@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  AlertTriangle, ArrowRight, Building2, FileWarning, Handshake, Landmark,
-  Loader2, Plus, ScrollText, Trash2, UserPlus,
+  ArrowRight, Building2, Landmark, Loader2, Plus, ScrollText, Trash2, UserPlus,
 } from "lucide-react";
 import { evaluar, type Requisito } from "../../lib/motor";
 import {
@@ -62,13 +61,9 @@ export function Dashboard({ store, onAbrir }: { store: Store; onAbrir: (p: Proye
     reales.forEach((r) => porInstitucion.set(r.institucion, (porInstitucion.get(r.institucion) ?? 0) + r.documentos.length));
     return {
       exigidos,
-      cargados,
       pendientes: Math.max(0, exigidos - cargados),
       instituciones: porInstitucion.size,
       porInstitucion: [...porInstitucion.entries()].sort((a, b) => b[1] - a[1]),
-      sinConfirmar: reales.filter((r) => r.confianza === "SIN_CONFIRMAR"),
-      gestiones: reales.filter((r) => r.tipo === "gestion"),
-      avisos: todas.filter((r) => r.tipo === "aviso").length,
     };
   }, [mapa, store.proyectos]);
 
@@ -132,53 +127,6 @@ export function Dashboard({ store, onAbrir }: { store: Store; onAbrir: (p: Proye
         </Panel>
       </div>
 
-      <Etiqueta>Lo que ninguna lista de requisitos te dice</Etiqueta>
-      <div className="mt-3 grid gap-3 lg:grid-cols-3">
-        <Panel className="p-4">
-          <div className="flex items-center gap-2">
-            <Handshake size={15} style={{ color: T.peligro }} />
-            <span className="text-[13px] font-semibold" style={{ color: T.tinta, fontFamily: sans }}>
-              {m.gestiones.length} no se resuelven con papel
-            </span>
-          </div>
-          {m.gestiones.map((g) => (
-            <p key={g.id} className="mt-2 text-[11.5px] leading-snug" style={{ color: T.tenue, fontFamily: sans }}>
-              {g.documentos[0]}
-            </p>
-          ))}
-          {!m.gestiones.length && (
-            <p className="mt-2 text-[11.5px]" style={{ color: T.tenue, fontFamily: sans }}>
-              Ningún requisito de tu cartera exige negociación.
-            </p>
-          )}
-        </Panel>
-
-        <Panel className="p-4">
-          <div className="flex items-center gap-2">
-            <FileWarning size={15} style={{ color: T.alerta }} />
-            <span className="text-[13px] font-semibold" style={{ color: T.tinta, fontFamily: sans }}>
-              {m.sinConfirmar.length} reglas sin confirmar
-            </span>
-          </div>
-          <p className="mt-2 text-[11.5px] leading-snug" style={{ color: T.tenue, fontFamily: sans }}>
-            Provienen de fuentes secundarias o de instructivos que no repiten el umbral. Se muestran igual,
-            marcadas, en vez de omitirlas.
-          </p>
-        </Panel>
-
-        <Panel className="p-4">
-          <div className="flex items-center gap-2">
-            <AlertTriangle size={15} style={{ color: T.alerta }} />
-            <span className="text-[13px] font-semibold" style={{ color: T.tinta, fontFamily: sans }}>
-              {m.avisos} municipalidades se reservan pedir más
-            </span>
-          </div>
-          <p className="mt-2 text-[11.5px] leading-snug" style={{ color: T.tenue, fontFamily: sans }}>
-            Tanto la capital como Pinula lo dicen por escrito en sus guías. Ninguna lista publicada es la
-            lista completa.
-          </p>
-        </Panel>
-      </div>
     </>
   );
 }
