@@ -5,7 +5,7 @@ Pegá todo lo que sigue (desde la línea punteada) en Claude, junto con las imá
 
 ---
 
-Necesito una presentación para un buildathon. El proyecto se llama **Tramitología** y ataca
+Necesito una presentación para un buildathon. El proyecto se llama **Cimiento** y ataca
 el licenciamiento de construcción en Guatemala. Ya está construido y funcionando: no es una
 idea, es una demo con datos normativos reales scrapeados de fuentes oficiales.
 
@@ -36,7 +36,7 @@ La **Ventanilla Ágil de la Construcción (VAC)** ya consolidó las institucione
 central: MARN, CONAP, CONRED, DGAC, MSPAS, IDAEH y MEM en un solo formulario. Eso está hecho.
 
 **Lo que no está resuelto:** saber qué te aplica antes de empezar, la capa municipal, y la
-memoria de rechazos. Ahí entra Tramitología. Es importante que el deck deje claro que
+memoria de rechazos. Ahí entra Cimiento. Es importante que el deck deje claro que
 construimos **sobre** la VAC, no contra ella — si no, el jurado pregunta por qué no usan la VAC.
 
 ## Por qué lo municipal es el problema difícil

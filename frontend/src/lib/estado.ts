@@ -118,7 +118,7 @@ const SEMILLA: Store = {
   ],
 };
 
-const CLAVE = "tramitologia.v1";
+const CLAVE = "cimiento.v1";
 
 function guardar(s: Store) {
   try {
