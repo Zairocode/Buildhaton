@@ -367,5 +367,145 @@
     "fuente": "Guía 01-F · documentos específicos",
     "confianza": "confirmada",
     "nota": "Aplica para proyectos de urbanización, movimiento de tierra y obras mayores a 900 m³."
+  },
+  {
+    "id": "muni-gt-discrecionalidad",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "tipo": "aviso",
+    "cuando": {},
+    "exige": ["Esta lista NO es completa: la guía se reserva pedir requisitos adicionales segun sea el caso"],
+    "fuente": "Guía 09-F · requisitos de presentación",
+    "confianza": "confirmada"
+  },
+
+  {
+    "id": "scp-base",
+    "capa": "municipal",
+    "jurisdiccion": "scp",
+    "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
+    "cuando": {},
+    "exige": [
+      "Formulario de solicitud de la Dirección Municipal de Planificación",
+      "Boleto de ornato del propietario",
+      "Solvencia municipal extendida por Tesorería",
+      "DPI del propietario o representante legal",
+      "Certificación del Registro General de la Propiedad, máximo 3 MESES de emisión",
+      "Recibo de pago del servicio de agua potable"
+    ],
+    "fuente": "SCP construcción menor / mayor / gran magnitud",
+    "confianza": "confirmada",
+    "nota": "Vigencia registral de 3 meses, no 6 como en la capital. Un expediente armado para Muniguate se rechaza aquí."
+  },
+  {
+    "id": "scp-obra-mayor",
+    "capa": "municipal",
+    "jurisdiccion": "scp",
+    "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
+    "cuando": { "categoria_obra_scp": { "in": ["mayor", "gran_magnitud"] } },
+    "exige": [
+      "Boleto de ornato del planificador Y del ejecutor",
+      "Constancia vigente de colegiado activo del planificador y del ejecutor",
+      "Certificación catastral de la Dirección de Catastro de SCP",
+      "Acta notarial asumiendo responsabilidad por daños a terceros, eximiendo a la Municipalidad",
+      "Dos juegos de planos numerados, timbrados, sellados y firmados",
+      "Copia digital de los planos en formato DWG",
+      "Detalle de volumen de tierra a mover en metros cúbicos",
+      "Localización geográfica del botadero con autorización de su propietario"
+    ],
+    "fuente": "SCP construcción mayor",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "scp-asociacion-vecinos",
+    "capa": "municipal",
+    "jurisdiccion": "scp",
+    "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
+    "tipo": "gestion",
+    "cuando": {
+      "any": [
+        { "categoria_obra_scp": "mayor" },
+        { "en_residencial_o_condominio": true }
+      ]
+    },
+    "exige": [
+      "Carta de la asociación de vecinos manifestando que no tiene dificultad con la obra",
+      "Planos sellados por la asociación de vecinos (obra mayor)"
+    ],
+    "fuente": "SCP construcción mayor / menor / gran magnitud",
+    "confianza": "confirmada",
+    "nota": "NO es un documento que se imprime: es una negociación con los vecinos, y pueden negarse. No existe equivalente en la capital."
+  },
+  {
+    "id": "scp-agua-privada",
+    "capa": "municipal",
+    "jurisdiccion": "scp",
+    "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
+    "cuando": { "fuente_agua_scp": "empresa_privada" },
+    "exige": ["Dictamen de agua y saneamiento"],
+    "fuente": "SCP construcción mayor",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "scp-agua-municipal",
+    "capa": "municipal",
+    "jurisdiccion": "scp",
+    "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
+    "cuando": { "fuente_agua_scp": "municipal" },
+    "exige": ["Constancia de pago del último mes del servicio de agua"],
+    "fuente": "SCP construcción mayor",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "scp-agua-pozo",
+    "capa": "municipal",
+    "jurisdiccion": "scp",
+    "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
+    "cuando": { "fuente_agua_scp": "pozo" },
+    "exige": [
+      "Dictamen de autorización de la Dirección de Agua y Saneamiento",
+      "Plano de ubicación del pozo mecánico: distancia radial NO MENOR A 100 m de pozos cercanos"
+    ],
+    "fuente": "SCP construcción mayor / gran magnitud",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "scp-gran-magnitud",
+    "capa": "municipal",
+    "jurisdiccion": "scp",
+    "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
+    "cuando": { "categoria_obra_scp": "gran_magnitud" },
+    "exige": [
+      "Memorial dirigido al Alcalde solicitando la licencia",
+      "Declaración jurada del propietario comprometiéndose a cumplir toda la normativa aplicable",
+      "Fianza de cumplimiento a favor de la Municipalidad (art. 148 Código Municipal)",
+      "Presupuesto por renglones de la construcción",
+      "Cronograma general de ejecución del proyecto",
+      "Estudio de cambio de uso de suelo autorizado por INAB, con sello de recibido",
+      "Resolución final del Estudio de Cambio de Uso de Suelo del INAB",
+      "Autorización del delegado de Derecho de Vía, Asesoría Jurídica de Caminos",
+      "Resolución del área de salud, área NORTE del MSPAS, sobre calidad de agua y tratamiento de residuales",
+      "Estudio de Impacto Vial",
+      "Cumplimiento de NRD-1, NRD-2 y NRD-3",
+      "Memoria de diseño estructural y estudio geotécnico",
+      "Planos hidráulicos autorizados por Ingeniero Sanitario colegiado activo",
+      "Redes de energía eléctrica e instalaciones especiales SUBTERRÁNEAS",
+      "Reglamento de copropiedad del condominio"
+    ],
+    "fuente": "SCP proyecto de gran magnitud",
+    "confianza": "confirmada",
+    "nota": "Si el proyecto usa derivados del petróleo, además licencia del MEM."
+  },
+  {
+    "id": "scp-discrecionalidad",
+    "capa": "municipal",
+    "jurisdiccion": "scp",
+    "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
+    "tipo": "aviso",
+    "cuando": {},
+    "exige": ["Esta lista NO es completa: la DMP se reserva pedir otros requisitos a su criterio técnico"],
+    "fuente": "SCP gran magnitud incisos l y m; construcción mayor",
+    "confianza": "confirmada"
   }
 ]

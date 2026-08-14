@@ -112,7 +112,14 @@ python motor/motor.py    # self-check + informe de ejemplo
 
 Las reglas viven en [`motor/reglas.json`](motor/reglas.json) como **datos, no código** — quien mantiene la normativa municipal no es quien escribe Python. [`motor/motor.py`](motor/motor.py) son ~40 líneas: filtra reglas contra las respuestas del proyecto y agrupa por capa.
 
-18 reglas sembradas de ambas capas, cada una con su `fuente` y su `confianza`. Las no verificadas salen marcadas `[SIN CONFIRMAR]` en el informe en vez de fingir certeza.
+28 reglas de tres jurisdicciones — ministerial, capital y Santa Catarina Pinula — cada una con su `fuente` y su `confianza`. Las no verificadas salen marcadas `[SIN CONFIRMAR]` en vez de fingir certeza, y las que no se resuelven con papel (la carta de la asociación de vecinos) salen marcadas `[NO ES UN DOCUMENTO]`.
+
+Ambas municipalidades se reservan por escrito el derecho de pedir más. El motor lo dice en la salida en vez de fingir completitud:
+
+```
+ADVERTENCIAS
+  * Esta lista NO es completa: la guía se reserva pedir requisitos adicionales segun sea el caso
+```
 
 ```python
 {"id": "muni-gt-cad-digital",
@@ -125,20 +132,28 @@ Las reglas viven en [`motor/reglas.json`](motor/reglas.json) como **datos, no c�
 
 ## Documentación
 
+- [`docs/comparativa-municipal.md`](docs/comparativa-municipal.md) — **Guatemala vs. Santa Catarina Pinula**: la evidencia de que la autonomía municipal rompe el proceso
 - [`docs/matriz-requisitos.md`](docs/matriz-requisitos.md) — **requisitos ministeriales y sus disparadores**, validados contra VAC04
-- [`docs/municipal-guatemala.md`](docs/municipal-guatemala.md) — **capa municipal**: umbrales, documentos que solo existen ahí, y la costura VAC↔muni
+- [`docs/municipal-guatemala.md`](docs/municipal-guatemala.md) — capa municipal de la capital: umbrales y costura VAC↔muni
+- [`docs/normativa-muniguate.md`](docs/normativa-muniguate.md) — **índice de 107 cuerpos normativos / 420 archivos** con acuerdo y fecha
 - [`docs/vac02.md`](docs/vac02.md) — estructura del Formulario Consolidado y catálogo de 96 documentos
-- [`docs/fuentes/`](docs/fuentes/) — instructivos oficiales VAC01, VAC02 (v1 y v2), VAC04, VAC05, VAC07, VAC09 + Guía 09-F municipal
+- [`docs/fuentes/`](docs/fuentes/) — 11 PDFs oficiales: instructivos VAC, Guía 09-F y las tres guías de SCP
 
 ---
 
 ## Estado
 
-**Módulo 1: esqueleto funcionando.** 18 reglas de ambas capas, con self-check verde.
+**Módulo 1 funcionando, con dos municipalidades y self-check verde.** El motor demuestra la tesis en código: la misma obra en la capital y en Pinula produce dos listas sin un solo requisito en común.
+
+```
+MISMA OBRA (450 m², pozo, en condominio) EN CADA MUNICIPALIDAD
+  CAPITAL                5 reglas, 17 requisitos
+  SANTA CATARINA PINULA  5 reglas, 18 requisitos
+```
 
 Falta:
-- Bajar el resto de guías municipales — `vu.muniguate.com` y `muniguate.com` bloquean acceso automatizado (403 en todo el dominio), y `asisehace.gt` ya redirige a pronacom. La Guía 09-F que tenemos salió de un mirror privado. **Se necesita un navegador real para completar la capa municipal.**
-- Guía 08 (obras > 700 m²), Guía 04 (medio ambiente municipal), formulario F08 vigente, tabla de costos municipal
-- Una segunda municipalidad para contrastar — Santa Catarina Pinula
+- Cargar reglas desde el POT y el Reglamento de Construcción (ya indexados, no leídos)
+- Guía 08 (obras > 700 m²) y Guía 04 de la capital — descarga por botón JS, hace falta navegador
 - Confirmar el umbral de 16 m de DGAC
+- **Revisar CONRED contra la NRD-2 vigente** — cambió en diciembre 2025 (CN-3-2025) y VAC04 la cita sin versión
 - Módulos 2 y 3

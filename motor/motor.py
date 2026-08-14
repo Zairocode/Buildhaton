@@ -34,19 +34,29 @@ def requisitos(proyecto, reglas=REGLAS):
     return [r for r in reglas if r["jurisdiccion"] in jur and aplica(r, proyecto)]
 
 
+MARCA = {"gestion": "[NO ES UN DOCUMENTO]", "aviso": ""}
+
+
 def informe(proyecto):
+    rs = requisitos(proyecto)
     lineas = []
     for capa in ("ministerial", "municipal"):
-        rs = [r for r in requisitos(proyecto) if r["capa"] == capa]
-        if not rs:
+        bloque = [r for r in rs if r["capa"] == capa and r.get("tipo") != "aviso"]
+        if not bloque:
             continue
         lineas.append(f"\n{capa.upper()}")
-        for r in rs:
-            flag = "  [SIN CONFIRMAR]" if r["confianza"] == "SIN_CONFIRMAR" else ""
-            lineas.append(f"  {r['institucion']} — {r['id']}{flag}")
+        for r in bloque:
+            marca = MARCA.get(r.get("tipo"), "")
+            if r["confianza"] == "SIN_CONFIRMAR":
+                marca += "  [SIN CONFIRMAR]"
+            lineas.append(f"  {r['institucion']} — {r['id']}  {marca}".rstrip())
             lineas.extend(f"    - {d}" for d in r["exige"])
             if "nota" in r:
                 lineas.append(f"    ! {r['nota']}")
+    avisos = [r for r in rs if r.get("tipo") == "aviso"]
+    if avisos:
+        lineas.append("\nADVERTENCIAS")
+        lineas.extend(f"  * {d}  ({r['fuente']})" for r in avisos for d in r["exige"])
     return "\n".join(lineas)
 
 
@@ -59,7 +69,7 @@ def demo():
         "uso_publico": False,
         "categoria_ambiental": "B2",
     }
-    ids = {r["id"] for r in requisitos(casa)}
+    ids = {r["id"] for r in requisitos(casa) if r.get("tipo") != "aviso"}
     assert ids == {
         "muni-gt-base", "muni-gt-colegiado", "muni-gt-cad-digital",
         "muni-gt-marn-resolucion", "muni-gt-nrd1-acta",
@@ -95,9 +105,31 @@ def demo():
     assert "mspas-conexion-existente" in {r["id"] for r in requisitos(b)}
     assert requisitos(a) != requisitos(b)
 
+    # La tesis del proyecto: mismo proyecto, distinta muni, distinto tramite.
+    obra = {"area_construccion_m2": 450, "altura_m": 8, "categoria_obra_scp": "mayor",
+            "fuente_agua_scp": "pozo", "en_residencial_o_condominio": True}
+    en_capital = {**obra, "municipalidad": "muniguate"}
+    en_pinula = {**obra, "municipalidad": "scp"}
+    ids_cap = {r["id"] for r in requisitos(en_capital)}
+    ids_scp = {r["id"] for r in requisitos(en_pinula)}
+    assert not (ids_cap & ids_scp), "las reglas municipales no deben cruzarse entre jurisdicciones"
+    assert "scp-asociacion-vecinos" in ids_scp      # requisito social, no existe en la capital
+    assert "scp-agua-pozo" in ids_scp
+    assert "muni-gt-cad-digital" in ids_cap         # CAD 2007 vs DWG
+
+    # Ninguna lista publicada es completa, y ambas munis lo dicen por escrito.
+    for p in (en_capital, en_pinula):
+        assert any(r.get("tipo") == "aviso" for r in requisitos(p))
+
     print("self-check OK\n")
     print(f"Caso: EAP {torre['area_construccion_m2']} m², {torre['altura_m']} m de altura, PTAR nueva")
     print(informe(torre))
+    print("\n" + "=" * 70)
+    print("MISMA OBRA (450 m², pozo, en condominio) EN CADA MUNICIPALIDAD")
+    for etiqueta, p in (("CAPITAL", en_capital), ("SANTA CATARINA PINULA", en_pinula)):
+        rs = [r for r in requisitos(p) if r["capa"] == "municipal"]
+        docs = sum(len(r["exige"]) for r in rs if r.get("tipo") != "aviso")
+        print(f"  {etiqueta:22} {len(rs)} reglas, {docs} requisitos")
 
 
 if __name__ == "__main__":

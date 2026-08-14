@@ -20,17 +20,21 @@ El [README](README.md) tiene el planteamiento completo.
 
 **3. La costura entre capas tiene una válvula de escape poco conocida.** La municipalidad exige la resolución del MARN como entrada. Pero si el trámite MARN no ha concluido, se puede ingresar el expediente municipal con **acta de declaración jurada** + copia de recepción de la solicitud ante MARN. Permite paralelizar. Fuente: Guía 09-F.
 
-**4. La guía municipal admite que la lista no es la lista.** Textual: *"Se podrán requerir aquellos requisitos adicionales que se consideren necesarios para la autorización de la solicitud, según sea el caso."* Esa discrecionalidad es el problema que el proyecto ataca, y es la razón de ser del módulo 3.
+**4. Las guías municipales admiten que la lista no es la lista.** La capital: *"Se podrán requerir aquellos requisitos adicionales que se consideren necesarios… según sea el caso."* Santa Catarina Pinula: *"Otros requisitos que a criterio de la Dirección tengan una justificación técnica."* Dos municipalidades independientes, misma cláusula. Ningún motor de reglas cierra esa brecha — solo el historial de qué pidieron de verdad, que es el módulo 3.
+
+**5. Las dos municipalidades ni siquiera clasifican las obras igual.** La capital usa metros cuadrados (30 / 200 / 700); Pinula usa categorías cualitativas (menor / mayor / gran magnitud). Y coinciden en documentos con parámetros distintos: la certificación registral vale **6 meses** en la capital y **3 meses** en Pinula. La jurisdicción no es un filtro sobre un trámite genérico, es un eje. Detalle completo en [`docs/comparativa-municipal.md`](docs/comparativa-municipal.md).
 
 ## Mapa de documentación
 
 | Archivo | Contenido |
 |---|---|
+| [`docs/comparativa-municipal.md`](docs/comparativa-municipal.md) | **Capital vs. Santa Catarina Pinula.** La evidencia de la tesis. Empieza por aquí si necesitas convencer a alguien. |
 | [`docs/matriz-requisitos.md`](docs/matriz-requisitos.md) | Requisitos ministeriales por institución + disparadores. Validado contra VAC04. |
 | [`docs/municipal-guatemala.md`](docs/municipal-guatemala.md) | Capa municipal (Muniguate): Guía 09-F y Guía 00-F/01-F, umbrales, documentos exclusivos, costura VAC↔muni. |
+| [`docs/normativa-muniguate.md`](docs/normativa-muniguate.md) | Índice de 107 cuerpos normativos / 420 archivos con acuerdo y fecha. La lista de vigilancia. |
 | [`docs/vac02.md`](docs/vac02.md) | Estructura del Formulario Consolidado, 8 pantallas, catálogo de 96 documentos. |
 | [`docs/fuentes/`](docs/fuentes/) | PDFs originales. Toda afirmación en los .md debe poder rastrearse aquí. |
-| [`motor/`](motor/) | Motor de requisitos: reglas como datos + ~40 líneas de filtro. |
+| [`motor/`](motor/) | Motor de requisitos: reglas como datos + ~55 líneas de filtro. |
 
 ## Nivel de confianza de los datos
 
@@ -65,14 +69,17 @@ No los repitas:
 
 | Fuente | Estado |
 |---|---|
-| `vac.com.gt` | ✅ accesible con User-Agent de navegador (urllib funciona; WebFetch da 403) |
+| `vac.com.gt` | ✅ urllib con User-Agent de navegador (WebFetch da 403) |
+| `scp.gob.gt` | ✅ urllib con User-Agent — Santa Catarina Pinula |
 | `approvato.com.gt` | ✅ accesible — fuente de Guía 09-F y Guía 00-F/01-F |
-| `vu.muniguate.com` | ❌ **403 a todo cliente automatizado** |
-| `muniguate.com` | ❌ **403** |
-| `asisehace.gt` | ❌ redirige a pronacom.org — catálogo nacional de trámites fuera de línea |
+| `vu.muniguate.com` | ⚠️ **403 a todo cliente automatizado.** Solo con navegador real (Claude in Chrome) |
+| `muniguate.com` | ❌ 403 |
+| `asisehace.gt` | ❌ redirige a pronacom.org — catálogo nacional fuera de línea |
 | `app.vac.com.gt` | 🔒 requiere cuenta registrada |
 
-**Para avanzar en lo municipal hace falta un navegador real.** No gastes intentos re-scrapeando muniguate: ya se intentó por tres vías distintas.
+**Cómo se raspó vu.muniguate.com.** No tiene API: el contenido está renderizado en el DOM dentro de acordeones Bootstrap colapsados. Se extrae leyendo `.accordion-header` + el panel `#regCollapseNNN` con `javascript_tool`, sin necesidad de hacer clic. Los formularios (F02–F14) sí se descargan por botón JS y no tienen URL estable.
+
+No gastes intentos con urllib/WebFetch sobre muniguate: ya se intentó por tres vías y todas dan 403.
 
 ## PDFs locales disponibles
 
@@ -92,13 +99,15 @@ No los repitas:
 ## Trabajo pendiente
 
 **Datos**
-- Guía 04 (medio ambiente municipal — cortes de árboles < 10 m³), formulario F08 vigente y F02 v3 vigente, tabla de costos municipal
+- Leer el **POT** (11 archivos, COM-008-2026) y el **Reglamento de Construcción** (COM-004-2024) y sacarles reglas. Están indexados en `normativa-muniguate.md` pero nadie los ha leído.
+- Guía 04 (medio ambiente municipal — cortes de árboles < 10 m³), formulario F08 vigente y F02 v3 vigente, tabla de costos municipal — descarga por botón JS, hace falta navegador
 - Las "guías por dependencia" que la 09-F y 00-F mencionan: EMPAGUA, DPD-DMA, VUCH, Bomberos
-- Una segunda municipalidad para contrastar — **Santa Catarina Pinula** es el caso que motiva el proyecto
+- **Revisar CONRED contra la NRD-2 vigente.** Cambió el 22/12/2025 (Acuerdo CN-3-2025) y VAC04 la cita sin versión. Las reglas `conred-*` pueden estar desactualizadas.
 - Confirmar el umbral DGAC en VAC04 (actualmente en dos fuentes: VAC02 + Guía 00-F, pero ninguna es VAC04)
 - Confirmar el cono de aproximación La Aurora (límites geográficos exactos)
 - Confirmar disparador exacto de NRD-1 (acta en VUM) y NRD-3
 - Requisitos de CONAP, IDAEH, MEM, INAB
+- Resolver la discrepancia de SCP: la guía de obra mayor cita AG **137-2016** para el instrumento ambiental y la de obra menor cita AG **61-2015**
 
 **Preguntas abiertas que cambian el producto**
 - **¿La VAC tiene API?** Define si el módulo 2 sincroniza estado real o solo lo registra en paralelo. Es la pregunta de mayor impacto.
