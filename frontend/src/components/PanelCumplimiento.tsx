@@ -1,157 +1,25 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Copy, Grid2x2, Link2, Loader2, Users } from "lucide-react";
+import {
+  ArrowLeft, Copy, Handshake, LayoutDashboard, Link2, Loader2, Users as UsersIcon, FolderKanban,
+} from "lucide-react";
 import { evaluar, type Requisito } from "../lib/motor";
-import { ESTADOS, PROYECTOS, type ProyectoPanel } from "../lib/proyectos";
+import { ESTADOS, useStore, type ProyectoPanel } from "../lib/estado";
+import { Barra, Boton, Chip, Etiqueta, Panel, T, mono, sans } from "./panel/ui";
+import { Dashboard, NuevoProyecto, Proyectos, Usuarios, contar } from "./panel/vistas";
 
-/* ---------- Modernist ---------- */
-const CREMA = "#FAF7F2";
-const TINTA = "#1C1917";
-const CARMIN = "#C2410C";
-const LINEA = "#E3DDD3";
-const TENUE = "#78716C";
-const OK = "#2D9D78";
-const serif = { fontFamily: "'Instrument Serif', Georgia, 'Times New Roman', serif" };
+/* ===================== FICHA ===================== */
 
-/** Un requisito calculado vale por documento, salvo los avisos. */
-function contar(rs: Requisito[]) {
-  return rs.filter((r) => r.tipo !== "aviso").reduce((n, r) => n + r.documentos.length, 0);
-}
-
-/* ================= Dashboard ================= */
-
-function Dashboard({ onAbrir }: { onAbrir: (p: ProyectoPanel) => void }) {
-  const [totales, setTotales] = useState<Record<string, number | null>>({});
-  const [q, setQ] = useState("");
-
-  useEffect(() => {
-    // El total de cada proyecto lo dice el motor, no una constante.
-    PROYECTOS.forEach((p) =>
-      evaluar(p.datos)
-        .then((r) => setTotales((t) => ({ ...t, [p.id]: contar(r.requirements) })))
-        .catch(() => setTotales((t) => ({ ...t, [p.id]: null })))
-    );
-  }, []);
-
-  const filtrados = PROYECTOS.filter(
-    (p) =>
-      p.nombre.toLowerCase().includes(q.toLowerCase()) ||
-      p.municipalidadLabel.toLowerCase().includes(q.toLowerCase())
-  );
-
-  return (
-    <>
-      <div className="mb-8 flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-[52px] leading-[1.05] tracking-tight" style={{ ...serif, color: TINTA }}>
-            Proyectos
-          </h1>
-          <p className="mt-2 text-[14px]" style={{ color: TENUE }}>
-            Gestioná el archivo de cumplimiento de cada proyecto inmobiliario
-          </p>
-        </div>
-        <button
-          className="shrink-0 rounded px-4 py-2.5 text-[13px] font-semibold text-white"
-          style={{ background: CARMIN }}
-        >
-          + Nuevo proyecto
-        </button>
-      </div>
-
-      <input
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        placeholder="Buscar proyecto o municipalidad"
-        className="mb-8 w-full max-w-md rounded border px-3 py-2.5 text-[13px] outline-none"
-        style={{ borderColor: LINEA, background: "white", color: TINTA }}
-      />
-
-      <table className="w-full border-collapse text-left">
-        <thead>
-          <tr className="text-[10.5px] font-semibold uppercase tracking-[0.09em]" style={{ color: TENUE }}>
-            <th className="border-b pb-3 pr-4" style={{ borderColor: LINEA }}>Proyecto</th>
-            <th className="border-b pb-3 pr-4" style={{ borderColor: LINEA }}>Municipalidad</th>
-            <th className="border-b pb-3 pr-4" style={{ borderColor: LINEA }}>Tipo</th>
-            <th className="border-b pb-3 pr-4" style={{ borderColor: LINEA }}>Documentos</th>
-            <th className="border-b pb-3" style={{ borderColor: LINEA }}>Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtrados.map((p) => {
-            const total = totales[p.id];
-            const pct = total ? Math.min(100, Math.round((p.cargados / total) * 100)) : 0;
-            const est = ESTADOS[p.estado];
-            return (
-              <tr
-                key={p.id}
-                onClick={() => onAbrir(p)}
-                className="cursor-pointer transition-colors hover:bg-black/[0.02]"
-              >
-                <td className="border-b py-4 pr-4" style={{ borderColor: LINEA }}>
-                  <div className="text-[15px] font-semibold" style={{ color: TINTA }}>{p.nombre}</div>
-                  <div className="mt-0.5 font-mono text-[11px]" style={{ color: TENUE }}>{p.id}</div>
-                </td>
-                <td className="border-b py-4 pr-4 text-[13.5px]" style={{ borderColor: LINEA, color: TINTA }}>
-                  {p.municipalidadLabel}
-                </td>
-                <td className="border-b py-4 pr-4 text-[13.5px]" style={{ borderColor: LINEA, color: TINTA }}>
-                  {p.tipo}
-                </td>
-                <td className="border-b py-4 pr-4" style={{ borderColor: LINEA }}>
-                  {total == null ? (
-                    <span className="flex items-center gap-1.5 text-[12px]" style={{ color: TENUE }}>
-                      <Loader2 size={11} className="animate-spin" /> calculando…
-                    </span>
-                  ) : (
-                    <>
-                      <div className="text-[13px]" style={{ color: TINTA }}>
-                        {p.cargados}/{total} cargados
-                      </div>
-                      <div className="mt-1.5 h-[3px] w-40 rounded-full" style={{ background: LINEA }}>
-                        <div className="h-full rounded-full" style={{ width: `${pct}%`, background: CARMIN }} />
-                      </div>
-                    </>
-                  )}
-                </td>
-                <td className="border-b py-4" style={{ borderColor: LINEA }}>
-                  <span
-                    className="inline-block rounded border px-2.5 py-1 text-[11.5px] font-medium"
-                    style={{
-                      borderColor: est.tono === "acento" ? CARMIN : "transparent",
-                      color: est.tono === "acento" ? CARMIN : est.tono === "ok" ? OK : TENUE,
-                    }}
-                  >
-                    {est.label}
-                  </span>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-
-      <p className="mt-6 text-[11.5px]" style={{ color: TENUE }}>
-        El total de documentos de cada proyecto lo calcula el motor de reglas contra la normativa de su
-        municipalidad. No es un número fijo: cambia con el proyecto y con el municipio.
-      </p>
-    </>
-  );
-}
-
-/* ================= Ficha ================= */
-
-function Dato({ label, valor }: { label: string; valor: string }) {
+function Dato({ label, valor, esMono }: { label: string; valor: string; esMono?: boolean }) {
   return (
     <div>
-      <div className="text-[10.5px] font-semibold uppercase tracking-[0.09em]" style={{ color: TENUE }}>
-        {label}
-      </div>
-      <div className="mt-1 text-[15px]" style={{ color: TINTA }}>{valor}</div>
+      <Etiqueta>{label}</Etiqueta>
+      <div className="mt-1.5 text-[14px]" style={{ color: T.tinta, fontFamily: esMono ? mono : sans }}>{valor}</div>
     </div>
   );
 }
 
 function Ficha({ p, onVolver }: { p: ProyectoPanel; onVolver: () => void }) {
-  const [tab, setTab] = useState<"info" | "docs" | "vac">("info");
+  const [tab, setTab] = useState<"info" | "docs" | "vac">("docs");
   const [rs, setRs] = useState<Requisito[] | null>(null);
 
   useEffect(() => {
@@ -160,56 +28,46 @@ function Ficha({ p, onVolver }: { p: ProyectoPanel; onVolver: () => void }) {
   }, [p]);
 
   const total = rs ? contar(rs) : null;
-  const pct = total ? Math.min(100, Math.round((p.cargados / total) * 100)) : 0;
-  const est = ESTADOS[p.estado];
+  const pct = total ? Math.round((p.cargados / total) * 100) : 0;
 
-  /* Agrupado por institucion: asi es como llegan los rechazos, uno por institucion. */
   const grupos = useMemo(() => {
     const m = new Map<string, Requisito[]>();
-    (rs ?? []).filter((r) => r.tipo !== "aviso").forEach((r) => {
-      m.set(r.institucion, [...(m.get(r.institucion) ?? []), r]);
-    });
+    (rs ?? []).filter((r) => r.tipo !== "aviso").forEach((r) =>
+      m.set(r.institucion, [...(m.get(r.institucion) ?? []), r])
+    );
     return [...m.entries()];
   }, [rs]);
-
   const avisos = (rs ?? []).filter((r) => r.tipo === "aviso");
 
   return (
     <>
       <button
         onClick={onVolver}
-        className="mb-6 flex items-center gap-2 text-[13px] font-semibold"
-        style={{ color: CARMIN }}
+        className="mb-5 flex items-center gap-1.5 text-[12.5px] font-semibold"
+        style={{ color: T.acento, fontFamily: sans }}
       >
-        <ArrowLeft size={15} /> Volver a proyectos
+        <ArrowLeft size={14} /> Volver
       </button>
 
-      <div className="mb-7 flex flex-wrap items-baseline gap-4">
-        <h1 className="text-[46px] leading-none tracking-tight" style={{ ...serif, color: TINTA }}>
+      <div className="mb-6 flex flex-wrap items-center gap-3">
+        <h1 className="text-[28px] font-semibold tracking-[-0.02em]" style={{ color: T.tinta, fontFamily: sans }}>
           {p.nombre}
         </h1>
-        <span className="font-mono text-[12px]" style={{ color: TENUE }}>{p.id}</span>
-        <span
-          className="rounded border px-2.5 py-1 text-[11.5px] font-medium"
-          style={{
-            borderColor: est.tono === "acento" ? CARMIN : LINEA,
-            color: est.tono === "acento" ? CARMIN : TENUE,
-          }}
-        >
-          {est.label}
-        </span>
+        <span className="text-[12px]" style={{ color: T.tenue, fontFamily: mono }}>{p.id}</span>
+        <Chip tono={ESTADOS[p.estado].tono}>{ESTADOS[p.estado].label}</Chip>
       </div>
 
-      <div className="mb-7 flex gap-7 border-b" style={{ borderColor: LINEA }}>
-        {([["info", "Info"], ["docs", "Documentos"], ["vac", "VAC"]] as const).map(([k, l]) => (
+      <div className="mb-7 flex gap-6 border-b" style={{ borderColor: T.linea }}>
+        {([["info", "Información"], ["docs", "Requisitos"], ["vac", "VAC"]] as const).map(([k, l]) => (
           <button
             key={k}
             onClick={() => setTab(k)}
-            className="-mb-px border-b-2 pb-3 text-[14px] transition-colors"
+            className="-mb-px border-b-2 pb-3 text-[13.5px]"
             style={{
-              borderColor: tab === k ? CARMIN : "transparent",
-              color: tab === k ? CARMIN : TENUE,
+              borderColor: tab === k ? T.acento : "transparent",
+              color: tab === k ? T.acento : T.tenue,
               fontWeight: tab === k ? 600 : 400,
+              fontFamily: sans,
             }}
           >
             {l}
@@ -218,191 +76,195 @@ function Ficha({ p, onVolver }: { p: ProyectoPanel; onVolver: () => void }) {
       </div>
 
       {tab === "info" && (
-        <div className="grid gap-7 sm:grid-cols-2">
-          <Dato label="Municipalidad" valor={p.municipalidadLabel} />
-          <Dato label="Tipo de obra" valor={p.tipo} />
-          <Dato label="Dirección" valor={p.direccion} />
-          <Dato label="Área de terreno" valor={`${p.areaTerreno.toLocaleString("es-GT")} m²`} />
-          <Dato
-            label="Área de construcción"
-            valor={`${Number(p.datos.area_construccion_m2).toLocaleString("es-GT")} m²`}
-          />
-          <Dato label="Altura" valor={`${p.datos.altura_m} m`} />
-          <Dato label="Propietario / desarrollador" valor={p.propietario} />
-          <Dato label="NIT" valor={p.nit} />
-        </div>
+        <Panel className="max-w-4xl p-6">
+          <div className="grid gap-6 sm:grid-cols-3">
+            <Dato label="Municipalidad" valor={p.municipalidadLabel} />
+            <Dato label="Tipo de obra" valor={p.tipo} />
+            <Dato label="Dirección" valor={p.direccion || "—"} />
+            <Dato label="Área de terreno" valor={p.areaTerreno ? `${p.areaTerreno.toLocaleString("es-GT")} m²` : "—"} esMono />
+            <Dato label="Área de construcción" valor={`${Number(p.datos.area_construccion_m2 ?? 0).toLocaleString("es-GT")} m²`} esMono />
+            <Dato label="Altura" valor={`${p.datos.altura_m ?? 0} m`} esMono />
+          </div>
+        </Panel>
       )}
 
       {tab === "docs" && (
-        <div>
+        <div className="max-w-4xl">
           <div className="mb-7 flex items-center gap-4">
-            <span className="text-[13.5px]" style={{ color: TINTA }}>
-              {total == null ? "calculando…" : `${p.cargados}/${total} cargados · ${pct}%`}
+            <span className="whitespace-nowrap text-[13px]" style={{ color: T.medio, fontFamily: mono }}>
+              {total == null ? "calculando…" : `${p.cargados}/${total} · ${pct}%`}
             </span>
-            <div className="h-[3px] flex-1 rounded-full" style={{ background: LINEA }}>
-              <div className="h-full rounded-full" style={{ width: `${pct}%`, background: CARMIN }} />
-            </div>
+            <div className="flex-1"><Barra pct={pct} /></div>
           </div>
 
+          {total == null && (
+            <div className="flex items-center gap-2 text-[13px]" style={{ color: T.tenue, fontFamily: sans }}>
+              <Loader2 size={14} className="animate-spin" /> evaluando normativa de {p.municipalidadLabel}…
+            </div>
+          )}
+
           {grupos.map(([institucion, reglas]) => (
-            <section key={institucion} className="mb-8">
-              <h2 className="mb-3 text-[22px]" style={{ ...serif, color: TINTA }}>{institucion}</h2>
-              {reglas.map((r) => (
-                <div key={r.id}>
-                  {r.documentos.map((d) => (
-                    <div
-                      key={d}
-                      className="flex items-center justify-between gap-4 border-b py-3"
-                      style={{ borderColor: LINEA }}
-                    >
-                      <span className="text-[13.5px]" style={{ color: TINTA }}>{d}</span>
-                      <div className="flex shrink-0 items-center gap-3">
-                        {r.confianza === "SIN_CONFIRMAR" && (
-                          <span className="text-[10.5px] font-bold" style={{ color: CARMIN }}>
-                            SIN CONFIRMAR
-                          </span>
-                        )}
-                        {r.tipo === "gestion" ? (
-                          <span
-                            className="rounded border px-2 py-1 text-[11px] font-semibold"
-                            style={{ borderColor: CARMIN, color: CARMIN }}
-                          >
-                            No es un documento
-                          </span>
-                        ) : (
-                          <button
-                            className="rounded px-3 py-1.5 text-[11.5px] font-semibold text-white"
-                            style={{ background: TINTA }}
-                          >
-                            Cargar
-                          </button>
-                        )}
+            <section key={institucion} className="mb-7">
+              <h2 className="mb-3 text-[15px] font-semibold" style={{ color: T.tinta, fontFamily: sans }}>
+                {institucion}
+              </h2>
+              <Panel>
+                {reglas.map((r) => (
+                  <div key={r.id}>
+                    {r.documentos.map((d, i) => (
+                      <div
+                        key={d}
+                        className="flex items-center justify-between gap-4 px-5 py-3"
+                        style={{ borderTop: i === 0 && r === reglas[0] ? "none" : `1px solid ${T.linea}` }}
+                      >
+                        <span className="text-[13px] leading-snug" style={{ color: T.tinta, fontFamily: sans }}>{d}</span>
+                        <div className="flex shrink-0 items-center gap-2">
+                          {r.confianza === "SIN_CONFIRMAR" && <Chip tono="alerta">Sin confirmar</Chip>}
+                          {r.tipo === "gestion" ? (
+                            <Chip tono="peligro"><Handshake size={11} /> No es un documento</Chip>
+                          ) : (
+                            <Boton variante="borde">Cargar</Boton>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                  {r.nota && (
-                    <p className="border-l-2 py-2 pl-3 text-[11.5px] italic" style={{ borderColor: CARMIN, color: TENUE }}>
-                      {r.nota}
-                    </p>
-                  )}
-                </div>
-              ))}
+                    ))}
+                    {r.nota && (
+                      <p
+                        className="mx-5 mb-3 border-l-2 py-1.5 pl-3 text-[11.5px] italic leading-snug"
+                        style={{ borderColor: T.alerta, color: T.tenue, fontFamily: sans }}
+                      >
+                        {r.nota}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </Panel>
+              <p className="mt-1.5 text-[10.5px]" style={{ color: T.tenue, fontFamily: mono }}>
+                {[...new Set(reglas.map((r) => r.fuente))].join(" · ")}
+              </p>
             </section>
           ))}
 
           {avisos.map((a) => (
-            <div key={a.id} className="rounded border p-4" style={{ borderColor: CARMIN, background: "#FFF8F3" }}>
+            <div key={a.id} className="rounded-[4px] border p-4" style={{ borderColor: T.alerta, background: T.alertaSuave }}>
               {a.documentos.map((d) => (
-                <p key={d} className="text-[13px] font-semibold" style={{ color: TINTA }}>{d}</p>
+                <p key={d} className="text-[12.5px] font-semibold" style={{ color: T.tinta, fontFamily: sans }}>{d}</p>
               ))}
-              <p className="mt-1 text-[11px]" style={{ color: TENUE }}>{a.fuente}</p>
+              <p className="mt-1 text-[10.5px]" style={{ color: T.tenue, fontFamily: mono }}>{a.fuente}</p>
             </div>
           ))}
         </div>
       )}
 
       {tab === "vac" && (
-        <div className="rounded p-7" style={{ background: "#F3EEE7" }}>
-          <div className="mb-6 text-[10.5px] font-bold uppercase tracking-[0.11em]" style={{ color: CARMIN }}>
-            Ventanilla Ágil de la Construcción
-          </div>
-          <div className="mb-7 grid gap-7 sm:grid-cols-2">
+        <Panel className="max-w-3xl p-6">
+          <Etiqueta>Ventanilla Ágil de la Construcción</Etiqueta>
+          <div className="mt-5 grid gap-6 sm:grid-cols-2">
             <div>
-              <div className="text-[10.5px] font-semibold uppercase tracking-[0.09em]" style={{ color: TENUE }}>
-                ID de proyecto
-              </div>
+              <Etiqueta>ID de proyecto</Etiqueta>
               <div className="mt-1.5 flex items-center gap-2">
-                <span className="font-mono text-[22px] font-bold" style={{ color: TINTA }}>{p.id}</span>
-                <Copy size={15} style={{ color: TENUE }} />
+                <span className="text-[19px] font-semibold" style={{ color: T.tinta, fontFamily: mono }}>{p.id}</span>
+                <Copy size={14} style={{ color: T.tenue }} />
               </div>
             </div>
             <div>
-              <div className="text-[10.5px] font-semibold uppercase tracking-[0.09em]" style={{ color: TENUE }}>
-                Link de VAC
-              </div>
+              <Etiqueta>Link de VAC</Etiqueta>
               <div className="mt-1.5 flex items-center gap-2">
-                <Link2 size={14} style={{ color: TENUE }} />
-                <span className="text-[13px]" style={{ color: TINTA }}>
-                  https://app.vac.com.gt/tramite/{p.id}
+                <Link2 size={13} style={{ color: T.tenue }} />
+                <span className="text-[12.5px]" style={{ color: T.tinta, fontFamily: mono }}>
+                  app.vac.com.gt/tramite/{p.id}
                 </span>
-                <Copy size={15} style={{ color: TENUE }} />
               </div>
             </div>
           </div>
-          <h3 className="mb-2 text-[18px]" style={{ ...serif, color: TINTA }}>Cómo usarlo</h3>
-          <ol className="ml-4 list-decimal space-y-1 text-[13px]" style={{ color: TINTA }}>
+          <ol className="mt-6 ml-4 list-decimal space-y-1 text-[13px]" style={{ color: T.medio, fontFamily: sans }}>
             <li>Copiá el ID o el link del proyecto.</li>
             <li>Abrí la extensión de VAC en tu navegador.</li>
-            <li>Pegalo ahí — la extensión completa el formulario de VAC automáticamente.</li>
+            <li>Pegalo ahí — la extensión completa el formulario automáticamente.</li>
           </ol>
-          <p className="mt-5 border-t pt-4 text-[11.5px]" style={{ borderColor: LINEA, color: TENUE }}>
+          <p className="mt-5 border-t pt-4 text-[11.5px] leading-snug" style={{ borderColor: T.linea, color: T.tenue, fontFamily: sans }}>
             El VAC02 cubre las instituciones de gobierno central. Los requisitos municipales de este
-            proyecto viven en la pestaña Documentos y no viajan con el expediente VAC.
+            proyecto no viajan con el expediente VAC: se tramitan aparte, en {p.municipalidadLabel}.
           </p>
-        </div>
+        </Panel>
       )}
     </>
   );
 }
 
-/* ================= Shell ================= */
+/* ===================== SHELL ===================== */
 
-export default function PanelCumplimiento({ onIrAlWizard }: { onIrAlWizard: () => void }) {
+type Vista = "dashboard" | "proyectos" | "usuarios" | "nuevo";
+
+const NAV = [
+  { k: "dashboard", l: "Resumen", Icono: LayoutDashboard },
+  { k: "proyectos", l: "Proyectos", Icono: FolderKanban },
+  { k: "usuarios", l: "Usuarios", Icono: UsersIcon },
+] as const;
+
+export default function PanelCumplimiento({ onLlenarVac }: { onLlenarVac: (p: ProyectoPanel) => void }) {
+  const { store, setStore } = useStore();
+  const [vista, setVista] = useState<Vista>("dashboard");
   const [abierto, setAbierto] = useState<ProyectoPanel | null>(null);
-  const [seccion, setSeccion] = useState<"proyectos" | "usuarios">("proyectos");
+
+  const abrir = (p: ProyectoPanel) => {
+    setAbierto(p);
+    setVista("proyectos");
+  };
 
   return (
-    <div className="flex min-h-screen" style={{ background: CREMA }}>
-      <aside className="w-60 shrink-0 border-r p-6" style={{ borderColor: LINEA }}>
-        <div className="mb-8">
-          <div className="text-[23px] leading-tight" style={{ ...serif, color: TINTA }}>Tramitología</div>
-          <div className="text-[11.5px]" style={{ color: TENUE }}>Panel de cumplimiento</div>
+    <div className="flex min-h-screen" style={{ background: T.papel, fontFamily: sans }}>
+      <aside className="w-56 shrink-0 border-r px-4 py-6" style={{ borderColor: T.linea, background: T.blanco }}>
+        <div className="mb-8 px-2">
+          <div className="text-[16px] font-semibold tracking-[-0.01em]" style={{ color: T.tinta }}>Tramitología</div>
+          <div className="text-[11px]" style={{ color: T.tenue }}>Panel de cumplimiento</div>
         </div>
-        <nav className="space-y-1">
-          {([["proyectos", "Proyectos", Grid2x2], ["usuarios", "Usuarios", Users]] as const).map(
-            ([k, l, Icono]) => (
+        <nav className="space-y-0.5">
+          {NAV.map(({ k, l, Icono }) => {
+            const activo = vista === k && !abierto;
+            return (
               <button
                 key={k}
-                onClick={() => {
-                  setSeccion(k);
-                  setAbierto(null);
-                }}
-                className="flex w-full items-center gap-2.5 rounded px-3 py-2.5 text-left text-[13.5px] transition-colors"
+                onClick={() => { setVista(k); setAbierto(null); }}
+                className="flex w-full items-center gap-2.5 rounded-[3px] px-2.5 py-2 text-left text-[13px]"
                 style={{
-                  background: seccion === k ? CARMIN : "transparent",
-                  color: seccion === k ? "white" : TENUE,
-                  fontWeight: seccion === k ? 600 : 400,
+                  background: activo ? T.acentoSuave : "transparent",
+                  color: activo ? T.acento : T.medio,
+                  fontWeight: activo ? 600 : 400,
                 }}
               >
                 <Icono size={15} /> {l}
               </button>
-            )
-          )}
+            );
+          })}
         </nav>
-        <button
-          onClick={onIrAlWizard}
-          className="mt-8 w-full rounded border px-3 py-2 text-[12px] font-medium"
-          style={{ borderColor: LINEA, color: TENUE }}
-        >
-          Abrir formulario VAC02
-        </button>
+        <div className="mt-8 border-t px-2 pt-4" style={{ borderColor: T.linea }}>
+          <Etiqueta>Empresa</Etiqueta>
+          <div className="mt-1.5 text-[12px] leading-snug" style={{ color: T.medio }}>
+            {store.empresa.nombreComercial}
+          </div>
+          <div className="text-[11px]" style={{ color: T.tenue, fontFamily: mono }}>NIT {store.empresa.nit}</div>
+        </div>
       </aside>
 
-      <main className="flex-1 overflow-x-auto p-10">
-        {seccion === "usuarios" ? (
-          <>
-            <h1 className="text-[52px] leading-none tracking-tight" style={{ ...serif, color: TINTA }}>
-              Usuarios
-            </h1>
-            <p className="mt-3 text-[14px]" style={{ color: TENUE }}>
-              Los proyectos cuelgan del NIT de la empresa, no de la persona. Cuando el contratista se va,
-              el historial se queda.
-            </p>
-          </>
-        ) : abierto ? (
+      <main className="flex-1 overflow-x-auto px-9 py-8">
+        {abierto ? (
           <Ficha p={abierto} onVolver={() => setAbierto(null)} />
+        ) : vista === "dashboard" ? (
+          <Dashboard store={store} onAbrir={abrir} />
+        ) : vista === "usuarios" ? (
+          <Usuarios store={store} setStore={setStore} />
+        ) : vista === "nuevo" ? (
+          <NuevoProyecto
+            store={store}
+            onCancelar={() => setVista("proyectos")}
+            onCrear={(p) => {
+              setStore((s) => ({ ...s, proyectos: [...s.proyectos, p] }));
+              onLlenarVac(p);
+            }}
+          />
         ) : (
-          <Dashboard onAbrir={setAbierto} />
+          <Proyectos store={store} onAbrir={abrir} onNuevo={() => setVista("nuevo")} />
         )}
       </main>
     </div>

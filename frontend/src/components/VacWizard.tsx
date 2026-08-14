@@ -371,12 +371,32 @@ function SummaryCard({ label, value, ok }: SummaryCardProps) {
 }
 
 // ---------- main component ----------
-export default function VACWizard() {
+/** Lo que ya sabemos del proyecto no se vuelve a preguntar. */
+interface VACWizardProps {
+  proyecto?: {
+    nombre: string;
+    tipo: string;
+    direccion: string;
+    municipalidadLabel: string;
+    datos: Record<string, unknown>;
+  };
+}
+
+export default function VACWizard({ proyecto }: VACWizardProps) {
   const [step, setStep] = useState<number>(0);
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [data, setData] = useState<FormData>({
     solicitante: {},
-    proyecto: {},
+    proyecto: proyecto
+      ? {
+          nombre: proyecto.nombre,
+          tipoUso: proyecto.tipo,
+          direccionInmueble: proyecto.direccion,
+          municipioInmueble: proyecto.municipalidadLabel,
+          areaConstruccion: String(proyecto.datos.area_construccion_m2 ?? ""),
+          alturaEdificio: String(proyecto.datos.altura_m ?? ""),
+        }
+      : {},
     ambiental: {},
     seguridad: {},
   });
