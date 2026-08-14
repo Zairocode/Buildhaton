@@ -4,6 +4,7 @@ import {
   MapPin, Users, CheckCircle2, ChevronLeft, ChevronRight,
   Plus, Trash2, Copy, Check,
 } from "lucide-react";
+import RequisitosPanel from "./RequisitosPanel";
 
 // ---------- design tokens ----------
 const NAVY = "#16324F";
@@ -216,20 +217,28 @@ interface TextInputProps {
   onChange: (value: string) => void;
   placeholder?: string;
   type?: string;
+  hint?: string;
 }
 
-function TextInput({ value, onChange, placeholder, type = "text" }: TextInputProps) {
+function TextInput({ value, onChange, placeholder, type = "text", hint }: TextInputProps) {
   return (
-    <input
-      type={type}
-      value={value ?? ""}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      className={inputBase}
-      style={{ borderColor: LINE, color: INK }}
-      onFocus={(e) => (e.target.style.borderColor = ORANGE)}
-      onBlur={(e) => (e.target.style.borderColor = LINE)}
-    />
+    <>
+      <input
+        type={type}
+        value={value ?? ""}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className={inputBase}
+        style={{ borderColor: LINE, color: INK }}
+        onFocus={(e) => (e.target.style.borderColor = ORANGE)}
+        onBlur={(e) => (e.target.style.borderColor = LINE)}
+      />
+      {hint && (
+        <p className="mt-1 text-[11px]" style={{ color: "#9AA8B5" }}>
+          {hint}
+        </p>
+      )}
+    </>
   );
 }
 
@@ -473,7 +482,6 @@ export default function VACWizard() {
         <aside className="hidden w-64 shrink-0 md:block">
           <ol className="space-y-0.5">
             {STEPS.map((s, i) => {
-              const Icon = s.icon;
               const active = i === step;
               const done = i < step;
               return (
@@ -972,6 +980,16 @@ export default function VACWizard() {
                   value={`${Object.values(checked).filter(Boolean).length}/${DOCS_REQUERIDOS.length}`}
                   ok={Object.values(checked).filter(Boolean).length === DOCS_REQUERIDOS.length}
                 />
+              </div>
+
+              <div className="mt-8 border-t pt-6" style={{ borderColor: LINE }}>
+                <h2 className="mb-1 text-[15px] font-bold" style={{ color: NAVY }}>
+                  Qué te van a pedir de verdad
+                </h2>
+                <p className="mb-4 text-[12.5px]" style={{ color: "#4A5A6A" }}>
+                  Calculado en vivo por el motor de reglas, contra normativa real de la VAC y de tu municipalidad.
+                </p>
+                <RequisitosPanel form={data} />
               </div>
 
               <div className="mt-6 flex flex-wrap gap-3">

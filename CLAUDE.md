@@ -115,6 +115,33 @@ No gastes intentos con urllib/WebFetch sobre muniguate: ya se intentó por tres 
 - ¿Quién carga la bitácora — el contratista, o se extrae de las resoluciones de rechazo?
 - ¿Usuario final: constructora, arquitecto independiente, o municipalidad?
 
+## Cómo están conectadas las piezas
+
+```
+frontend/src/components/VacWizard.tsx   wizard de las 8 pantallas del VAC02
+        ↓ data (camelCase, "Sí"/"No", strings)
+frontend/src/lib/motor.ts               TRADUCTOR + cliente HTTP
+        ↓ proyecto (snake_case, tipado)
+api-server/app.py                       POST /api/validate
+        ↓
+motor/motor.py + reglas.json            35 reglas, 3 jurisdicciones
+```
+
+`frontend/src/lib/motor.ts` es la pieza clave y la más fácil de romper: el wizard usa
+nombres del VAC02 y el motor usa los suyos. **Si agregás un campo al motor, agregalo al
+traductor o quedará siempre vacío y la regla nunca disparará.**
+
+### El hallazgo que justifica el producto, en código
+
+El VAC02 captura 79 campos y **aun así le faltan 15** para saber qué pide una
+municipalidad. Están enumerados en `FALTANTES` dentro de `motor.ts`; 13 de los 15 son
+municipales. Por eso el panel los pregunta aparte, y por eso el wizard solo no alcanza.
+
+Ejemplos de lo que el Formulario Consolidado nunca pregunta: en qué municipalidad se
+tramita, si el terreno está en Centro Histórico, si el polígono es irregular, cuántos m³
+de árboles se cortan, si está dentro de un residencial (que en Pinula obliga a la carta
+de la asociación de vecinos).
+
 ## Convenciones
 
 - **Documentación en español.** Es el idioma del dominio y de los usuarios.

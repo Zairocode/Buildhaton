@@ -104,6 +104,28 @@ Ese es el objetivo de fondo — **cerrar la brecha de conocimiento civil en un �
 
 ---
 
+## Correr la demo
+
+```bash
+pip install -r api-server/requirements.txt
+python api-server/app.py          # motor + API en :5000
+
+cd frontend && npm install && npm run dev   # wizard en :5173
+```
+
+El wizard llena el Formulario Consolidado VAC02. Al llegar a **Revisión**, el panel
+*"Qué te van a pedir de verdad"* traduce esas respuestas a los campos del motor y
+consulta la API en vivo. El toggle de municipalidad recalcula todo.
+
+Mismo proyecto, 450 m², 20 m, pozo, en condominio:
+
+| | Capital | Santa Catarina Pinula |
+|---|---|---|
+| Reglas | 11 | 8 |
+| Documentos | 39 | 34 |
+| Ministeriales | 3 (idénticas) | 3 (idénticas) |
+| Municipales | 8 | 5 — **ninguna en común** |
+
 ## Motor de requisitos
 
 ```bash

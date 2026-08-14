@@ -15,6 +15,20 @@ app = Flask(__name__)
 VALID_MUNICIPALITIES = {"GT", "muniguate", "scp"}
 
 
+@app.after_request
+def _cors(response):
+    """El frontend corre en otro puerto (vite:5173). Sin esto el browser lo bloquea."""
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    return response
+
+
+@app.route("/api/<path:_>", methods=["OPTIONS"])
+def _preflight(_):
+    return ("", 204)
+
+
 def _field_error(field: str, code: str, message: str, **extra: Any):
     payload = {
         "field": field,
