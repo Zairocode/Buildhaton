@@ -59,9 +59,13 @@ Fuente: VAC04 · https://conred.gob.gt/evaluaciones-edificaciones/
 
 ## DGAC — control de alturas
 
-**Disparador declarado (VAC02):** *"especialmente en el Departamento de Guatemala todos los proyectos que superen los 16 mts de altura deben poseer autorización por parte de la DGAC"*.
+**Disparador principal (VAC02):** *"especialmente en el Departamento de Guatemala todos los proyectos que superen los 16 mts de altura deben poseer autorización por parte de la DGAC"*.
 
-> ⚠️ **Ojo con este umbral.** El "16 m" aparece **solo en VAC02**, no se repite en VAC04, y la palabra *"especialmente"* deja ambiguo si el umbral es nacional o específico del Departamento de Guatemala. **Confirmar antes de codificarlo como regla.** El alcance de DGAC además cubre *edificios, torres y vallas publicitarias* — los rótulos publicitarios son un disparador aparte que no estaba en la matriz.
+**Segundo disparador (Guía 00-F municipal):** inmuebles limitados por el **cono de aproximación al Aeropuerto Internacional 'La Aurora'** — geográfico, sin umbral de altura.
+
+> ⚠️ **El umbral de 16 m.** Aparece en VAC02 y ahora también en la Guía 00-F municipal ("APLICA PARA EDIFICACIONES CON ALTURA MAYOR A 16 M"). Dos fuentes independientes, ninguna es VAC04. La palabra *"especialmente"* en VAC02 sigue dejando ambiguo si el umbral es nacional o solo Departamento de Guatemala. En `reglas.json` sigue marcado `"confianza": "SIN_CONFIRMAR"` hasta tener confirmación en VAC04 o norma DGAC. El alcance además cubre *edificios, torres y vallas publicitarias* — los rótulos son un disparador aparte.
+
+> ⚠️ **El cono de La Aurora.** Solo aparece en la Guía 00-F. No hay equivalente en VAC02 ni VAC04. La zona del cono no está delimitada en el documento; requiere consulta a DGAC o un plano de la DGAC. Marcado `SIN_CONFIRMAR` en `reglas.json`.
 
 1. Carta de solicitud dirigida al Director General de Aeronáutica Civil
 2. Formulario de Solicitud de Control de Alturas de Edificios, Torres, Rótulos publicitarios y Otros — firmado por el Representante Legal, con sello de la entidad

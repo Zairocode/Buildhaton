@@ -1,14 +1,84 @@
 # Capa municipal — Municipalidad de Guatemala
 
-Fuente: **Guía 09-F**, código `PTLI.23 Versión 2` — Ventanilla Única Municipal, Dirección de Control Territorial (DCT). Copia local: [`fuentes/MUNIGUATE_guia_09F.pdf`](fuentes/MUNIGUATE_guia_09F.pdf).
+Dos guías extraídas, con alcances distintos:
 
-> ⚠️ **Obtenida de un mirror privado** (approvato.com.gt), no del portal municipal — `vu.muniguate.com` bloquea acceso automatizado. La versión es de 2019. **Confirmar contra la guía vigente antes de codificar montos o umbrales.** Ver [Estado del scraping](#estado-del-scraping).
+| Guía | Código | Formulario | Alcance | Fuente |
+|---|---|---|---|---|
+| **Guía 09-F** | PTLI.23 v2 | **F08** | Vivienda unifamiliar ≤ 700 m², EAP, fraccionamiento ≤ 4 predios | [`fuentes/MUNIGUATE_guia_09F.pdf`](fuentes/MUNIGUATE_guia_09F.pdf) |
+| **Guía 00-F / 01-F** | PLTI.01/02 v2 | **F02 (versión 3)** | Todos los proyectos: fraccionamiento, obra, uso del suelo, EAP, localización industrial | [`fuentes/MUNIGUATE_guia_00F_01F.pdf`](fuentes/MUNIGUATE_guia_00F_01F.pdf) |
+
+> ⚠️ **Ambas obtenidas de mirror privado** (approvato.com.gt), no del portal municipal — `vu.muniguate.com` bloquea acceso automatizado. La Guía 09-F es de 2019. **Confirmar contra las guías vigentes antes de codificar montos o umbrales.** Ver [Estado del scraping](#estado-del-scraping).
 
 Esta es la mitad que la VAC no cubre. Confirma la tesis del proyecto: mismo país, reglas distintas, y aquí aparecen requisitos que no existen en ninguna parte del expediente ministerial.
 
+**Teléfono Ventanilla Única Municipal: PBX 2285-8500**
+
 ---
 
-## Alcance de esta guía
+## Guía 00-F — Requisitos Generales (todos los proyectos)
+
+Es la guía padre. La Guía 09-F es un subconjunto simplificado para proyectos pequeños. Cualquier proyecto que no quepa en la 09-F usa la 00-F.
+
+### Diferencias clave entre Guía 00-F y Guía 09-F
+
+| | Guía 09-F | Guía 00-F |
+|---|---|---|
+| Formulario | **F08** | **F02 (versión 3)** |
+| CDs | 1 CD | **2 CDs idénticos** |
+| Centro Histórico | No aplica | Acepta, pero sin ingreso digital |
+| Alcance | ≤ 700 m², EAP, fraccionamiento ≤ 4 predios | Sin límite; incluye uso del suelo e industria |
+
+### Documentos en Guía 00-F que no están en Guía 09-F
+
+| Documento | Disparador |
+|---|---|
+| Duplicado del recibo de pago por factibilidad de agua potable EMPAGUA (hoja verde) | cuando aplique EMPAGUA |
+| Resolución favorable de la DGAC | proyectos > 16 m o dentro del cono de aproximación al Aeropuerto La Aurora |
+| Resolución favorable del MEM | cuando aplique |
+| Certificación de Bienes Culturales (IDAEH) | inmuebles en Centro Histórico, Conjunto Histórico o Área de Amortiguamiento |
+| Copia simple legalizada de escritura pública de destino de áreas comunales | urbanizaciones en régimen de copropiedad (condominios) |
+| Informe industrial | localización industrial |
+| Estudio geotécnico + memorias de diseño estructural respecto a NRD-1 | ⚠️ disparador no confirmado con exactitud en el texto; listado sin "cuando aplique" explícito |
+| Cuadro de cuantificación de edificabilidad en Excel editable | proyectos > 700 m², formato en ventanilla |
+| Plano de edificabilidad por niveles | proyectos > 700 m² |
+| Plano de red de energía eléctrica y alumbrado público (autorizado EEGSA) | urbanizaciones |
+| Plano de red general de agua y drenajes | urbanizaciones |
+| Memoria descriptiva + planos de factores de impacto y medidas de mitigación | movimiento de tierra, urbanización u obras mayores a **900 m³** |
+| Memoria y planos de incentivos | cuando aplique incentivos |
+
+### Actas de declaración jurada CONRED — tres normas, tres tratamientos
+
+La Guía 00-F distingue tres normas de CONRED, con distinto tratamiento en la Ventanilla Única:
+
+| Norma | Aplica a | Requisito ante la VUM |
+|---|---|---|
+| **NRD-2** (uso público) | Casos del Acuerdo 04-2011 y sus reformas | **Resolución favorable de CONRED** — viene del expediente VAC |
+| **NRD-1** (sismorresistencia estructural) | Construcciones (firmada por estructural y ejecutor) | **Acta de declaración jurada**, formato de la VUM; indicar en planos los códigos AGIES |
+| **NRD-3** (riesgo en edificaciones existentes) | Casos del Acuerdo SE-02-2013 | **Acta de declaración jurada**, formato de la VUM, firmada por propietario y ejecutor |
+
+### Segunda válvula de escape — DGAC
+
+Paralela a la del MARN, pero para DGAC:
+
+> *"Si aún no ha concluido el trámite de la DGAC, podrá ingresar el expediente a través de un **acta de declaración jurada** según formato proporcionado en la Ventanilla Única Municipal, adjuntando copia de recepción de la solicitud ante la DGAC."*
+
+Permite paralelizar el trámite municipal con el de DGAC, igual que con el MARN.
+
+### Segundo disparador de DGAC — cono de La Aurora
+
+La Guía 00-F revela un segundo disparador para DGAC, independiente de la altura:
+
+> *"Aplica para los inmuebles que se encuentren limitados por el **cono de aproximación al Aeropuerto Internacional 'La Aurora'**."*
+
+Los dos disparadores DGAC en la capa municipal son:
+1. **Altura > 16 m** — mismo umbral que VAC02 (ver [nota de confianza en matriz-requisitos](matriz-requisitos.md#dgac--control-de-alturas))
+2. **Cono de aproximación de La Aurora** — geográfico, sin medida de altura; no figura en los instructivos VAC
+
+El umbral de 16 m ya aparecía en VAC02; ahora la Guía 00-F lo repite desde el lado municipal. Sigue sin confirmación en VAC04, pero ahora tiene dos fuentes independientes.
+
+---
+
+## Guía 09-F — Alcance (vivienda unifamiliar y proyectos pequeños)
 
 **Aplica a:**
 - Vivienda unifamiliar hasta **700 m²**
@@ -130,6 +200,22 @@ La guía define códigos de obra con sus propios planos, además de los generale
 
 ---
 
+## Costos de la licencia
+
+> ⚠️ **Fuente secundaria** (livinginguatemala.com) — no publicado oficialmente. La Municipalidad tiene una **tabla de costos vigente** que define el monto exacto pero no está disponible en línea.
+
+| Concepto | Rango aproximado |
+|---|---|
+| Tasa por licencia municipal | Q 5,000 – Q 60,000+ (según m² y zona) |
+| Honorarios de arquitecto/ingeniero | Q 5,000 – Q 50,000+ |
+| Estudio de suelos (proyectos grandes) | Q 3,000 – Q 10,000 |
+| Póliza de seguro | calculada contra la tabla de costos vigente de la Municipalidad |
+| EAP (no exento) | Q 350.00 por solicitud (Guía 09-F, confirmado) |
+
+**Tiempo oficial:** 30–60 días hábiles. **Tiempo real documentado:** 2–4 meses con papelería completa.
+
+---
+
 ## Estado del scraping
 
 | Fuente | Resultado |
@@ -137,15 +223,14 @@ La guía define códigos de obra con sus propios planos, además de los generale
 | `vu.muniguate.com/docs` | **403** — bloqueo a clientes automatizados, en todo el dominio |
 | `muniguate.com/empresadevivienda/...` | **403** — mismo bloqueo |
 | `asisehace.gt` (catálogo nacional de trámites) | **redirige a pronacom.org** — el catálogo ya no está en línea |
-| `approvato.com.gt` (mirror privado) | ✅ funcionó — de ahí salió la Guía 09-F |
-| `vac.com.gt` | ✅ funcionó — los 7 instructivos VAC |
+| `approvato.com.gt` (mirror privado) | ✅ — Guía 09-F y Guía 00-F/01-F descargadas |
+| `vac.com.gt` | ✅ — los 7 instructivos VAC |
 
-**Para completar la capa municipal hace falta bajar los PDFs desde un navegador real.** Las guías que esta misma referencia y que faltan:
+**Para completar la capa municipal hace falta bajar los PDFs desde un navegador real.** Las guías que faltan:
 
-- **Guía 08** — obras mayores (el rango arriba de 700 m²)
 - **Guía 04** — Dirección de Medio Ambiente municipal (cortes de árboles < 10 m³)
-- Las "guías por dependencia" que la 09-F menciona sin nombrar
-- Formulario **F08** vigente
+- Las "guías por dependencia" que la 09-F y 00-F mencionan sin nombrar (EMPAGUA, DPD-DMA, VUCH, Bomberos)
+- Formulario **F08** vigente y formulario **F02 versión 3** vigente
 - **Tabla de costos vigente** de la Municipalidad (define el monto de la póliza y el cálculo de la licencia)
 
 Y después, otra municipalidad para contrastar — Santa Catarina Pinula es el caso que motiva el proyecto.

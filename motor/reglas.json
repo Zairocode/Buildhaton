@@ -262,7 +262,8 @@
     "institucion": "Municipalidad de Guatemala (DCT)",
     "cuando": {},
     "exige": [
-      "Formulario F08 (versión actual)",
+      "Formulario F08 (versión actual) — proyectos Guía 09-F (≤ 700 m², vivienda unifamiliar)",
+      "Formulario F02 (versión 3) — todos los demás proyectos (Guía 00-F)",
       "Consulta 'A' (se obtiene en la Ventanilla Única Municipal)",
       "Certificación del Registro General de la Propiedad con historial completo, emitida en los últimos 6 meses",
       "Solvencia Municipal del inmueble, emitida en los últimos 2 meses",
@@ -271,7 +272,100 @@
       "Memoria Descriptiva DCT",
       "Expediente físico en fólder color claro tamaño oficio con gancho"
     ],
-    "fuente": "Guía 09-F · documentos generales",
+    "fuente": "Guía 09-F · Guía 00-F · documentos generales",
     "confianza": "confirmada"
+  },
+  {
+    "id": "muni-gt-nrd1-acta",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": { "area_construccion_m2": { ">": 30 } },
+    "exige": [
+      "Acta de declaración jurada de cumplimiento NRD-1 CONRED (firmada por estructural y ejecutor, formato VUM)",
+      "Indicar en planos estructurales los códigos de la Norma AGIES aplicada"
+    ],
+    "fuente": "Guía 00-F · documentos generales · doc 13",
+    "confianza": "SIN_CONFIRMAR",
+    "nota": "El texto lista el acta sin un 'cuando aplique' explícito en esa línea; el disparador exacto no está confirmado. NRD-1 es la norma sismorresistente estructural."
+  },
+  {
+    "id": "muni-gt-nrd3-acta",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": { "aplica_nrd3": true },
+    "exige": [
+      "Acta de declaración jurada de cumplimiento NRD-3 CONRED (firmada por propietario y ejecutor, formato VUM)"
+    ],
+    "fuente": "Guía 00-F · documentos generales · Acuerdo SE-02-2013",
+    "confianza": "SIN_CONFIRMAR",
+    "nota": "NRD-3 aplica a los casos del Acuerdo SE-02-2013. El disparador exacto requiere lectura del acuerdo."
+  },
+  {
+    "id": "muni-gt-dgac-resolucion",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": { "altura_m": { ">": 16 } },
+    "exige": [
+      "Resolución favorable de la DGAC",
+      "ALTERNATIVA: Acta de declaración jurada + copia de recepción de solicitud ante DGAC (si el trámite DGAC aún no ha concluido)"
+    ],
+    "fuente": "Guía 00-F · documentos específicos",
+    "confianza": "confirmada",
+    "nota": "Válvula de escape paralela a la del MARN: se puede ingresar el expediente municipal antes de tener la resolución DGAC, con declaración jurada + acuse de recibo DGAC."
+  },
+  {
+    "id": "muni-gt-dgac-cono-aurora",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": { "en_cono_la_aurora": true },
+    "exige": [
+      "Resolución favorable de la DGAC",
+      "ALTERNATIVA: Acta de declaración jurada + copia de recepción de solicitud ante DGAC"
+    ],
+    "fuente": "Guía 00-F · documentos específicos",
+    "confianza": "SIN_CONFIRMAR",
+    "nota": "Segundo disparador DGAC: inmuebles dentro del cono de aproximación al Aeropuerto Internacional La Aurora. Geográfico, independiente de la altura. Los límites del cono no están en el documento; requiere consulta a DGAC."
+  },
+  {
+    "id": "muni-gt-mem-resolucion",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": { "requiere_mem": true },
+    "exige": ["Resolución favorable del MEM (Ministerio de Energía y Minas)"],
+    "fuente": "Guía 00-F · documentos específicos",
+    "confianza": "SIN_CONFIRMAR",
+    "nota": "El disparador exacto del MEM no está definido en la Guía 00-F. Aparece listado como requisito específico sin criterio explícito. Probablemente aplica a industrias extractivas o proyectos de almacenamiento de combustibles."
+  },
+  {
+    "id": "muni-gt-empagua",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT) / EMPAGUA",
+    "cuando": { "con_empagua": true },
+    "exige": [
+      "Duplicado del recibo de pago por factibilidad de agua potable EMPAGUA (hoja verde)"
+    ],
+    "fuente": "Guía 00-F · documentos generales",
+    "confianza": "SIN_CONFIRMAR",
+    "nota": "EMPAGUA es la empresa de agua de Guatemala. El ingreso del expediente a EMPAGUA se hace por separado de la Ventanilla Única (la Guía 00-F lo exceptúa). Monto según cobro de EMPAGUA."
+  },
+  {
+    "id": "muni-gt-movimiento-tierra",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": { "movimiento_tierra_m3": { ">": 900 } },
+    "exige": [
+      "Memoria descriptiva y planos de los factores de impacto a considerar",
+      "Medidas de mitigación para impactos negativos a colindancias y vía pública"
+    ],
+    "fuente": "Guía 01-F · documentos específicos",
+    "confianza": "confirmada",
+    "nota": "Aplica para proyectos de urbanización, movimiento de tierra y obras mayores a 900 m³."
   }
 ]

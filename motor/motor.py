@@ -61,7 +61,8 @@ def demo():
     }
     ids = {r["id"] for r in requisitos(casa)}
     assert ids == {
-        "muni-gt-base", "muni-gt-colegiado", "muni-gt-cad-digital", "muni-gt-marn-resolucion"
+        "muni-gt-base", "muni-gt-colegiado", "muni-gt-cad-digital",
+        "muni-gt-marn-resolucion", "muni-gt-nrd1-acta",
     }, ids
 
     torre = {

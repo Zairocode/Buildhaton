@@ -27,7 +27,7 @@ El [README](README.md) tiene el planteamiento completo.
 | Archivo | Contenido |
 |---|---|
 | [`docs/matriz-requisitos.md`](docs/matriz-requisitos.md) | Requisitos ministeriales por institución + disparadores. Validado contra VAC04. |
-| [`docs/municipal-guatemala.md`](docs/municipal-guatemala.md) | Capa municipal (Muniguate): umbrales, documentos exclusivos, costura VAC↔muni. |
+| [`docs/municipal-guatemala.md`](docs/municipal-guatemala.md) | Capa municipal (Muniguate): Guía 09-F y Guía 00-F/01-F, umbrales, documentos exclusivos, costura VAC↔muni. |
 | [`docs/vac02.md`](docs/vac02.md) | Estructura del Formulario Consolidado, 8 pantallas, catálogo de 96 documentos. |
 | [`docs/fuentes/`](docs/fuentes/) | PDFs originales. Toda afirmación en los .md debe poder rastrearse aquí. |
 | [`motor/`](motor/) | Motor de requisitos: reglas como datos + ~40 líneas de filtro. |
@@ -58,13 +58,15 @@ No los repitas:
 | MSPAS tiene 2 ramas | Tiene **base + 9 paquetes**, y el eje que faltaba es **obra nueva vs. conexión a sistema existente** |
 | Edicto MARN siempre | Solo categorías **A y B1**; B2 exento |
 | "Carta" de señalización DGAC | Es **acta notarial** |
+| El formulario municipal es único | Hay **dos formularios distintos**: F08 (Guía 09-F, vivienda ≤ 700 m²) y F02 v3 (Guía 00-F, todos los demás proyectos) |
+| DGAC tiene un solo disparador | Tiene **dos**: altura > 16 m Y estar dentro del cono de aproximación de La Aurora (geográfico) |
 
 ## Fuentes y accesibilidad
 
 | Fuente | Estado |
 |---|---|
 | `vac.com.gt` | ✅ accesible con User-Agent de navegador (urllib funciona; WebFetch da 403) |
-| `approvato.com.gt` | ✅ accesible |
+| `approvato.com.gt` | ✅ accesible — fuente de Guía 09-F y Guía 00-F/01-F |
 | `vu.muniguate.com` | ❌ **403 a todo cliente automatizado** |
 | `muniguate.com` | ❌ **403** |
 | `asisehace.gt` | ❌ redirige a pronacom.org — catálogo nacional de trámites fuera de línea |
@@ -72,12 +74,30 @@ No los repitas:
 
 **Para avanzar en lo municipal hace falta un navegador real.** No gastes intentos re-scrapeando muniguate: ya se intentó por tres vías distintas.
 
+## PDFs locales disponibles
+
+| Archivo | Código | Contenido |
+|---|---|---|
+| `docs/fuentes/VAC01_usuarios_nuevos.pdf` | VAC01 | Registro de usuarios nuevos en la plataforma |
+| `docs/fuentes/VAC02_v1_llenado.pdf` | VAC02 v1 | Llenado del Formulario Consolidado (versión 1) |
+| `docs/fuentes/VAC02_v2_llenado.pdf` | VAC02 v2 | Llenado del Formulario Consolidado (versión 2, más completa) |
+| `docs/fuentes/VAC04_requisitos_a.pdf` | VAC04 parte a | Requisitos por institución (primeras páginas) |
+| `docs/fuentes/VAC04_requisitos_b.pdf` | VAC04 parte b | Requisitos por institución (MSPAS completo, MARN, CONRED, DGAC) |
+| `docs/fuentes/VAC05_correcciones.pdf` | VAC05 | Procedimiento de correcciones en la plataforma |
+| `docs/fuentes/VAC07_dgac.pdf` | VAC07 | Procedimiento específico DGAC |
+| `docs/fuentes/VAC09_lic_ambiental.pdf` | VAC09 | Obtención de Licencia Ambiental MARN |
+| `docs/fuentes/MUNIGUATE_guia_09F.pdf` | PTLI.23 v2 | Guía 09-F — Ventanilla Única Municipal (vivienda ≤ 700 m²) |
+| `docs/fuentes/MUNIGUATE_guia_00F_01F.pdf` | PLTI.01/02 v2 | Guía 00-F/01-F — Guía General de la Ventanilla Única (todos los proyectos) |
+
 ## Trabajo pendiente
 
 **Datos**
-- Guía 08 (obras > 700 m²), Guía 04 (medio ambiente municipal), formulario F08 vigente, tabla de costos municipal
+- Guía 04 (medio ambiente municipal — cortes de árboles < 10 m³), formulario F08 vigente y F02 v3 vigente, tabla de costos municipal
+- Las "guías por dependencia" que la 09-F y 00-F mencionan: EMPAGUA, DPD-DMA, VUCH, Bomberos
 - Una segunda municipalidad para contrastar — **Santa Catarina Pinula** es el caso que motiva el proyecto
-- Confirmar el umbral de DGAC
+- Confirmar el umbral DGAC en VAC04 (actualmente en dos fuentes: VAC02 + Guía 00-F, pero ninguna es VAC04)
+- Confirmar el cono de aproximación La Aurora (límites geográficos exactos)
+- Confirmar disparador exacto de NRD-1 (acta en VUM) y NRD-3
 - Requisitos de CONAP, IDAEH, MEM, INAB
 
 **Preguntas abiertas que cambian el producto**
