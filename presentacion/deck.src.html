@@ -1,0 +1,533 @@
+<title>Cimiento</title>
+
+<style>
+  /* Paleta: papel de plano (frío, no crema), tinta azul-negra, azul de heliografía.
+     El rojo es de sello: solo aparece donde algo se rechaza o no se puede resolver. */
+  :root {
+    --ground: #F4F6F8;
+    --panel: #FFFFFF;
+    --ink: #0E1621;
+    --muted: #5A6673;
+    --line: #D8DEE5;
+    --accent: #1B4D8F;
+    --stamp: #A81F26;
+    --grid: rgba(27, 77, 143, 0.06);
+    --shadow: 0 1px 2px rgba(14, 22, 33, .05), 0 12px 32px -18px rgba(14, 22, 33, .35);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0B121A;
+      --panel: #111B25;
+      --ink: #E7EDF3;
+      --muted: #8794A3;
+      --line: #223141;
+      --accent: #74AEF0;
+      --stamp: #EE6F76;
+      --grid: rgba(116, 174, 240, 0.08);
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px -18px rgba(0, 0, 0, .8);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #0B121A;
+    --panel: #111B25;
+    --ink: #E7EDF3;
+    --muted: #8794A3;
+    --line: #223141;
+    --accent: #74AEF0;
+    --stamp: #EE6F76;
+    --grid: rgba(116, 174, 240, 0.08);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px -18px rgba(0, 0, 0, .8);
+  }
+
+  /* El dominio son códigos: acuerdos, NIT, expedientes, coordenadas.
+     Por eso la voz de display es monoespaciada. */
+  --mono-stack: initial;
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mono, .eyebrow, .num, .code, .counter {
+    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  /* ---------- estructura ---------- */
+  .deck { position: relative; }
+
+  .slide {
+    min-height: 100svh;
+    padding: clamp(28px, 6vw, 96px);
+    padding-bottom: clamp(64px, 9vw, 120px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(18px, 2.4vw, 34px);
+    border-bottom: 1px solid var(--line);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 44px 44px;
+    scroll-snap-align: start;
+  }
+
+  .slide > * { max-width: 1180px; width: 100%; margin-inline: auto; }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .eyebrow.stamp { color: var(--stamp); }
+
+  h1 {
+    font-size: clamp(40px, 7.5vw, 92px);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    margin: 0;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+  h2 {
+    font-size: clamp(28px, 4.4vw, 54px);
+    line-height: 1.1;
+    letter-spacing: -0.028em;
+    margin: 0;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+  h3 {
+    font-size: clamp(17px, 1.9vw, 21px);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0;
+    font-weight: 650;
+  }
+  p { margin: 0; max-width: 62ch; color: var(--muted); font-size: clamp(15px, 1.35vw, 17.5px); }
+  p.lead { color: var(--ink); font-size: clamp(17px, 1.8vw, 22px); max-width: 34ch; }
+  strong { color: var(--ink); font-weight: 650; }
+
+  .num {
+    font-size: clamp(84px, 19vw, 260px);
+    line-height: .82;
+    letter-spacing: -0.05em;
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .num.stamp { color: var(--stamp); }
+
+  .rule { height: 1px; background: var(--line); border: 0; margin: 0; }
+
+  /* ---------- piezas ---------- */
+  .cols { display: grid; gap: clamp(16px, 2.2vw, 30px); grid-template-columns: 1fr; }
+  @media (min-width: 800px) {
+    .cols.two { grid-template-columns: 1fr 1fr; }
+    .cols.three { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: clamp(16px, 2vw, 26px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: var(--shadow);
+  }
+  .card .k {
+    font-size: clamp(30px, 4vw, 46px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .card p { font-size: 14px; }
+
+  .shot {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+    background: var(--panel);
+  }
+
+  figure { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  figcaption { font-size: 13px; color: var(--muted); }
+
+  .quote {
+    border-left: 3px solid var(--stamp);
+    padding: 4px 0 4px 20px;
+    font-size: clamp(17px, 2.1vw, 26px);
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    max-width: 48ch;
+    text-wrap: balance;
+  }
+  .quote cite { display: block; margin-top: 12px; font-size: 13px; font-style: normal; color: var(--muted); }
+
+  /* comparativo */
+  .vs { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 3px; overflow: hidden; }
+  @media (min-width: 800px) { .vs { grid-template-columns: 1fr 1fr; } }
+  .vs > div { background: var(--panel); padding: clamp(16px, 2vw, 26px); display: flex; flex-direction: column; gap: 14px; }
+  .vs h3 { letter-spacing: -0.01em; }
+  .vs ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .vs li { font-size: 13.5px; display: flex; gap: 9px; align-items: baseline; color: var(--ink); }
+  .vs li .tick { color: var(--muted); font-size: 11px; }
+  .shared { background: var(--panel); border: 1px solid var(--line); border-radius: 3px; padding: clamp(14px, 1.8vw, 22px); display: flex; flex-direction: column; gap: 10px; }
+  .shared ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+  .shared li { font-size: 12.5px; border: 1px solid var(--line); border-radius: 2px; padding: 3px 9px; color: var(--muted); }
+
+  .disjoint {
+    display: flex; align-items: center; gap: 14px;
+    font-size: clamp(15px, 1.7vw, 19px); color: var(--stamp); font-weight: 650;
+  }
+  .disjoint .bar { flex: 1; height: 1px; background: var(--stamp); opacity: .35; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+  th { font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  td.n { font-variant-numeric: tabular-nums; }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 3px; background: var(--panel); }
+
+  ol.steps { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; counter-reset: s; }
+  ol.steps li { display: grid; grid-template-columns: 30px 1fr; gap: 14px; align-items: start; }
+  ol.steps li::before {
+    counter-increment: s; content: counter(s);
+    font-family: ui-monospace, Consolas, monospace; font-size: 12px; font-weight: 650;
+    color: var(--accent); border: 1px solid var(--line); border-radius: 2px;
+    height: 26px; display: grid; place-items: center;
+  }
+  ol.steps .done::before { color: var(--panel); background: var(--accent); border-color: var(--accent); }
+  ol.steps p { font-size: 14.5px; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-size: 12px; border: 1px solid var(--line); border-radius: 2px; padding: 4px 10px; color: var(--muted); }
+  .chip.on { border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- navegación ---------- */
+  .hud {
+    position: fixed; inset: auto 0 0 0; z-index: 20;
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px clamp(16px, 4vw, 40px);
+    background: color-mix(in srgb, var(--ground) 88%, transparent);
+    border-top: 1px solid var(--line);
+    backdrop-filter: blur(8px);
+  }
+  .track { flex: 1; height: 2px; background: var(--line); position: relative; overflow: hidden; }
+  .track i { position: absolute; inset: 0 auto 0 0; background: var(--accent); width: 0; transition: width .25s ease; }
+  @media (prefers-reduced-motion: reduce) { .track i { transition: none; } }
+  .counter { font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; letter-spacing: .06em; }
+  .hud button {
+    font: inherit; font-size: 12px; cursor: pointer;
+    background: var(--panel); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 2px; padding: 5px 11px;
+  }
+  .hud button:hover { border-color: var(--accent); color: var(--accent); }
+  .hud button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .hint { font-size: 11.5px; color: var(--muted); }
+  @media (max-width: 640px) { .hint { display: none; } }
+</style>
+
+<div class="deck">
+
+  <!-- 01 · portada -->
+  <section class="slide">
+    <div class="eyebrow">Buildathon · Guatemala · 2026</div>
+    <h1>Cimiento</h1>
+    <p class="lead">Licenciamiento de construcción sin depender de que alguien ya sepa cómo se hace.</p>
+    <hr class="rule" />
+    <div class="chips">
+      <span class="chip on">Motor de reglas</span>
+      <span class="chip">35 reglas · 3 jurisdicciones</span>
+      <span class="chip">13 PDFs oficiales</span>
+      <span class="chip">107 cuerpos normativos</span>
+    </div>
+  </section>
+
+  <!-- 02 · el problema -->
+  <section class="slide">
+    <div class="eyebrow">El problema</div>
+    <h2>Para sacar un permiso necesitás a alguien que ya sepa.</h2>
+    <p>El requisito publicado y el requisito real no son el mismo documento. Quién sabe qué te van a pedir es un arquitecto o contratista con años de oficio. Cuando el proyecto termina, esa experiencia se va con él y no queda registro de por qué te rechazaron.</p>
+  </section>
+
+  <!-- 03 · 96 -->
+  <section class="slide">
+    <div class="eyebrow">Anexo I del Formulario Consolidado VAC02</div>
+    <div class="num">96</div>
+    <h2>documentos posibles. A tu proyecto le tocan unos 25.</h2>
+    <p>Cuáles 25 depende de disparadores dispersos: pasar de 16 metros de altura, estar cerca de un bosque, tener obras hidrosanitarias, ser adyacente a un sitio arqueológico. <strong>Nadie te dice cuáles son antes de que te reboten.</strong></p>
+  </section>
+
+  <!-- 04 · 1970 -->
+  <section class="slide">
+    <div class="eyebrow">Municipalidad de Guatemala</div>
+    <div class="num">1970</div>
+    <h2>El Reglamento de Construcción de la capital es de 1970.</h2>
+    <p>El de Urbanizaciones, de 1960. El de Drenajes, de 1964. Encima llevan 55 años de parches — y solo en 2026 van <strong>ocho acuerdos municipales nuevos</strong>.</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Norma</th><th>Acuerdo vigente</th><th>Publicación</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Reglamento de Impacto Vial</td><td class="code">COM-24-2026</td><td class="n">06/08/2026</td></tr>
+          <tr><td>Plan de Ordenamiento Territorial</td><td class="code">COM-008-2026</td><td class="n">27/02/2026</td></tr>
+          <tr><td>Excavaciones y movimiento de tierras</td><td class="code">COM-001-2026</td><td class="n">16/01/2026</td></tr>
+          <tr><td>Reglamento de Construcción</td><td class="code">S/N</td><td class="n">10/08/1970</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Un contratista que aprendió el proceso en 2023 ya trabaja con reglamentos vencidos.</p>
+  </section>
+
+  <!-- 05 · la VAC -->
+  <section class="slide">
+    <div class="eyebrow">Lo que ya existe</div>
+    <h2>La Ventanilla Ágil de la Construcción ya unificó los ministerios.</h2>
+    <p>Un solo formulario alimenta a MARN, CONAP, CONRED, DGAC, MSPAS, IDAEH y MEM. Eso está resuelto y no hay que rehacerlo. <strong>Construimos sobre la VAC, no contra ella.</strong></p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>&nbsp;</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>Consolidar instituciones de gobierno central</td><td><strong>Resuelto · VAC02</strong></td></tr>
+          <tr><td>Saber qué documentos te aplican antes de empezar</td><td>Abierto</td></tr>
+          <tr><td>La capa municipal</td><td>Abierto</td></tr>
+          <tr><td>Memoria de por qué te rechazaron</td><td>Abierto</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 06 · el contraste -->
+  <section class="slide">
+    <div class="eyebrow stamp">La evidencia</div>
+    <h2>Mismo proyecto. Dos municipios vecinos.</h2>
+    <p>450 m², 20 metros de altura, pozo mecánico, dentro de un condominio. Evaluado por el motor contra la normativa de cada municipalidad.</p>
+
+    <div class="shared">
+      <div class="eyebrow">Capa ministerial — idéntica en ambos</div>
+      <ul>
+        <li class="code">conred-nrd2</li>
+        <li class="code">dgac-altura</li>
+        <li class="code">marn-edicto</li>
+      </ul>
+    </div>
+
+    <div class="vs">
+      <div>
+        <h3>Guatemala capital</h3>
+        <div class="mono" style="font-size:13px;color:var(--muted)">8 reglas municipales · 39 documentos</div>
+        <ul>
+          <li><span class="tick code">▸</span> Formulario F08 / F02 v3</li>
+          <li><span class="tick code">▸</span> Registro de la Propiedad, <strong>6 meses</strong></li>
+          <li><span class="tick code">▸</span> Planos en <strong>CAD versión 2007</strong></li>
+          <li><span class="tick code">▸</span> Consulta “A”, presencial</li>
+          <li><span class="tick code">▸</span> Corte de árboles &gt; 10 m³ → INAB</li>
+          <li><span class="tick code">▸</span> Clasifica por m²: 30 / 200 / 700</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Santa Catarina Pinula</h3>
+        <div class="mono" style="font-size:13px;color:var(--muted)">5 reglas municipales · 34 documentos</div>
+        <ul>
+          <li><span class="tick code">▸</span> Memorial dirigido al Alcalde</li>
+          <li><span class="tick code">▸</span> Registro de la Propiedad, <strong>3 meses</strong></li>
+          <li><span class="tick code">▸</span> Planos en <strong>DWG</strong></li>
+          <li><span class="tick code">▸</span> Pozo a <strong>100 m</strong> mínimo de otros pozos</li>
+          <li><span class="tick code">▸</span> Botadero con autorización del propietario</li>
+          <li><span class="tick code">▸</span> Clasifica por categoría: menor / mayor / gran magnitud</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="disjoint">
+      <span>Cero reglas municipales en común</span>
+      <span class="bar"></span>
+    </div>
+  </section>
+
+  <!-- 07 · la carta de los vecinos -->
+  <section class="slide">
+    <div class="eyebrow stamp">El requisito que no es un documento</div>
+    <h2>En Pinula te lo tienen que firmar los vecinos.</h2>
+    <div class="cols two">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <blockquote class="quote">
+          Carta en donde la asociación de vecinos debidamente registrada manifieste que no tiene dificultad para el desarrollo de la obra — y los planos deberán estar sellados por la asociación de vecinos.
+          <cite>Requisitos de construcción mayor · Municipalidad de Santa Catarina Pinula</cite>
+        </blockquote>
+        <p>No se resuelve imprimiendo. Es una negociación, y pueden negarse. <strong>No existe nada equivalente en la capital.</strong></p>
+        <p>El sistema lo marca aparte, porque tratarlo como un archivo más sería mentirle al usuario.</p>
+      </div>
+      <figure>
+        <img class="shot" src="{{IMG_04}}" alt="Ficha del proyecto Residencial Las Conchas mostrando la carta de la asociación de vecinos marcada como No es un documento" />
+        <figcaption>Los requisitos que no se resuelven con papel salen marcados en rojo.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 08 · la cláusula -->
+  <section class="slide">
+    <div class="eyebrow stamp">Y las dos lo admiten por escrito</div>
+    <h2>Ninguna lista publicada es la lista completa.</h2>
+    <div class="cols two">
+      <blockquote class="quote">
+        Se podrán requerir aquellos requisitos adicionales que se consideren necesarios para la autorización de la solicitud, según sea el caso.
+        <cite>Guía 09-F · Municipalidad de Guatemala</cite>
+      </blockquote>
+      <blockquote class="quote">
+        Otros requisitos que a criterio de la Dirección tengan una justificación técnica.
+        <cite>Proyecto de gran magnitud · Santa Catarina Pinula</cite>
+      </blockquote>
+    </div>
+    <p>Dos municipalidades independientes, la misma cláusula. Ningún motor de reglas cierra esa brecha: <strong>solo la cierra el historial de qué pidieron de verdad la última vez.</strong></p>
+  </section>
+
+  <!-- 09 · los módulos -->
+  <section class="slide">
+    <div class="eyebrow">La solución</div>
+    <h2>Tres módulos sobre un mismo expediente.</h2>
+    <ol class="steps">
+      <li class="done">
+        <div>
+          <h3>Motor de requisitos <span class="mono" style="font-size:11.5px;color:var(--accent)">— construido</span></h3>
+          <p>Contestás lo del proyecto y sale tu lista: cuáles de los 96 aplican, qué institución los pide, y qué debés tener resuelto antes de abrir el VAC02.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Expediente con trazabilidad <span class="mono" style="font-size:11.5px;color:var(--muted)">— parcial</span></h3>
+          <p>Estado por institución. Cada una aprueba, corrige o rechaza por separado y hoy no existe una vista única.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Bitácora de rechazos <span class="mono" style="font-size:11.5px;color:var(--muted)">— pendiente</span></h3>
+          <p>La memoria que hoy se va con el contratista. Es lo único que cierra la brecha de la discrecionalidad.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- 10 · demo -->
+  <section class="slide">
+    <div class="eyebrow">La aplicación</div>
+    <h2>El total de documentos no está escrito: se calcula.</h2>
+    <figure>
+      <img class="shot" src="{{IMG_02}}" alt="Tabla de proyectos con denominadores distintos: 34/48, 11/26, 28/39, 0/6" />
+      <figcaption>Cuatro proyectos, cuatro totales distintos. Cada uno evaluado contra la normativa de su municipalidad.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 11 · panel -->
+  <section class="slide">
+    <div class="eyebrow">La aplicación</div>
+    <h2>Una cartera, siete instituciones, un solo lugar.</h2>
+    <figure>
+      <img class="shot" src="{{IMG_01}}" alt="Dashboard con métricas agregadas y carga por institución" />
+      <figcaption>Métricas agregadas por el motor sobre toda la cartera, no capturadas a mano.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 12 · lo construido -->
+  <section class="slide">
+    <div class="eyebrow">Lo construido</div>
+    <h2>Datos reales, con fuente rastreable.</h2>
+    <div class="cols three">
+      <div class="card"><div class="k mono">35</div><h3>reglas</h3><p>11 ministeriales · 16 de la capital · 8 de Pinula. Seis marcadas “sin confirmar”, mostradas igual.</p></div>
+      <div class="card"><div class="k mono">13</div><h3>PDFs oficiales</h3><p>Instructivos de la VAC y guías municipales, versionados en el repo para poder auditar cada regla.</p></div>
+      <div class="card"><div class="k mono">107</div><h3>cuerpos normativos</h3><p>420 archivos indexados con número de acuerdo y fecha. Es la lista de vigilancia del sistema.</p></div>
+    </div>
+    <hr class="rule" />
+    <div class="cols two">
+      <div>
+        <h3>Las reglas son datos, no código</h3>
+        <p>Quien mantiene normativa municipal no escribe Python. Un JSON editable, un filtro de cuarenta líneas.</p>
+      </div>
+      <div>
+        <h3>Lo incierto se marca, no se esconde</h3>
+        <p>Un requisito marcado vale más que uno ausente — y mucho más que uno presentado como cierto sin serlo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 · cierre -->
+  <section class="slide">
+    <div class="eyebrow">Qué sigue</div>
+    <h2>Más municipios, y la bitácora.</h2>
+    <p>Cada municipalidad nueva es un archivo de reglas, no un desarrollo. Y la bitácora de rechazos convierte la discrecionalidad — hoy el mayor riesgo del trámite — en el dato más valioso del sistema.</p>
+    <hr class="rule" />
+    <div class="eyebrow">Cimiento · Buildathon 2026</div>
+  </section>
+
+</div>
+
+<nav class="hud" aria-label="Navegación de la presentación">
+  <span class="counter" id="counter">01 / 13</span>
+  <div class="track" aria-hidden="true"><i id="bar"></i></div>
+  <span class="hint">← → para navegar</span>
+  <button type="button" id="prev" aria-label="Lámina anterior">Anterior</button>
+  <button type="button" id="next" aria-label="Lámina siguiente">Siguiente</button>
+</nav>
+
+<script>
+  (function () {
+    var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+    var counter = document.getElementById("counter");
+    var bar = document.getElementById("bar");
+    var pad = function (n) { return String(n).padStart(2, "0"); };
+    var current = 0;
+
+    function paint(i) {
+      current = i;
+      counter.textContent = pad(i + 1) + " / " + pad(slides.length);
+      bar.style.width = ((i + 1) / slides.length * 100) + "%";
+    }
+
+    function go(i) {
+      var t = Math.max(0, Math.min(slides.length - 1, i));
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      slides[t].scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      paint(t);
+    }
+
+    document.getElementById("next").addEventListener("click", function () { go(current + 1); });
+    document.getElementById("prev").addEventListener("click", function () { go(current - 1); });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); go(current + 1); }
+      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); go(current - 1); }
+      else if (e.key === "Home") { e.preventDefault(); go(0); }
+      else if (e.key === "End") { e.preventDefault(); go(slides.length - 1); }
+    });
+
+    // Mantiene el contador sincronizado si el lector hace scroll a mano.
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) paint(slides.indexOf(en.target));
+        });
+      }, { threshold: 0.55 });
+      slides.forEach(function (s) { io.observe(s); });
+    }
+
+    paint(0);
+  })();
+</script>

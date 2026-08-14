@@ -216,7 +216,7 @@ export default function PanelCumplimiento({ onLlenarVac }: { onLlenarVac: (p: Pr
     <div className="flex min-h-screen" style={{ background: T.papel, fontFamily: sans }}>
       <aside className="w-56 shrink-0 border-r px-4 py-6" style={{ borderColor: T.linea, background: T.blanco }}>
         <div className="mb-8 px-2">
-          <div className="text-[16px] font-semibold tracking-[-0.01em]" style={{ color: T.tinta }}>Tramitología</div>
+          <div className="text-[16px] font-semibold tracking-[-0.01em]" style={{ color: T.tinta }}>Cimiento</div>
           <div className="text-[11px]" style={{ color: T.tenue }}>Panel de cumplimiento</div>
         </div>
         <nav className="space-y-0.5">
