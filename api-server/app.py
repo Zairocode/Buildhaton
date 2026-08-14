@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -45,20 +46,127 @@ def _field_error(field: str, code: str, message: str, **extra: Any):
     return payload
 
 
-def _normalize_project(project: Any):
+def _as_bool(value: Any):
+    if isinstance(value, bool):
+        return value
+    if value is None or value == "":
+        return None
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return bool(value)
+
+    text = str(value).strip().lower()
+    if text in {"sí", "si", "yes", "true", "1", "s"}:
+        return True
+    if text in {"no", "false", "0", "n"}:
+        return False
+    return None
+
+
+def _as_number(value: Any):
+    if value is None or value == "":
+        return None
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return float(value)
+    if isinstance(value, str):
+        cleaned = re.sub(r"[^\d.-]", "", value.strip())
+        if cleaned in {"", "-", ".", "-."}:
+            return None
+        try:
+            return float(cleaned)
+        except ValueError:
+            return None
+    return None
+
+
+def stored_project_to_engine_document(project: Any):
+    """Converts stored project records (demo.json shape) into the flat document expected by motor.py."""
     if not isinstance(project, dict):
         raise ValueError("Request body must be a JSON object with project data.")
 
-    normalized = dict(project)
-    for key in ["municipalidad", "tipo_solicitud", "fuente_agua", "fuente_agua_scp", "categoria_obra_scp"]:
-        value = normalized.get(key)
-        if value is not None and isinstance(value, str):
-            normalized[key] = value.strip()
+    if "proyecto" in project or "ambiental" in project:
+        proyecto = project.get("proyecto") if isinstance(project.get("proyecto"), dict) else {}
+        ambiental = project.get("ambiental") if isinstance(project.get("ambiental"), dict) else {}
+        flat = dict(project)
+        flat.pop("proyecto", None)
+        flat.pop("ambiental", None)
+        flat.pop("seguridad", None)
+        flat.pop("coordenadas", None)
+        flat.pop("contactos", None)
+        flat.pop("documentosAdjuntos", None)
 
-    if normalized.get("municipalidad") is not None and normalized["municipalidad"] == "":
-        normalized["municipalidad"] = None
+        flat["municipalidad"] = flat.get("municipalidad")
+        flat["tipo_solicitud"] = proyecto.get("tipoUso") or flat.get("tipo_solicitud")
+        flat["area_construccion_m2"] = _as_number(proyecto.get("areaConstruccion"))
+        flat["altura_m"] = _as_number(proyecto.get("alturaEdificio"))
+        flat["uso_publico"] = (
+            proyecto.get("tipoUso") in {"Plaza Comercial", "Oficina", "Industrial", "Mixto"}
+        ) or _as_bool(flat.get("uso_publico"))
+        flat["genera_aguas_pluviales"] = _as_bool(proyecto.get("aguasPluviales"))
+        flat["afecta_salud_circunvecina"] = _as_bool(proyecto.get("afectaSalud"))
+        flat["impacto_social"] = _as_bool(proyecto.get("impactoSocial"))
+        flat["almacena_agua_combustible_lubricantes"] = _as_bool(proyecto.get("almacenamiento"))
+        flat["cercano_area_bosque"] = _as_bool(proyecto.get("bosque"))
+        flat["categoria_ambiental"] = ambiental.get("tipoLicencia") or flat.get("categoria_ambiental")
+        flat["abastecimiento_agua_consumo_humano"] = _as_bool(ambiental.get("consumoAguaPotable"))
+        flat["tratamiento_aguas_residuales"] = "nueva" if _as_bool(ambiental.get("tratamientoAR")) else None
+        flat["asientos_fijos"] = _as_bool(flat.get("asientos_fijos"))
+        flat["giro_exento"] = _as_bool(flat.get("giro_exento"))
+        flat["en_residencial_o_condominio"] = _as_bool(flat.get("en_residencial_o_condominio"))
+        flat["en_centro_historico"] = _as_bool(flat.get("en_centro_historico"))
+        flat["en_cono_la_aurora"] = _as_bool(flat.get("en_cono_la_aurora"))
+        flat["requiere_mem"] = _as_bool(flat.get("requiere_mem"))
+        flat["con_empagua"] = _as_bool(flat.get("con_empagua"))
+        flat["aplica_nrd3"] = _as_bool(flat.get("aplica_nrd3"))
+        flat["corte_arboles_m3"] = _as_number(flat.get("corte_arboles_m3"))
+        flat["movimiento_tierra_m3"] = _as_number(flat.get("movimiento_tierra_m3"))
 
-    return normalized
+        project = flat
+
+    if isinstance(project, dict):
+        normalized = dict(project)
+        for key in ["municipalidad", "tipo_solicitud", "fuente_agua", "fuente_agua_scp", "categoria_obra_scp"]:
+            value = normalized.get(key)
+            if value is not None and isinstance(value, str):
+                normalized[key] = value.strip()
+
+        if normalized.get("municipalidad") is not None and normalized["municipalidad"] == "":
+            normalized["municipalidad"] = None
+
+        for key in [
+            "area_construccion_m2",
+            "altura_m",
+            "corte_arboles_m3",
+            "movimiento_tierra_m3",
+        ]:
+            if key in normalized:
+                normalized[key] = _as_number(normalized.get(key))
+
+        for key in [
+            "uso_publico",
+            "aplica_nrd3",
+            "en_residencial_o_condominio",
+            "giro_exento",
+            "cercano_area_bosque",
+            "genera_aguas_pluviales",
+            "afecta_salud_circunvecina",
+            "impacto_social",
+            "almacena_agua_combustible_lubricantes",
+            "abastecimiento_agua_consumo_humano",
+            "requiere_mem",
+            "con_empagua",
+            "en_centro_historico",
+            "en_cono_la_aurora",
+        ]:
+            if key in normalized:
+                normalized[key] = _as_bool(normalized.get(key))
+
+        return normalized
+
+    return project
+
+
+def _normalize_project(project: Any):
+    return stored_project_to_engine_document(project)
 
 
 def _collect_errors(project: dict):
