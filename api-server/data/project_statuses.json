@@ -1,0 +1,107 @@
+[
+  {
+    "ambiental": {
+      "caracterizacionAR": "No",
+      "consumoAgua": "500",
+      "consumoAguaPotable": "Sí",
+      "consumoEnergia": "Sí",
+      "descargaAR": "Sí",
+      "desechosSolidos": "nose",
+      "empleadosPorJornada": "100",
+      "empresaEnergia": "no se",
+      "gases": "Sí",
+      "jornada": "diaria",
+      "numEmpleados": "50",
+      "olores": "Sí",
+      "proveedorConsumo": "Sí",
+      "riesgosOcupacionales": "Sí",
+      "ruido": "Sí",
+      "tipoLicencia": "B1",
+      "tipoRiesgo": "no se ",
+      "transporte": "publico",
+      "tratamientoAR": "nose ",
+      "usoConsumo": "nose "
+    },
+    "contactos": [
+      {
+        "correo": "jose123@gmail.com",
+        "direccion": "14 ave E zona 18",
+        "nombre": "jose ",
+        "profesion": "profe ",
+        "telefono": "45768990",
+        "tipo": "Representante Legal"
+      }
+    ],
+    "coordenadas": [
+      {
+        "latitud": "10000",
+        "longitud": "5000",
+        "tipo": "Decimal"
+      },
+      {
+        "latitud": "10000",
+        "longitud": "5000",
+        "tipo": "Decimal"
+      },
+      {
+        "latitud": "10000",
+        "longitud": "5000",
+        "tipo": "Decimal"
+      },
+      {
+        "latitud": "10000",
+        "longitud": "5000",
+        "tipo": "Decimal"
+      }
+    ],
+    "documentosAdjuntos": {
+      "Carta de compromiso de señalización DGAC": true,
+      "Certificación del Registro de la Propiedad": true,
+      "Elevaciones y Secciones - DGAC": true,
+      "Memoria descriptiva del proyecto - CONRED": true,
+      "Nombramiento de representante legal": true,
+      "Patente de comercio de la empresa": true,
+      "Planos de ruta de evacuación - CONRED": true
+    },
+    "proyecto": {
+      "adyacenteCultural": "Sí",
+      "afectaPaisaje": "No",
+      "afectaSalud": "Sí",
+      "aguasPluviales": "No",
+      "almacenamiento": "No",
+      "alturaEdificio": "500",
+      "areaConstruccion": "160",
+      "areaTerreno": "80",
+      "bosque": "Sí",
+      "categoriaPot": "nose ",
+      "colindancias": "norte",
+      "deptoInmueble": "321321",
+      "descActividades": "ventas ",
+      "descEntorno": "tranquilo con mucha zona verde ",
+      "descProyecto": "nose ",
+      "direccionInmueble": "2314",
+      "empleosGenerados": "50",
+      "epoca": "4",
+      "finca": "23131",
+      "folio": "31312",
+      "impactoSocial": "Sí",
+      "libro": "321",
+      "montoInversion": "",
+      "municipioInmueble": "312311",
+      "niveles": "8",
+      "nombre": "Diego Santandrea",
+      "nombreSitio": "No se",
+      "sitioArqueologico": "Sí",
+      "tipoAmbiental": "123",
+      "tipoObra": "General",
+      "tipoUso": "Plaza Comercial"
+    },
+    "seguridad": {
+      "equipoProteccion": "guardia nacional ",
+      "planMitigacion": "pues no se es prueba"
+    },
+    "solicitante": {},
+    "stored_at": "2026-08-14T21:09:14.134920+00:00",
+    "id": "status-1"
+  }
+]

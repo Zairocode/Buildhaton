@@ -1,10 +1,16 @@
+import json
 import os
 import sys
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
+
+DATA_DIR = Path(ROOT_DIR) / "api-server" / "data"
+STATUS_STORE_PATH = DATA_DIR / "project_statuses.json"
 
 from flask import Flask, jsonify, request
 
@@ -141,9 +147,86 @@ def _serialize_rule(rule: dict):
     }
 
 
+def _load_status_store() -> list:
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    if not STATUS_STORE_PATH.exists():
+        return []
+
+    try:
+        with STATUS_STORE_PATH.open("r", encoding="utf-8") as fh:
+            data = json.load(fh)
+    except (OSError, json.JSONDecodeError):
+        return []
+
+    return data if isinstance(data, list) else []
+
+
+def _save_status_store(items: list) -> None:
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    temp_path = STATUS_STORE_PATH.with_suffix(".json.tmp")
+    with temp_path.open("w", encoding="utf-8") as fh:
+        json.dump(items, fh, ensure_ascii=False, indent=2)
+        fh.write("\n")
+    os.replace(temp_path, STATUS_STORE_PATH)
+
+
 @app.get("/health")
 def health():
     return jsonify({"ok": True, "service": "buildhaton-rule-api", "status": "healthy"})
+
+
+@app.get("/api/project-status")
+@app.get("/api/status")
+def get_project_statuses():
+    items = _load_status_store()
+    return jsonify({"ok": True, "items": items, "count": len(items)})
+
+
+@app.post("/api/project-status")
+@app.post("/api/status")
+def save_project_status():
+    payload = request.get_json(silent=True)
+    if payload is None:
+        return jsonify({
+            "ok": False,
+            "error": _field_error("body", "invalid_json", "Request body must be valid JSON."),
+        }), 400
+
+    if isinstance(payload, list):
+        records = payload
+    elif isinstance(payload, dict):
+        records = [payload]
+    else:
+        return jsonify({
+            "ok": False,
+            "error": _field_error("body", "invalid_structure", "Request body must be a JSON object or an array of objects."),
+        }), 400
+
+    existing = _load_status_store()
+    now = datetime.now(timezone.utc).isoformat()
+    saved = []
+
+    for index, item in enumerate(records, start=1):
+        if not isinstance(item, dict):
+            return jsonify({
+                "ok": False,
+                "error": _field_error("body", "invalid_structure", f"Item #{index} must be a JSON object."),
+            }), 400
+
+        record = dict(item)
+        record["stored_at"] = now
+        record["id"] = f"status-{len(existing) + len(saved) + 1}"
+        saved.append(record)
+
+    existing.extend(saved)
+    _save_status_store(existing)
+
+    return jsonify({
+        "ok": True,
+        "saved": saved[0] if len(saved) == 1 else saved,
+        "count": len(saved),
+        "total": len(existing),
+    }), 201
 
 
 @app.post("/api/validate")
