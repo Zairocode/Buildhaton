@@ -1,0 +1,61 @@
+{
+  "muniguate": {
+    "reglas": 11,
+    "documentos": 39,
+    "ministeriales": 3,
+    "municipales": 8,
+    "ids": [
+      "conred-nrd2",
+      "dgac-altura",
+      "marn-edicto",
+      "muni-gt-colegiado",
+      "muni-gt-cad-digital",
+      "muni-gt-arboles-inab",
+      "muni-gt-marn-resolucion",
+      "muni-gt-base",
+      "muni-gt-nrd1-acta",
+      "muni-gt-dgac-resolucion",
+      "muni-gt-discrecionalidad"
+    ]
+  },
+  "scp": {
+    "reglas": 8,
+    "documentos": 34,
+    "ministeriales": 3,
+    "municipales": 5,
+    "ids": [
+      "conred-nrd2",
+      "dgac-altura",
+      "marn-edicto",
+      "scp-base",
+      "scp-obra-mayor",
+      "scp-asociacion-vecinos",
+      "scp-agua-pozo",
+      "scp-discrecionalidad"
+    ]
+  },
+  "_analisis": {
+    "compartidas": [
+      "conred-nrd2",
+      "dgac-altura",
+      "marn-edicto"
+    ],
+    "solo_capital": [
+      "muni-gt-arboles-inab",
+      "muni-gt-base",
+      "muni-gt-cad-digital",
+      "muni-gt-colegiado",
+      "muni-gt-dgac-resolucion",
+      "muni-gt-discrecionalidad",
+      "muni-gt-marn-resolucion",
+      "muni-gt-nrd1-acta"
+    ],
+    "solo_pinula": [
+      "scp-agua-pozo",
+      "scp-asociacion-vecinos",
+      "scp-base",
+      "scp-discrecionalidad",
+      "scp-obra-mayor"
+    ]
+  }
+}
