@@ -1,0 +1,277 @@
+[
+  {
+    "id": "conred-nrd2",
+    "capa": "ministerial",
+    "jurisdiccion": "GT",
+    "institucion": "CONRED",
+    "cuando": { "uso_publico": true },
+    "exige": [
+      "Formato de información",
+      "Formato de evaluación NRD2",
+      "Planos de ruta de evacuación y salidas de emergencia por nivel",
+      "Planta de techos",
+      "Memoria descriptiva del proyecto",
+      "Memoria fotográfica del proyecto",
+      "DPI del evaluador NRD-2"
+    ],
+    "fuente": "VAC04 · CONRED",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "conred-asientos-fijos",
+    "capa": "ministerial",
+    "jurisdiccion": "GT",
+    "institucion": "CONRED",
+    "cuando": { "uso_publico": true, "asientos_fijos": true },
+    "exige": ["Plano de detalle de asientos fijos"],
+    "fuente": "VAC04 · CONRED núm. 10",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "dgac-altura",
+    "capa": "ministerial",
+    "jurisdiccion": "GT",
+    "institucion": "DGAC",
+    "cuando": { "altura_m": { ">": 16 } },
+    "exige": [
+      "Carta de solicitud al Director General de Aeronáutica Civil",
+      "Formulario de Solicitud de Control de Alturas",
+      "Libreta topográfica firmada",
+      "Dictamen del IGN con banco de marca más cercano",
+      "Planos de elevación y sección con cota 0+00 y elevación msnm",
+      "Acta notarial de compromiso de señalización",
+      "Factura Electrónica DGAC"
+    ],
+    "fuente": "VAC02 · umbral no repetido en VAC04",
+    "confianza": "SIN_CONFIRMAR",
+    "nota": "El umbral de 16 m aparece solo en VAC02 y dice 'especialmente en el Departamento de Guatemala'. Confirmar alcance antes de usar en producción. Un formulario y un pago por cada torre (VAC07)."
+  },
+  {
+    "id": "mspas-base",
+    "capa": "ministerial",
+    "jurisdiccion": "GT",
+    "institucion": "MSPAS",
+    "cuando": {
+      "any": [
+        { "genera_aguas_pluviales": true },
+        { "afecta_salud_circunvecina": true },
+        { "almacena_agua_combustible_lubricantes": true },
+        { "impacto_social": true }
+      ]
+    },
+    "exige": [
+      "Formulario de Solicitud FS-001-2022",
+      "Información catastral del polígono emitida por la municipalidad",
+      "Plano de localización con coordenadas (>= A4)",
+      "Plano de ubicación con áreas libres y materiales (>= A4)",
+      "Planos topográficos con curvas de nivel (A1)",
+      "Memoria descriptiva detallada de las obras",
+      "Constancias de colegiado activo en original",
+      "Pronunciamientos de responsabilidad profesional (DRPSA-011-2022)",
+      "Pago de arancel AA-011"
+    ],
+    "fuente": "VAC04 · MSPAS base · disparadores en VAC02 v2 §3g",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "mspas-agua-consumo-humano",
+    "capa": "ministerial",
+    "jurisdiccion": "GT",
+    "institucion": "MSPAS",
+    "cuando": { "abastecimiento_agua_consumo_humano": true },
+    "exige": [
+      "Planos de planta general del sistema (A1)",
+      "Planos de elevaciones y secciones de componentes (A1)",
+      "Memorias de cálculo (crecimiento poblacional, dotación)",
+      "Manual de operación del sistema",
+      "Manual de mantenimiento del sistema"
+    ],
+    "fuente": "VAC04 · MSPAS paquete 1",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "mspas-fuente-nueva",
+    "capa": "ministerial",
+    "jurisdiccion": "GT",
+    "institucion": "MSPAS",
+    "cuando": { "abastecimiento_agua_consumo_humano": true, "fuente_agua": "nueva" },
+    "exige": ["Certificado de calidad del agua (AG 178-2009)"],
+    "fuente": "VAC04 · MSPAS paquete 2",
+    "confianza": "confirmada",
+    "nota": "Si la fuente es pozo, el certificado se presenta tras la perforación dentro del plazo del AG 178-2009. Si no se presenta, el dictamen sanitario favorable SE ANULA."
+  },
+  {
+    "id": "mspas-conexion-existente",
+    "capa": "ministerial",
+    "jurisdiccion": "GT",
+    "institucion": "MSPAS",
+    "cuando": { "abastecimiento_agua_consumo_humano": true, "fuente_agua": "existente" },
+    "exige": [
+      "Constancia del abastecedor garantizando dotación y continuidad",
+      "Informes de caracterización física, química y microbiológica (COGUANOR NTG 29001)"
+    ],
+    "fuente": "VAC04 · MSPAS paquete 3",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "mspas-ptar-nueva",
+    "capa": "ministerial",
+    "jurisdiccion": "GT",
+    "institucion": "MSPAS",
+    "cuando": { "tratamiento_aguas_residuales": "nueva" },
+    "exige": [
+      "Planos de planta general de la PTAR (A1)",
+      "Planos de elevaciones y secciones de componentes (A1)",
+      "Informe de caracterización de afluentes (15 parámetros)",
+      "Informe de estimación de efluentes (15 parámetros)",
+      "Memorias detalladas de cálculo del sistema",
+      "Manual de operación",
+      "Manual de mantenimiento"
+    ],
+    "fuente": "VAC04 · MSPAS paquete 8",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "mspas-ptar-existente",
+    "capa": "ministerial",
+    "jurisdiccion": "GT",
+    "institucion": "MSPAS",
+    "cuando": { "tratamiento_aguas_residuales": "conexion_existente" },
+    "exige": ["Informe técnico descriptivo de la PTAR a la que se conectará"],
+    "fuente": "VAC04 · MSPAS paquete 9",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "marn-edicto",
+    "capa": "ministerial",
+    "jurisdiccion": "GT",
+    "institucion": "MARN",
+    "cuando": { "categoria_ambiental": { "in": ["A", "B1"] } },
+    "exige": ["Edicto publicado (archivo individual)"],
+    "fuente": "VAC04 · MARN núm. 3",
+    "confianza": "confirmada",
+    "nota": "Categoría B2 queda exenta del edicto."
+  },
+  {
+    "id": "inab-bosque",
+    "capa": "ministerial",
+    "jurisdiccion": "GT",
+    "institucion": "INAB",
+    "cuando": { "cercano_area_bosque": true },
+    "exige": ["Plan de aprovechamiento forestal"],
+    "fuente": "VAC02 §3j",
+    "confianza": "confirmada",
+    "nota": "INAB NO está integrado a VAC. Se gestiona por fuera."
+  },
+
+  {
+    "id": "muni-gt-colegiado",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": { "area_construccion_m2": { ">": 30 } },
+    "exige": [
+      "Planos firmados, sellados y timbrados por ingeniero o arquitecto colegiado activo",
+      "Constancia original de colegiado activo vigente",
+      "Boleto de Ornato del profesional responsable"
+    ],
+    "fuente": "Guía 09-F · PTLI.23 v2",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "muni-gt-cad-digital",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": {
+      "any": [
+        { "area_construccion_m2": { ">": 200 } },
+        { "tipo_solicitud": "fraccionamiento" },
+        { "poligono_irregular": true }
+      ]
+    },
+    "exige": [
+      "Copia digital de todos los planos en disco compacto, formato CAD versión 2007",
+      "CD en sobre pegado en hoja de papel bond",
+      "Planos de arquitectura y estabilización de taludes en un solo archivo PDF"
+    ],
+    "fuente": "Guía 09-F · nota importante",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "muni-gt-fuera-de-guia",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": { "area_construccion_m2": { ">": 700 } },
+    "exige": ["ALERTA: fuera del alcance de la Guía 09-F. Aplica otra guía (Guía 08 u obras mayores)"],
+    "fuente": "Guía 09-F · alcance",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "muni-gt-centro-historico",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": { "en_centro_historico": true },
+    "exige": ["ALERTA: la Guía 09-F no aplica en Centro Histórico, Conjunto Histórico ni Área de Amortiguamiento"],
+    "fuente": "Guía 09-F · alcance",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "muni-gt-eap-tasa",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": { "tipo_solicitud": "EAP", "giro_exento": false },
+    "exige": ["Recibo de pago de tasa Q 350.00 por solicitud EAP"],
+    "fuente": "Guía 09-F · documentos específicos",
+    "confianza": "confirmada",
+    "nota": "Exentos: tiendas, abarroterías, panaderías, farmacias, librerías, centros educativos, centros comunitarios e iglesias."
+  },
+  {
+    "id": "muni-gt-arboles-inab",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": { "corte_arboles_m3": { ">": 10 } },
+    "exige": ["Dictamen favorable del INAB"],
+    "fuente": "Guía 09-F · documentos complementarios",
+    "confianza": "confirmada",
+    "nota": "Cortes menores a 10 m³ van por la Guía 04, Dirección de Medio Ambiente municipal."
+  },
+  {
+    "id": "muni-gt-marn-resolucion",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": {},
+    "exige": [
+      "Resolución favorable del MARN (y Licencia Ambiental si aplica)",
+      "Copia digital del instrumento ambiental completo",
+      "Copia de planos sellados por el Ministerio (cuando aplique)"
+    ],
+    "fuente": "Guía 09-F · documentos específicos",
+    "confianza": "confirmada",
+    "nota": "COSTURA VAC->MUNI. Si el trámite MARN no ha concluido, se puede ingresar con acta de declaración jurada + copia de recepción de la solicitud ante MARN."
+  },
+  {
+    "id": "muni-gt-base",
+    "capa": "municipal",
+    "jurisdiccion": "muniguate",
+    "institucion": "Municipalidad de Guatemala (DCT)",
+    "cuando": {},
+    "exige": [
+      "Formulario F08 (versión actual)",
+      "Consulta 'A' (se obtiene en la Ventanilla Única Municipal)",
+      "Certificación del Registro General de la Propiedad con historial completo, emitida en los últimos 6 meses",
+      "Solvencia Municipal del inmueble, emitida en los últimos 2 meses",
+      "DPI autenticado del propietario",
+      "Boleto de Ornato vigente del propietario",
+      "Memoria Descriptiva DCT",
+      "Expediente físico en fólder color claro tamaño oficio con gancho"
+    ],
+    "fuente": "Guía 09-F · documentos generales",
+    "confianza": "confirmada"
+  }
+]
