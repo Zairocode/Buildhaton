@@ -1,64 +1,18 @@
 [
   {
-    "id": "registral-vencida-gt",
-    "severidad": "bloqueante",
-    "titulo": "Certificación registral vencida",
-    "cuando": { "municipalidad": "muniguate" },
-    "documento_contiene": "Registro General de la Propiedad",
-    "vigencia_dias": 180,
-    "detalle": "La capital exige que la certificación se haya emitido en los últimos 6 meses. Una certificación buena hace 7 meses se rechaza en ventanilla sin revisar el resto del fólder.",
-    "remedio": "Pedí una certificación nueva en el Registro General de la Propiedad antes de armar el expediente.",
-    "fuente": "Guía 09-F — Muniguate"
-  },
-  {
-    "id": "registral-vencida-scp",
-    "severidad": "bloqueante",
-    "titulo": "Certificación registral vencida",
-    "cuando": { "municipalidad": "scp" },
-    "documento_contiene": "Registro General de la Propiedad",
-    "vigencia_dias": 90,
-    "detalle": "Pinula acepta máximo 3 MESES de emisión — la mitad que la capital. El mismo papel que sirve en Guatemala se rechaza aquí.",
-    "remedio": "Certificación con menos de 3 meses. Si el proyecto va a las dos municipalidades, gobierná con el plazo más corto.",
-    "fuente": "Guía de requisitos SCP — obra mayor"
-  },
-  {
-    "id": "solvencia-vencida-gt",
-    "severidad": "bloqueante",
-    "titulo": "Solvencia municipal vencida",
-    "cuando": { "municipalidad": "muniguate" },
-    "documento_contiene": "Solvencia Municipal",
-    "vigencia_dias": 60,
-    "detalle": "Vigencia de 2 meses. Es el documento que más se vence mientras el expediente espera, porque se saca al inicio y el trámite dura más que su vigencia.",
-    "remedio": "Sacala de último, cuando el resto del fólder ya esté armado.",
-    "fuente": "Guía 09-F — Muniguate"
-  },
-  {
-    "id": "planos-cad-gt",
-    "severidad": "riesgo",
-    "titulo": "Planos no vienen en CAD",
-    "cuando": { "municipalidad": "muniguate" },
-    "documento_contiene": "formato CAD versión 2007",
-    "extensiones": [".dwg"],
-    "detalle": "La guía pide el archivo CAD en versión 2007, no un PDF ni un DWG de versión reciente. La extensión sola no prueba la versión: verificalo al exportar.",
-    "remedio": "Exportá desde tu CAD como «AutoCAD 2007 Drawing (*.dwg)» y grabalo en el disco compacto.",
-    "fuente": "Guía 09-F — Muniguate"
-  },
-  {
-    "id": "planos-dwg-scp",
-    "severidad": "riesgo",
-    "titulo": "Planos no vienen en DWG",
-    "cuando": { "municipalidad": "scp" },
-    "documento_contiene": "formato DWG",
-    "extensiones": [".dwg"],
-    "detalle": "Pinula pide la copia digital en DWG. Un PDF no sustituye el archivo editable.",
-    "remedio": "Adjuntá el DWG además del juego impreso.",
-    "fuente": "Guía de requisitos SCP — obra mayor"
-  },
-  {
     "id": "pozo-calidad-agua",
     "severidad": "riesgo",
     "titulo": "El dictamen sanitario se anula si no entregás la calidad de agua a tiempo",
-    "cuando": { "any": [{ "fuente_agua": "nueva" }, { "fuente_agua_scp": "pozo" }] },
+    "cuando": {
+      "any": [
+        {
+          "fuente_agua": "nueva"
+        },
+        {
+          "fuente_agua_scp": "pozo"
+        }
+      ]
+    },
     "detalle": "Con fuente de agua nueva o pozo, el certificado de calidad del agua debe presentarse dentro del plazo del AG 178-2009 después de perforar. Si se pasa el plazo, el dictamen sanitario favorable YA EMITIDO se anula y el trámite MSPAS se reinicia.",
     "remedio": "Agendá el muestreo el mismo día que termine la perforación. Es el único requisito que puede tumbar una aprobación que ya tenías.",
     "fuente": "VAC04 — MSPAS · AG 178-2009"
@@ -67,7 +21,15 @@
     "id": "marn-boleta-72h",
     "severidad": "riesgo",
     "titulo": "72 horas para pagar la boleta MARN",
-    "cuando": { "categoria_ambiental": { "in": ["A", "B1", "B2"] } },
+    "cuando": {
+      "categoria_ambiental": {
+        "in": [
+          "A",
+          "B1",
+          "B2"
+        ]
+      }
+    },
     "detalle": "Emitida la boleta de pago de la licencia ambiental, hay 72 horas para pagarla. Vencida, se cae y toca reponer el paso.",
     "remedio": "Que la boleta la reciba quien pueda pagar el mismo día, no el correo de un buzón que se revisa los lunes.",
     "fuente": "VAC09 — Licencia Ambiental"
@@ -76,7 +38,11 @@
     "id": "dgac-por-torre",
     "severidad": "riesgo",
     "titulo": "DGAC cobra por torre, no por proyecto",
-    "cuando": { "altura_m": { ">": 16 } },
+    "cuando": {
+      "altura_m": {
+        ">": 16
+      }
+    },
     "detalle": "Un proyecto de varias torres necesita UN formulario DGAC y UN pago POR CADA TORRE. Presentar un solo formulario por el conjunto devuelve el expediente.",
     "remedio": "Contá las torres y multiplicá formularios y pagos antes de presupuestar el trámite.",
     "fuente": "VAC07 — Procedimiento DGAC"
@@ -85,7 +51,15 @@
     "id": "marn-paralelo",
     "severidad": "aviso",
     "titulo": "Podés ingresar a la muni sin esperar la resolución del MARN",
-    "cuando": { "categoria_ambiental": { "in": ["A", "B1", "B2"] } },
+    "cuando": {
+      "categoria_ambiental": {
+        "in": [
+          "A",
+          "B1",
+          "B2"
+        ]
+      }
+    },
     "detalle": "La municipalidad exige la resolución del MARN como entrada, pero si el trámite MARN no ha concluido se puede ingresar el expediente municipal con acta de declaración jurada más copia de la recepción de la solicitud ante MARN.",
     "remedio": "Usá la declaración jurada para arrancar la capa municipal en paralelo en vez de en serie. Es la única costura del proceso que permite paralelizar.",
     "fuente": "Guía 09-F — Muniguate"
@@ -94,7 +68,9 @@
     "id": "expediente-fisico",
     "severidad": "aviso",
     "titulo": "El expediente municipal es físico y tiene forma exigida",
-    "cuando": { "municipalidad": "muniguate" },
+    "cuando": {
+      "municipalidad": "muniguate"
+    },
     "detalle": "Fólder color claro tamaño oficio con gancho, sin borrones ni corrector, disco compacto en sobre pegado a hoja de papel bond. La forma del fólder es causal de devolución en ventanilla.",
     "remedio": "Armá el fólder con la lista en mano. Lo digital de acá se imprime; no sustituye la entrega física.",
     "fuente": "Guía 09-F — Muniguate"

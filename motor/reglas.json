@@ -4,15 +4,38 @@
     "capa": "ministerial",
     "jurisdiccion": "GT",
     "institucion": "CONRED",
-    "cuando": { "uso_publico": true },
+    "cuando": {
+      "uso_publico": true
+    },
     "exige": [
-      "Formato de información",
-      "Formato de evaluación NRD2",
-      "Planos de ruta de evacuación y salidas de emergencia por nivel",
-      "Planta de techos",
-      "Memoria descriptiva del proyecto",
-      "Memoria fotográfica del proyecto",
-      "DPI del evaluador NRD-2"
+      {
+        "documento": "formato-de-informacion",
+        "detalle": "Formato de información"
+      },
+      {
+        "documento": "formato-de-evaluacion-nrd2",
+        "detalle": "Formato de evaluación NRD2"
+      },
+      {
+        "documento": "planos-de-ruta-de-evacuacion-y-salidas",
+        "detalle": "Planos de ruta de evacuación y salidas de emergencia por nivel"
+      },
+      {
+        "documento": "planta-de-techos",
+        "detalle": "Planta de techos"
+      },
+      {
+        "documento": "memoria-descriptiva-del-proyecto",
+        "detalle": "Memoria descriptiva del proyecto"
+      },
+      {
+        "documento": "memoria-fotografica-del-proyecto",
+        "detalle": "Memoria fotográfica del proyecto"
+      },
+      {
+        "documento": "dpi-del-evaluador-nrd-2",
+        "detalle": "DPI del evaluador NRD-2"
+      }
     ],
     "fuente": "VAC04 · CONRED",
     "confianza": "confirmada"
@@ -22,8 +45,16 @@
     "capa": "ministerial",
     "jurisdiccion": "GT",
     "institucion": "CONRED",
-    "cuando": { "uso_publico": true, "asientos_fijos": true },
-    "exige": ["Plano de detalle de asientos fijos"],
+    "cuando": {
+      "uso_publico": true,
+      "asientos_fijos": true
+    },
+    "exige": [
+      {
+        "documento": "plano-de-detalle-de-asientos-fijos",
+        "detalle": "Plano de detalle de asientos fijos"
+      }
+    ],
     "fuente": "VAC04 · CONRED núm. 10",
     "confianza": "confirmada"
   },
@@ -32,15 +63,40 @@
     "capa": "ministerial",
     "jurisdiccion": "GT",
     "institucion": "DGAC",
-    "cuando": { "altura_m": { ">": 16 } },
+    "cuando": {
+      "altura_m": {
+        ">": 16
+      }
+    },
     "exige": [
-      "Carta de solicitud al Director General de Aeronáutica Civil",
-      "Formulario de Solicitud de Control de Alturas",
-      "Libreta topográfica firmada",
-      "Dictamen del IGN con banco de marca más cercano",
-      "Planos de elevación y sección con cota 0+00 y elevación msnm",
-      "Acta notarial de compromiso de señalización",
-      "Factura Electrónica DGAC"
+      {
+        "documento": "carta-de-solicitud-al-director-general",
+        "detalle": "Carta de solicitud al Director General de Aeronáutica Civil"
+      },
+      {
+        "documento": "formulario-de-solicitud-de-control-de",
+        "detalle": "Formulario de Solicitud de Control de Alturas"
+      },
+      {
+        "documento": "libreta-topografica-firmada",
+        "detalle": "Libreta topográfica firmada"
+      },
+      {
+        "documento": "dictamen-del-ign-con-banco-de-marca-mas",
+        "detalle": "Dictamen del IGN con banco de marca más cercano"
+      },
+      {
+        "documento": "planos-de-elevacion-y-seccion-con-cota-0",
+        "detalle": "Planos de elevación y sección con cota 0+00 y elevación msnm"
+      },
+      {
+        "documento": "acta-notarial-de-compromiso-de",
+        "detalle": "Acta notarial de compromiso de señalización"
+      },
+      {
+        "documento": "factura-electronica-dgac",
+        "detalle": "Factura Electrónica DGAC"
+      }
     ],
     "fuente": "VAC02 · umbral no repetido en VAC04",
     "confianza": "SIN_CONFIRMAR",
@@ -53,22 +109,57 @@
     "institucion": "MSPAS",
     "cuando": {
       "any": [
-        { "genera_aguas_pluviales": true },
-        { "afecta_salud_circunvecina": true },
-        { "almacena_agua_combustible_lubricantes": true },
-        { "impacto_social": true }
+        {
+          "genera_aguas_pluviales": true
+        },
+        {
+          "afecta_salud_circunvecina": true
+        },
+        {
+          "almacena_agua_combustible_lubricantes": true
+        },
+        {
+          "impacto_social": true
+        }
       ]
     },
     "exige": [
-      "Formulario de Solicitud FS-001-2022",
-      "Información catastral del polígono emitida por la municipalidad",
-      "Plano de localización con coordenadas (>= A4)",
-      "Plano de ubicación con áreas libres y materiales (>= A4)",
-      "Planos topográficos con curvas de nivel (A1)",
-      "Memoria descriptiva detallada de las obras",
-      "Constancias de colegiado activo en original",
-      "Pronunciamientos de responsabilidad profesional (DRPSA-011-2022)",
-      "Pago de arancel AA-011"
+      {
+        "documento": "formulario-de-solicitud-fs-001-2022",
+        "detalle": "Formulario de Solicitud FS-001-2022"
+      },
+      {
+        "documento": "informacion-catastral-del-poligono",
+        "detalle": "Información catastral del polígono emitida por la municipalidad"
+      },
+      {
+        "documento": "plano-de-localizacion-con-coordenadas-a4",
+        "detalle": "Plano de localización con coordenadas (>= A4)"
+      },
+      {
+        "documento": "plano-de-ubicacion-con-areas-libres-y",
+        "detalle": "Plano de ubicación con áreas libres y materiales (>= A4)"
+      },
+      {
+        "documento": "planos-topograficos-con-curvas-de-nivel",
+        "detalle": "Planos topográficos con curvas de nivel (A1)"
+      },
+      {
+        "documento": "memoria-descriptiva-detallada-de-las",
+        "detalle": "Memoria descriptiva detallada de las obras"
+      },
+      {
+        "documento": "constancia-colegiado-activo",
+        "detalle": "Constancias de colegiado activo en original"
+      },
+      {
+        "documento": "pronunciamientos-de-responsabilidad",
+        "detalle": "Pronunciamientos de responsabilidad profesional (DRPSA-011-2022)"
+      },
+      {
+        "documento": "pago-de-arancel-aa-011",
+        "detalle": "Pago de arancel AA-011"
+      }
     ],
     "fuente": "VAC04 · MSPAS base · disparadores en VAC02 v2 §3g",
     "confianza": "confirmada"
@@ -78,13 +169,30 @@
     "capa": "ministerial",
     "jurisdiccion": "GT",
     "institucion": "MSPAS",
-    "cuando": { "abastecimiento_agua_consumo_humano": true },
+    "cuando": {
+      "abastecimiento_agua_consumo_humano": true
+    },
     "exige": [
-      "Planos de planta general del sistema (A1)",
-      "Planos de elevaciones y secciones de componentes (A1)",
-      "Memorias de cálculo (crecimiento poblacional, dotación)",
-      "Manual de operación del sistema",
-      "Manual de mantenimiento del sistema"
+      {
+        "documento": "planos-de-planta-general-del-sistema-a1",
+        "detalle": "Planos de planta general del sistema (A1)"
+      },
+      {
+        "documento": "planos-de-elevaciones-y-secciones-de",
+        "detalle": "Planos de elevaciones y secciones de componentes (A1)"
+      },
+      {
+        "documento": "memorias-de-calculo-crecimiento",
+        "detalle": "Memorias de cálculo (crecimiento poblacional, dotación)"
+      },
+      {
+        "documento": "manual-de-operacion-del-sistema",
+        "detalle": "Manual de operación del sistema"
+      },
+      {
+        "documento": "manual-de-mantenimiento-del-sistema",
+        "detalle": "Manual de mantenimiento del sistema"
+      }
     ],
     "fuente": "VAC04 · MSPAS paquete 1",
     "confianza": "confirmada"
@@ -94,8 +202,16 @@
     "capa": "ministerial",
     "jurisdiccion": "GT",
     "institucion": "MSPAS",
-    "cuando": { "abastecimiento_agua_consumo_humano": true, "fuente_agua": "nueva" },
-    "exige": ["Certificado de calidad del agua (AG 178-2009)"],
+    "cuando": {
+      "abastecimiento_agua_consumo_humano": true,
+      "fuente_agua": "nueva"
+    },
+    "exige": [
+      {
+        "documento": "certificado-de-calidad-del-agua-ag-178",
+        "detalle": "Certificado de calidad del agua (AG 178-2009)"
+      }
+    ],
     "fuente": "VAC04 · MSPAS paquete 2",
     "confianza": "confirmada",
     "nota": "Si la fuente es pozo, el certificado se presenta tras la perforación dentro del plazo del AG 178-2009. Si no se presenta, el dictamen sanitario favorable SE ANULA."
@@ -105,10 +221,19 @@
     "capa": "ministerial",
     "jurisdiccion": "GT",
     "institucion": "MSPAS",
-    "cuando": { "abastecimiento_agua_consumo_humano": true, "fuente_agua": "existente" },
+    "cuando": {
+      "abastecimiento_agua_consumo_humano": true,
+      "fuente_agua": "existente"
+    },
     "exige": [
-      "Constancia del abastecedor garantizando dotación y continuidad",
-      "Informes de caracterización física, química y microbiológica (COGUANOR NTG 29001)"
+      {
+        "documento": "constancia-del-abastecedor-garantizando",
+        "detalle": "Constancia del abastecedor garantizando dotación y continuidad"
+      },
+      {
+        "documento": "informes-de-caracterizacion-fisica",
+        "detalle": "Informes de caracterización física, química y microbiológica (COGUANOR NTG 29001)"
+      }
     ],
     "fuente": "VAC04 · MSPAS paquete 3",
     "confianza": "confirmada"
@@ -118,15 +243,38 @@
     "capa": "ministerial",
     "jurisdiccion": "GT",
     "institucion": "MSPAS",
-    "cuando": { "tratamiento_aguas_residuales": "nueva" },
+    "cuando": {
+      "tratamiento_aguas_residuales": "nueva"
+    },
     "exige": [
-      "Planos de planta general de la PTAR (A1)",
-      "Planos de elevaciones y secciones de componentes (A1)",
-      "Informe de caracterización de afluentes (15 parámetros)",
-      "Informe de estimación de efluentes (15 parámetros)",
-      "Memorias detalladas de cálculo del sistema",
-      "Manual de operación",
-      "Manual de mantenimiento"
+      {
+        "documento": "planos-de-planta-general-de-la-ptar-a1",
+        "detalle": "Planos de planta general de la PTAR (A1)"
+      },
+      {
+        "documento": "planos-de-elevaciones-y-secciones-de",
+        "detalle": "Planos de elevaciones y secciones de componentes (A1)"
+      },
+      {
+        "documento": "informe-de-caracterizacion-de-afluentes",
+        "detalle": "Informe de caracterización de afluentes (15 parámetros)"
+      },
+      {
+        "documento": "informe-de-estimacion-de-efluentes-15",
+        "detalle": "Informe de estimación de efluentes (15 parámetros)"
+      },
+      {
+        "documento": "memorias-detalladas-de-calculo-del",
+        "detalle": "Memorias detalladas de cálculo del sistema"
+      },
+      {
+        "documento": "manual-de-operacion",
+        "detalle": "Manual de operación"
+      },
+      {
+        "documento": "manual-de-mantenimiento",
+        "detalle": "Manual de mantenimiento"
+      }
     ],
     "fuente": "VAC04 · MSPAS paquete 8",
     "confianza": "confirmada"
@@ -136,8 +284,15 @@
     "capa": "ministerial",
     "jurisdiccion": "GT",
     "institucion": "MSPAS",
-    "cuando": { "tratamiento_aguas_residuales": "conexion_existente" },
-    "exige": ["Informe técnico descriptivo de la PTAR a la que se conectará"],
+    "cuando": {
+      "tratamiento_aguas_residuales": "conexion_existente"
+    },
+    "exige": [
+      {
+        "documento": "informe-tecnico-descriptivo-de-la-ptar-a",
+        "detalle": "Informe técnico descriptivo de la PTAR a la que se conectará"
+      }
+    ],
     "fuente": "VAC04 · MSPAS paquete 9",
     "confianza": "confirmada"
   },
@@ -146,8 +301,20 @@
     "capa": "ministerial",
     "jurisdiccion": "GT",
     "institucion": "MARN",
-    "cuando": { "categoria_ambiental": { "in": ["A", "B1"] } },
-    "exige": ["Edicto publicado (archivo individual)"],
+    "cuando": {
+      "categoria_ambiental": {
+        "in": [
+          "A",
+          "B1"
+        ]
+      }
+    },
+    "exige": [
+      {
+        "documento": "edicto-publicado-archivo-individual",
+        "detalle": "Edicto publicado (archivo individual)"
+      }
+    ],
     "fuente": "VAC04 · MARN núm. 3",
     "confianza": "confirmada",
     "nota": "Categoría B2 queda exenta del edicto."
@@ -157,23 +324,42 @@
     "capa": "ministerial",
     "jurisdiccion": "GT",
     "institucion": "INAB",
-    "cuando": { "cercano_area_bosque": true },
-    "exige": ["Plan de aprovechamiento forestal"],
+    "cuando": {
+      "cercano_area_bosque": true
+    },
+    "exige": [
+      {
+        "documento": "plan-de-aprovechamiento-forestal",
+        "detalle": "Plan de aprovechamiento forestal"
+      }
+    ],
     "fuente": "VAC02 §3j",
     "confianza": "confirmada",
     "nota": "INAB NO está integrado a VAC. Se gestiona por fuera."
   },
-
   {
     "id": "muni-gt-colegiado",
     "capa": "municipal",
     "jurisdiccion": "muniguate",
     "institucion": "Municipalidad de Guatemala (DCT)",
-    "cuando": { "area_construccion_m2": { ">": 30 } },
+    "cuando": {
+      "area_construccion_m2": {
+        ">": 30
+      }
+    },
     "exige": [
-      "Planos firmados, sellados y timbrados por ingeniero o arquitecto colegiado activo",
-      "Constancia original de colegiado activo vigente",
-      "Boleto de Ornato del profesional responsable"
+      {
+        "documento": "planos-firmados-sellados-y-timbrados-por",
+        "detalle": "Planos firmados, sellados y timbrados por ingeniero o arquitecto colegiado activo"
+      },
+      {
+        "documento": "constancia-colegiado-activo",
+        "detalle": "Constancia original de colegiado activo vigente"
+      },
+      {
+        "documento": "boleto-ornato",
+        "detalle": "Boleto de Ornato del profesional responsable"
+      }
     ],
     "fuente": "Guía 09-F · PTLI.23 v2",
     "confianza": "confirmada"
@@ -185,15 +371,35 @@
     "institucion": "Municipalidad de Guatemala (DCT)",
     "cuando": {
       "any": [
-        { "area_construccion_m2": { ">": 200 } },
-        { "tipo_solicitud": "fraccionamiento" },
-        { "poligono_irregular": true }
+        {
+          "area_construccion_m2": {
+            ">": 200
+          }
+        },
+        {
+          "tipo_solicitud": "fraccionamiento"
+        },
+        {
+          "poligono_irregular": true
+        }
       ]
     },
     "exige": [
-      "Copia digital de todos los planos en disco compacto, formato CAD versión 2007",
-      "CD en sobre pegado en hoja de papel bond",
-      "Planos de arquitectura y estabilización de taludes en un solo archivo PDF"
+      {
+        "documento": "planos-cad-2007",
+        "extensiones_validas": [
+          ".dwg"
+        ],
+        "detalle": "Copia digital de todos los planos en disco compacto, formato CAD versión 2007"
+      },
+      {
+        "documento": "cd-en-sobre-pegado-en-hoja-de-papel-bond",
+        "detalle": "CD en sobre pegado en hoja de papel bond"
+      },
+      {
+        "documento": "planos-de-arquitectura-y-estabilizacion",
+        "detalle": "Planos de arquitectura y estabilización de taludes en un solo archivo PDF"
+      }
     ],
     "fuente": "Guía 09-F · nota importante",
     "confianza": "confirmada"
@@ -203,28 +409,48 @@
     "capa": "municipal",
     "jurisdiccion": "muniguate",
     "institucion": "Municipalidad de Guatemala (DCT)",
-    "cuando": { "area_construccion_m2": { ">": 700 } },
-    "exige": ["ALERTA: fuera del alcance de la Guía 09-F. Aplica otra guía (Guía 08 u obras mayores)"],
+    "cuando": {
+      "area_construccion_m2": {
+        ">": 700
+      }
+    },
+    "exige": [
+      "ALERTA: fuera del alcance de la Guía 09-F. Aplica otra guía (Guía 08 u obras mayores)"
+    ],
     "fuente": "Guía 09-F · alcance",
-    "confianza": "confirmada"
+    "confianza": "confirmada",
+    "tipo": "aviso"
   },
   {
     "id": "muni-gt-centro-historico",
     "capa": "municipal",
     "jurisdiccion": "muniguate",
     "institucion": "Municipalidad de Guatemala (DCT)",
-    "cuando": { "en_centro_historico": true },
-    "exige": ["ALERTA: la Guía 09-F no aplica en Centro Histórico, Conjunto Histórico ni Área de Amortiguamiento"],
+    "cuando": {
+      "en_centro_historico": true
+    },
+    "exige": [
+      "ALERTA: la Guía 09-F no aplica en Centro Histórico, Conjunto Histórico ni Área de Amortiguamiento"
+    ],
     "fuente": "Guía 09-F · alcance",
-    "confianza": "confirmada"
+    "confianza": "confirmada",
+    "tipo": "aviso"
   },
   {
     "id": "muni-gt-eap-tasa",
     "capa": "municipal",
     "jurisdiccion": "muniguate",
     "institucion": "Municipalidad de Guatemala (DCT)",
-    "cuando": { "tipo_solicitud": "EAP", "giro_exento": false },
-    "exige": ["Recibo de pago de tasa Q 350.00 por solicitud EAP"],
+    "cuando": {
+      "tipo_solicitud": "EAP",
+      "giro_exento": false
+    },
+    "exige": [
+      {
+        "documento": "recibo-de-pago-de-tasa-q-350-00-por",
+        "detalle": "Recibo de pago de tasa Q 350.00 por solicitud EAP"
+      }
+    ],
     "fuente": "Guía 09-F · documentos específicos",
     "confianza": "confirmada",
     "nota": "Exentos: tiendas, abarroterías, panaderías, farmacias, librerías, centros educativos, centros comunitarios e iglesias."
@@ -234,8 +460,17 @@
     "capa": "municipal",
     "jurisdiccion": "muniguate",
     "institucion": "Municipalidad de Guatemala (DCT)",
-    "cuando": { "corte_arboles_m3": { ">": 10 } },
-    "exige": ["Dictamen favorable del INAB"],
+    "cuando": {
+      "corte_arboles_m3": {
+        ">": 10
+      }
+    },
+    "exige": [
+      {
+        "documento": "dictamen-favorable-del-inab",
+        "detalle": "Dictamen favorable del INAB"
+      }
+    ],
     "fuente": "Guía 09-F · documentos complementarios",
     "confianza": "confirmada",
     "nota": "Cortes menores a 10 m³ van por la Guía 04, Dirección de Medio Ambiente municipal."
@@ -247,9 +482,18 @@
     "institucion": "Municipalidad de Guatemala (DCT)",
     "cuando": {},
     "exige": [
-      "Resolución favorable del MARN (y Licencia Ambiental si aplica)",
-      "Copia digital del instrumento ambiental completo",
-      "Copia de planos sellados por el Ministerio (cuando aplique)"
+      {
+        "documento": "resolucion-favorable-del-marn-y-licencia",
+        "detalle": "Resolución favorable del MARN (y Licencia Ambiental si aplica)"
+      },
+      {
+        "documento": "copia-digital-del-instrumento-ambiental",
+        "detalle": "Copia digital del instrumento ambiental completo"
+      },
+      {
+        "documento": "copia-de-planos-sellados-por-el",
+        "detalle": "Copia de planos sellados por el Ministerio (cuando aplique)"
+      }
     ],
     "fuente": "Guía 09-F · documentos específicos",
     "confianza": "confirmada",
@@ -262,15 +506,44 @@
     "institucion": "Municipalidad de Guatemala (DCT)",
     "cuando": {},
     "exige": [
-      "Formulario F08 (versión actual) — proyectos Guía 09-F (≤ 700 m², vivienda unifamiliar)",
-      "Formulario F02 (versión 3) — todos los demás proyectos (Guía 00-F)",
-      "Consulta 'A' (se obtiene en la Ventanilla Única Municipal)",
-      "Certificación del Registro General de la Propiedad con historial completo, emitida en los últimos 6 meses",
-      "Solvencia Municipal del inmueble, emitida en los últimos 2 meses",
-      "DPI autenticado del propietario",
-      "Boleto de Ornato vigente del propietario",
-      "Memoria Descriptiva DCT",
-      "Expediente físico en fólder color claro tamaño oficio con gancho"
+      {
+        "documento": "formulario-f08-version-actual-proyectos",
+        "detalle": "Formulario F08 (versión actual) — proyectos Guía 09-F (≤ 700 m², vivienda unifamiliar)"
+      },
+      {
+        "documento": "formulario-f02-version-3-todos-los-demas",
+        "detalle": "Formulario F02 (versión 3) — todos los demás proyectos (Guía 00-F)"
+      },
+      {
+        "documento": "consulta-a-se-obtiene-en-la-ventanilla",
+        "detalle": "Consulta 'A' (se obtiene en la Ventanilla Única Municipal)"
+      },
+      {
+        "documento": "cert-rgp",
+        "detalle": "Certificación del Registro General de la Propiedad con historial completo, emitida en los últimos 6 meses",
+        "vigencia_meses": 6
+      },
+      {
+        "documento": "solvencia-municipal",
+        "detalle": "Solvencia Municipal del inmueble, emitida en los últimos 2 meses",
+        "vigencia_meses": 2
+      },
+      {
+        "documento": "dpi-autenticado-del-propietario",
+        "detalle": "DPI autenticado del propietario"
+      },
+      {
+        "documento": "boleto-ornato",
+        "detalle": "Boleto de Ornato vigente del propietario"
+      },
+      {
+        "documento": "memoria-descriptiva-dct",
+        "detalle": "Memoria Descriptiva DCT"
+      },
+      {
+        "documento": "expediente-fisico-en-folder-color-claro",
+        "detalle": "Expediente físico en fólder color claro tamaño oficio con gancho"
+      }
     ],
     "fuente": "Guía 09-F · Guía 00-F · documentos generales",
     "confianza": "confirmada"
@@ -280,10 +553,20 @@
     "capa": "municipal",
     "jurisdiccion": "muniguate",
     "institucion": "Municipalidad de Guatemala (DCT)",
-    "cuando": { "area_construccion_m2": { ">": 30 } },
+    "cuando": {
+      "area_construccion_m2": {
+        ">": 30
+      }
+    },
     "exige": [
-      "Acta de declaración jurada de cumplimiento NRD-1 CONRED (firmada por estructural y ejecutor, formato VUM)",
-      "Indicar en planos estructurales los códigos de la Norma AGIES aplicada"
+      {
+        "documento": "acta-de-declaracion-jurada-de",
+        "detalle": "Acta de declaración jurada de cumplimiento NRD-1 CONRED (firmada por estructural y ejecutor, formato VUM)"
+      },
+      {
+        "documento": "indicar-en-planos-estructurales-los",
+        "detalle": "Indicar en planos estructurales los códigos de la Norma AGIES aplicada"
+      }
     ],
     "fuente": "Guía 00-F · documentos generales · doc 13",
     "confianza": "SIN_CONFIRMAR",
@@ -294,9 +577,14 @@
     "capa": "municipal",
     "jurisdiccion": "muniguate",
     "institucion": "Municipalidad de Guatemala (DCT)",
-    "cuando": { "aplica_nrd3": true },
+    "cuando": {
+      "aplica_nrd3": true
+    },
     "exige": [
-      "Acta de declaración jurada de cumplimiento NRD-3 CONRED (firmada por propietario y ejecutor, formato VUM)"
+      {
+        "documento": "acta-de-declaracion-jurada-de-2",
+        "detalle": "Acta de declaración jurada de cumplimiento NRD-3 CONRED (firmada por propietario y ejecutor, formato VUM)"
+      }
     ],
     "fuente": "Guía 00-F · documentos generales · Acuerdo SE-02-2013",
     "confianza": "SIN_CONFIRMAR",
@@ -307,10 +595,20 @@
     "capa": "municipal",
     "jurisdiccion": "muniguate",
     "institucion": "Municipalidad de Guatemala (DCT)",
-    "cuando": { "altura_m": { ">": 16 } },
+    "cuando": {
+      "altura_m": {
+        ">": 16
+      }
+    },
     "exige": [
-      "Resolución favorable de la DGAC",
-      "ALTERNATIVA: Acta de declaración jurada + copia de recepción de solicitud ante DGAC (si el trámite DGAC aún no ha concluido)"
+      {
+        "documento": "resolucion-favorable-de-la-dgac",
+        "detalle": "Resolución favorable de la DGAC"
+      },
+      {
+        "documento": "alternativa-acta-de-declaracion-jurada",
+        "detalle": "ALTERNATIVA: Acta de declaración jurada + copia de recepción de solicitud ante DGAC (si el trámite DGAC aún no ha concluido)"
+      }
     ],
     "fuente": "Guía 00-F · documentos específicos",
     "confianza": "confirmada",
@@ -321,10 +619,18 @@
     "capa": "municipal",
     "jurisdiccion": "muniguate",
     "institucion": "Municipalidad de Guatemala (DCT)",
-    "cuando": { "en_cono_la_aurora": true },
+    "cuando": {
+      "en_cono_la_aurora": true
+    },
     "exige": [
-      "Resolución favorable de la DGAC",
-      "ALTERNATIVA: Acta de declaración jurada + copia de recepción de solicitud ante DGAC"
+      {
+        "documento": "resolucion-favorable-de-la-dgac",
+        "detalle": "Resolución favorable de la DGAC"
+      },
+      {
+        "documento": "alternativa-acta-de-declaracion-jurada-2",
+        "detalle": "ALTERNATIVA: Acta de declaración jurada + copia de recepción de solicitud ante DGAC"
+      }
     ],
     "fuente": "Guía 00-F · documentos específicos",
     "confianza": "SIN_CONFIRMAR",
@@ -335,8 +641,15 @@
     "capa": "municipal",
     "jurisdiccion": "muniguate",
     "institucion": "Municipalidad de Guatemala (DCT)",
-    "cuando": { "requiere_mem": true },
-    "exige": ["Resolución favorable del MEM (Ministerio de Energía y Minas)"],
+    "cuando": {
+      "requiere_mem": true
+    },
+    "exige": [
+      {
+        "documento": "resolucion-favorable-del-mem-ministerio",
+        "detalle": "Resolución favorable del MEM (Ministerio de Energía y Minas)"
+      }
+    ],
     "fuente": "Guía 00-F · documentos específicos",
     "confianza": "SIN_CONFIRMAR",
     "nota": "El disparador exacto del MEM no está definido en la Guía 00-F. Aparece listado como requisito específico sin criterio explícito. Probablemente aplica a industrias extractivas o proyectos de almacenamiento de combustibles."
@@ -346,9 +659,14 @@
     "capa": "municipal",
     "jurisdiccion": "muniguate",
     "institucion": "Municipalidad de Guatemala (DCT) / EMPAGUA",
-    "cuando": { "con_empagua": true },
+    "cuando": {
+      "con_empagua": true
+    },
     "exige": [
-      "Duplicado del recibo de pago por factibilidad de agua potable EMPAGUA (hoja verde)"
+      {
+        "documento": "duplicado-del-recibo-de-pago-por",
+        "detalle": "Duplicado del recibo de pago por factibilidad de agua potable EMPAGUA (hoja verde)"
+      }
     ],
     "fuente": "Guía 00-F · documentos generales",
     "confianza": "SIN_CONFIRMAR",
@@ -359,10 +677,20 @@
     "capa": "municipal",
     "jurisdiccion": "muniguate",
     "institucion": "Municipalidad de Guatemala (DCT)",
-    "cuando": { "movimiento_tierra_m3": { ">": 900 } },
+    "cuando": {
+      "movimiento_tierra_m3": {
+        ">": 900
+      }
+    },
     "exige": [
-      "Memoria descriptiva y planos de los factores de impacto a considerar",
-      "Medidas de mitigación para impactos negativos a colindancias y vía pública"
+      {
+        "documento": "memoria-descriptiva-y-planos-de-los",
+        "detalle": "Memoria descriptiva y planos de los factores de impacto a considerar"
+      },
+      {
+        "documento": "medidas-de-mitigacion-para-impactos",
+        "detalle": "Medidas de mitigación para impactos negativos a colindancias y vía pública"
+      }
     ],
     "fuente": "Guía 01-F · documentos específicos",
     "confianza": "confirmada",
@@ -375,11 +703,12 @@
     "institucion": "Municipalidad de Guatemala (DCT)",
     "tipo": "aviso",
     "cuando": {},
-    "exige": ["Esta lista NO es completa: la guía se reserva pedir requisitos adicionales segun sea el caso"],
+    "exige": [
+      "Esta lista NO es completa: la guía se reserva pedir requisitos adicionales segun sea el caso"
+    ],
     "fuente": "Guía 09-F · requisitos de presentación",
     "confianza": "confirmada"
   },
-
   {
     "id": "scp-base",
     "capa": "municipal",
@@ -387,12 +716,31 @@
     "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
     "cuando": {},
     "exige": [
-      "Formulario de solicitud de la Dirección Municipal de Planificación",
-      "Boleto de ornato del propietario",
-      "Solvencia municipal extendida por Tesorería",
-      "DPI del propietario o representante legal",
-      "Certificación del Registro General de la Propiedad, máximo 3 MESES de emisión",
-      "Recibo de pago del servicio de agua potable"
+      {
+        "documento": "formulario-de-solicitud-de-la-direccion",
+        "detalle": "Formulario de solicitud de la Dirección Municipal de Planificación"
+      },
+      {
+        "documento": "boleto-ornato",
+        "detalle": "Boleto de ornato del propietario"
+      },
+      {
+        "documento": "solvencia-municipal",
+        "detalle": "Solvencia municipal extendida por Tesorería"
+      },
+      {
+        "documento": "dpi-del-propietario-o-representante",
+        "detalle": "DPI del propietario o representante legal"
+      },
+      {
+        "documento": "cert-rgp",
+        "detalle": "Certificación del Registro General de la Propiedad, máximo 3 MESES de emisión",
+        "vigencia_meses": 3
+      },
+      {
+        "documento": "recibo-de-pago-del-servicio-de-agua",
+        "detalle": "Recibo de pago del servicio de agua potable"
+      }
     ],
     "fuente": "SCP construcción menor / mayor / gran magnitud",
     "confianza": "confirmada",
@@ -403,16 +751,50 @@
     "capa": "municipal",
     "jurisdiccion": "scp",
     "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
-    "cuando": { "categoria_obra_scp": { "in": ["mayor", "gran_magnitud"] } },
+    "cuando": {
+      "categoria_obra_scp": {
+        "in": [
+          "mayor",
+          "gran_magnitud"
+        ]
+      }
+    },
     "exige": [
-      "Boleto de ornato del planificador Y del ejecutor",
-      "Constancia vigente de colegiado activo del planificador y del ejecutor",
-      "Certificación catastral de la Dirección de Catastro de SCP",
-      "Acta notarial asumiendo responsabilidad por daños a terceros, eximiendo a la Municipalidad",
-      "Dos juegos de planos numerados, timbrados, sellados y firmados",
-      "Copia digital de los planos en formato DWG",
-      "Detalle de volumen de tierra a mover en metros cúbicos",
-      "Localización geográfica del botadero con autorización de su propietario"
+      {
+        "documento": "boleto-ornato",
+        "detalle": "Boleto de ornato del planificador Y del ejecutor"
+      },
+      {
+        "documento": "constancia-colegiado-activo",
+        "detalle": "Constancia vigente de colegiado activo del planificador y del ejecutor"
+      },
+      {
+        "documento": "certificacion-catastral-de-la-direccion",
+        "detalle": "Certificación catastral de la Dirección de Catastro de SCP"
+      },
+      {
+        "documento": "acta-notarial-asumiendo-responsabilidad",
+        "detalle": "Acta notarial asumiendo responsabilidad por daños a terceros, eximiendo a la Municipalidad"
+      },
+      {
+        "documento": "dos-juegos-de-planos-numerados-timbrados",
+        "detalle": "Dos juegos de planos numerados, timbrados, sellados y firmados"
+      },
+      {
+        "documento": "planos-dwg-scp",
+        "extensiones_validas": [
+          ".dwg"
+        ],
+        "detalle": "Copia digital de los planos en formato DWG"
+      },
+      {
+        "documento": "detalle-de-volumen-de-tierra-a-mover-en",
+        "detalle": "Detalle de volumen de tierra a mover en metros cúbicos"
+      },
+      {
+        "documento": "localizacion-geografica-del-botadero-con",
+        "detalle": "Localización geográfica del botadero con autorización de su propietario"
+      }
     ],
     "fuente": "SCP construcción mayor",
     "confianza": "confirmada"
@@ -425,13 +807,23 @@
     "tipo": "gestion",
     "cuando": {
       "any": [
-        { "categoria_obra_scp": "mayor" },
-        { "en_residencial_o_condominio": true }
+        {
+          "categoria_obra_scp": "mayor"
+        },
+        {
+          "en_residencial_o_condominio": true
+        }
       ]
     },
     "exige": [
-      "Carta de la asociación de vecinos manifestando que no tiene dificultad con la obra",
-      "Planos sellados por la asociación de vecinos (obra mayor)"
+      {
+        "documento": "carta-de-la-asociacion-de-vecinos",
+        "detalle": "Carta de la asociación de vecinos manifestando que no tiene dificultad con la obra"
+      },
+      {
+        "documento": "planos-sellados-por-la-asociacion-de",
+        "detalle": "Planos sellados por la asociación de vecinos (obra mayor)"
+      }
     ],
     "fuente": "SCP construcción mayor / menor / gran magnitud",
     "confianza": "confirmada",
@@ -442,8 +834,15 @@
     "capa": "municipal",
     "jurisdiccion": "scp",
     "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
-    "cuando": { "fuente_agua_scp": "empresa_privada" },
-    "exige": ["Dictamen de agua y saneamiento"],
+    "cuando": {
+      "fuente_agua_scp": "empresa_privada"
+    },
+    "exige": [
+      {
+        "documento": "dictamen-de-agua-y-saneamiento",
+        "detalle": "Dictamen de agua y saneamiento"
+      }
+    ],
     "fuente": "SCP construcción mayor",
     "confianza": "confirmada"
   },
@@ -452,8 +851,15 @@
     "capa": "municipal",
     "jurisdiccion": "scp",
     "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
-    "cuando": { "fuente_agua_scp": "municipal" },
-    "exige": ["Constancia de pago del último mes del servicio de agua"],
+    "cuando": {
+      "fuente_agua_scp": "municipal"
+    },
+    "exige": [
+      {
+        "documento": "constancia-de-pago-del-ultimo-mes-del",
+        "detalle": "Constancia de pago del último mes del servicio de agua"
+      }
+    ],
     "fuente": "SCP construcción mayor",
     "confianza": "confirmada"
   },
@@ -462,10 +868,18 @@
     "capa": "municipal",
     "jurisdiccion": "scp",
     "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
-    "cuando": { "fuente_agua_scp": "pozo" },
+    "cuando": {
+      "fuente_agua_scp": "pozo"
+    },
     "exige": [
-      "Dictamen de autorización de la Dirección de Agua y Saneamiento",
-      "Plano de ubicación del pozo mecánico: distancia radial NO MENOR A 100 m de pozos cercanos"
+      {
+        "documento": "dictamen-de-autorizacion-de-la-direccion",
+        "detalle": "Dictamen de autorización de la Dirección de Agua y Saneamiento"
+      },
+      {
+        "documento": "plano-de-ubicacion-del-pozo-mecanico",
+        "detalle": "Plano de ubicación del pozo mecánico: distancia radial NO MENOR A 100 m de pozos cercanos"
+      }
     ],
     "fuente": "SCP construcción mayor / gran magnitud",
     "confianza": "confirmada"
@@ -475,23 +889,70 @@
     "capa": "municipal",
     "jurisdiccion": "scp",
     "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
-    "cuando": { "categoria_obra_scp": "gran_magnitud" },
+    "cuando": {
+      "categoria_obra_scp": "gran_magnitud"
+    },
     "exige": [
-      "Memorial dirigido al Alcalde solicitando la licencia",
-      "Declaración jurada del propietario comprometiéndose a cumplir toda la normativa aplicable",
-      "Fianza de cumplimiento a favor de la Municipalidad (art. 148 Código Municipal)",
-      "Presupuesto por renglones de la construcción",
-      "Cronograma general de ejecución del proyecto",
-      "Estudio de cambio de uso de suelo autorizado por INAB, con sello de recibido",
-      "Resolución final del Estudio de Cambio de Uso de Suelo del INAB",
-      "Autorización del delegado de Derecho de Vía, Asesoría Jurídica de Caminos",
-      "Resolución del área de salud, área NORTE del MSPAS, sobre calidad de agua y tratamiento de residuales",
-      "Estudio de Impacto Vial",
-      "Cumplimiento de NRD-1, NRD-2 y NRD-3",
-      "Memoria de diseño estructural y estudio geotécnico",
-      "Planos hidráulicos autorizados por Ingeniero Sanitario colegiado activo",
-      "Redes de energía eléctrica e instalaciones especiales SUBTERRÁNEAS",
-      "Reglamento de copropiedad del condominio"
+      {
+        "documento": "memorial-dirigido-al-alcalde-solicitando",
+        "detalle": "Memorial dirigido al Alcalde solicitando la licencia"
+      },
+      {
+        "documento": "declaracion-jurada-del-propietario",
+        "detalle": "Declaración jurada del propietario comprometiéndose a cumplir toda la normativa aplicable"
+      },
+      {
+        "documento": "fianza-de-cumplimiento-a-favor-de-la",
+        "detalle": "Fianza de cumplimiento a favor de la Municipalidad (art. 148 Código Municipal)"
+      },
+      {
+        "documento": "presupuesto-por-renglones-de-la",
+        "detalle": "Presupuesto por renglones de la construcción"
+      },
+      {
+        "documento": "cronograma-general-de-ejecucion-del",
+        "detalle": "Cronograma general de ejecución del proyecto"
+      },
+      {
+        "documento": "estudio-de-cambio-de-uso-de-suelo",
+        "detalle": "Estudio de cambio de uso de suelo autorizado por INAB, con sello de recibido"
+      },
+      {
+        "documento": "resolucion-final-del-estudio-de-cambio",
+        "detalle": "Resolución final del Estudio de Cambio de Uso de Suelo del INAB"
+      },
+      {
+        "documento": "autorizacion-del-delegado-de-derecho-de",
+        "detalle": "Autorización del delegado de Derecho de Vía, Asesoría Jurídica de Caminos"
+      },
+      {
+        "documento": "resolucion-del-area-de-salud-area-norte",
+        "detalle": "Resolución del área de salud, área NORTE del MSPAS, sobre calidad de agua y tratamiento de residuales"
+      },
+      {
+        "documento": "estudio-de-impacto-vial",
+        "detalle": "Estudio de Impacto Vial"
+      },
+      {
+        "documento": "cumplimiento-de-nrd-1-nrd-2-y-nrd-3",
+        "detalle": "Cumplimiento de NRD-1, NRD-2 y NRD-3"
+      },
+      {
+        "documento": "memoria-de-diseno-estructural-y-estudio",
+        "detalle": "Memoria de diseño estructural y estudio geotécnico"
+      },
+      {
+        "documento": "planos-hidraulicos-autorizados-por",
+        "detalle": "Planos hidráulicos autorizados por Ingeniero Sanitario colegiado activo"
+      },
+      {
+        "documento": "redes-de-energia-electrica-e",
+        "detalle": "Redes de energía eléctrica e instalaciones especiales SUBTERRÁNEAS"
+      },
+      {
+        "documento": "reglamento-de-copropiedad-del-condominio",
+        "detalle": "Reglamento de copropiedad del condominio"
+      }
     ],
     "fuente": "SCP proyecto de gran magnitud",
     "confianza": "confirmada",
@@ -504,7 +965,9 @@
     "institucion": "Municipalidad de Santa Catarina Pinula (DMP)",
     "tipo": "aviso",
     "cuando": {},
-    "exige": ["Esta lista NO es completa: la DMP se reserva pedir otros requisitos a su criterio técnico"],
+    "exige": [
+      "Esta lista NO es completa: la DMP se reserva pedir otros requisitos a su criterio técnico"
+    ],
     "fuente": "SCP gran magnitud incisos l y m; construcción mayor",
     "confianza": "confirmada"
   }

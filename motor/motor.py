@@ -6,6 +6,11 @@ no es quien escribe Python. Correr `python motor.py` ejecuta el self-check.
 import json
 import pathlib
 
+try:                                  # importado como paquete (api-server)
+    from motor.catalogo import resuelve
+except ImportError:                   # corrido como script desde motor/
+    from catalogo import resuelve
+
 REGLAS = json.loads((pathlib.Path(__file__).parent / "reglas.json").read_text(encoding="utf-8"))
 
 OPS = {
@@ -29,9 +34,17 @@ def aplica(regla, proyecto):
 
 
 def requisitos(proyecto, reglas=REGLAS):
-    """Reglas que aplican a este proyecto, en orden ministerial -> municipal."""
+    """Reglas que aplican a este proyecto, en orden ministerial -> municipal.
+
+    `exige` viene resuelto: cada entrada es un dict con al menos `texto` (ver
+    catalogo.resuelve). Se resuelve en cada llamada, no se muta REGLAS.
+    """
     jur = {"GT", proyecto.get("municipalidad")}
-    return [r for r in reglas if r["jurisdiccion"] in jur and aplica(r, proyecto)]
+    return [
+        {**r, "exige": [resuelve(item) for item in r["exige"]]}
+        for r in reglas
+        if r["jurisdiccion"] in jur and aplica(r, proyecto)
+    ]
 
 
 MARCA = {"gestion": "[NO ES UN DOCUMENTO]", "aviso": ""}
@@ -50,13 +63,13 @@ def informe(proyecto):
             if r["confianza"] == "SIN_CONFIRMAR":
                 marca += "  [SIN CONFIRMAR]"
             lineas.append(f"  {r['institucion']} — {r['id']}  {marca}".rstrip())
-            lineas.extend(f"    - {d}" for d in r["exige"])
+            lineas.extend(f"    - {d['texto']}" for d in r["exige"])
             if "nota" in r:
                 lineas.append(f"    ! {r['nota']}")
     avisos = [r for r in rs if r.get("tipo") == "aviso"]
     if avisos:
         lineas.append("\nADVERTENCIAS")
-        lineas.extend(f"  * {d}  ({r['fuente']})" for r in avisos for d in r["exige"])
+        lineas.extend(f"  * {d['texto']}  ({r['fuente']})" for r in avisos for d in r["exige"])
     return "\n".join(lineas)
 
 

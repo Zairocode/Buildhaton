@@ -58,20 +58,56 @@ def revisar(proyecto, cargados=(), hoy=None, bitacora=()):
         if r.get("tipo") == "aviso":
             continue
         for d in r["exige"]:
+            nombre = d["texto"]
             if r.get("tipo") == "gestion":
                 out.append(_h(
                     f"gestion-{r['id']}", "riesgo", "Esto no se resuelve subiendo un archivo",
-                    f"«{d}» no es un documento que emita una institución: hay que conseguirlo. "
+                    f"«{nombre}» no es un documento que emita una institución: hay que conseguirlo. "
                     "Ningún motor de reglas lo acelera y no depende de vos.",
                     "Arrancá esta gestión primero — es la de plazo menos predecible del expediente.",
-                    r.get("fuente"), d,
+                    r.get("fuente"), nombre,
                 ))
-            elif d not in subidos:
+            elif nombre not in subidos:
                 out.append(_h(
-                    f"faltante-{r['id']}-{d[:24]}", "bloqueante", "Requisito sin documento",
-                    f"«{d}» lo exige {r['institucion']} y no hay archivo cargado.",
-                    "Cargalo en la pestaña Requisitos.", r.get("fuente"), d,
+                    f"faltante-{r['id']}-{nombre[:24]}", "bloqueante", "Requisito sin documento",
+                    f"«{nombre}» lo exige {r['institucion']} y no hay archivo cargado.",
+                    "Cargalo en la pestaña Requisitos.", r.get("fuente"), nombre,
                 ))
+
+            # Vigencia y formato salen del catalogo (documentos.json + override de la
+            # regla), no de una entrada aparte en fallas.json: agregarle vigencia a un
+            # documento nuevo ya no requiere tocar este archivo.
+            c = subidos.get(nombre)
+            if c is not None and d.get("vigencia_meses"):
+                dias_max = d["vigencia_meses"] * 30
+                dias = _antiguedad(c.get("fecha_emision"), hoy)
+                base_id = f"vencido-{r['id']}-{d['documento_id']}"
+                if dias is None:
+                    out.append(_h(
+                        f"{base_id}-sin-fecha", "riesgo", "No sabemos si está vigente",
+                        f"«{nombre}» tiene vigencia de {d['vigencia_meses']} meses y el archivo se "
+                        "cargó sin fecha de emisión.",
+                        "Poné la fecha de emisión al cargarlo para que el sistema te avise antes de que venza.",
+                        r.get("fuente"), nombre,
+                    ))
+                elif dias > dias_max:
+                    out.append(_h(
+                        base_id, "bloqueante", "Documento vencido",
+                        f"«{nombre}» vence a los {d['vigencia_meses']} meses de emitido "
+                        f"({r['institucion']}). El archivo cargado tiene {dias} días de emitido.",
+                        d.get("consejo_vencimiento"), r.get("fuente"), nombre,
+                    ))
+
+            if c is not None and d.get("extensiones_validas"):
+                ext = pathlib.PurePosixPath(str(c.get("archivo", ""))).suffix.lower()
+                if ext not in d["extensiones_validas"]:
+                    out.append(_h(
+                        f"formato-{r['id']}-{d['documento_id']}", "riesgo",
+                        "Documento en formato incorrecto",
+                        f"Se pide «{nombre}» en {', '.join(d['extensiones_validas'])} y se cargó "
+                        f"«{c.get('archivo')}» ({ext or 'sin extensión'}).",
+                        d.get("consejo_formato"), r.get("fuente"), nombre,
+                    ))
         if r.get("confianza") == "SIN_CONFIRMAR":
             out.append(_h(
                 f"sin-confirmar-{r['id']}", "aviso", "Requisito sin fuente confirmada",
@@ -81,44 +117,12 @@ def revisar(proyecto, cargados=(), hoy=None, bitacora=()):
                 r.get("fuente"),
             ))
 
-    # --- Reglas de fallas ---------------------------------------------------
+    # --- Reglas de fallas de expediente (no dependen de un documento puntual) ----
     for f in FALLAS:
         if "cuando" in f and not aplica(f, proyecto):
             continue
-
-        clave = f.get("documento_contiene")
-        if not clave:                                   # falla de expediente
-            out.append(_h(f["id"], f["severidad"], f["titulo"], f["detalle"],
-                          f.get("remedio"), f.get("fuente")))
-            continue
-
-        for nombre, c in subidos.items():               # falla sobre lo cargado
-            if clave.lower() not in nombre.lower():
-                continue
-
-            if "vigencia_dias" in f:
-                dias = _antiguedad(c.get("fecha_emision"), hoy)
-                if dias is None:
-                    out.append(_h(
-                        f"{f['id']}-sin-fecha", "riesgo", "No sabemos si está vigente",
-                        f"«{nombre}» tiene vigencia de {f['vigencia_dias']} días y el archivo se "
-                        "cargó sin fecha de emisión.",
-                        "Poné la fecha de emisión al cargarlo para que el sistema te avise antes de que venza.",
-                        f.get("fuente"), nombre,
-                    ))
-                elif dias > f["vigencia_dias"]:
-                    out.append({**_h(f["id"], f["severidad"], f["titulo"], f["detalle"],
-                                     f.get("remedio"), f.get("fuente"), nombre),
-                                "detalle": f"{f['detalle']} El archivo cargado tiene {dias} días "
-                                           f"de emitido; el máximo es {f['vigencia_dias']}."})
-
-            if "extensiones" in f:
-                ext = pathlib.PurePosixPath(str(c.get("archivo", ""))).suffix.lower()
-                if ext not in f["extensiones"]:
-                    out.append({**_h(f["id"], f["severidad"], f["titulo"], f["detalle"],
-                                     f.get("remedio"), f.get("fuente"), nombre),
-                                "detalle": f"{f['detalle']} Se cargó «{c.get('archivo')}» "
-                                           f"({ext or 'sin extensión'})."})
+        out.append(_h(f["id"], f["severidad"], f["titulo"], f["detalle"],
+                      f.get("remedio"), f.get("fuente")))
 
     veces = Counter(b.get("falla") for b in bitacora)
     for h in out:
@@ -152,18 +156,19 @@ def demo():
                   "archivo": "registral.pdf", "fecha_emision": "2026-05-08"}]
     ids_cap = {h["id"] for h in revisar({**base, "municipalidad": "muniguate"}, registral, hoy=HOY)}
     ids_scp = {h["id"] for h in revisar({**base, "municipalidad": "scp", "categoria_obra_scp": "mayor"}, registral, hoy=HOY)}
-    assert "registral-vencida-gt" not in ids_cap, "100 dias entra en los 6 meses de la capital"
-    assert "registral-vencida-scp" in ids_scp, "100 dias NO entra en los 3 meses de Pinula"
+    assert "vencido-muni-gt-base-cert-rgp" not in ids_cap, "100 dias entra en los 6 meses de la capital"
+    assert "vencido-scp-base-cert-rgp" in ids_scp, "100 dias NO entra en los 3 meses de Pinula"
 
     # Cargado sin fecha: no se afirma que este vencido, se marca que no se sabe.
     sin_fecha = [{**registral[0], "fecha_emision": None}]
     ids = {h["id"] for h in revisar({**base, "municipalidad": "muniguate"}, sin_fecha, hoy=HOY)}
-    assert "registral-vencida-gt-sin-fecha" in ids and "registral-vencida-gt" not in ids
+    assert "vencido-muni-gt-base-cert-rgp-sin-fecha" in ids and "vencido-muni-gt-base-cert-rgp" not in ids
 
     # Formato: un PDF donde piden el CAD.
     cad = [{"documento": "Copia digital de todos los planos en disco compacto, formato CAD versión 2007",
             "archivo": "planos.pdf"}]
-    h = next(h for h in revisar({**base, "municipalidad": "muniguate"}, cad, hoy=HOY) if h["id"] == "planos-cad-gt")
+    h = next(h for h in revisar({**base, "municipalidad": "muniguate"}, cad, hoy=HOY)
+             if h["id"] == "formato-muni-gt-cad-digital-planos-cad-2007")
     assert "planos.pdf" in h["detalle"]
 
     # Lo que no se arregla subiendo un archivo: la carta de los vecinos en Pinula.

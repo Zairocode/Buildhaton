@@ -1,0 +1,912 @@
+[
+  {
+    "id": "acta-de-declaracion-jurada-de",
+    "nombre": "Acta de declaración jurada de cumplimiento NRD-1 CONRED (firmada por estructural y ejecutor, formato VUM)",
+    "categoria": "acta",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "acta-de-declaracion-jurada-de-2",
+    "nombre": "Acta de declaración jurada de cumplimiento NRD-3 CONRED (firmada por propietario y ejecutor, formato VUM)",
+    "categoria": "acta",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "acta-notarial-asumiendo-responsabilidad",
+    "nombre": "Acta notarial asumiendo responsabilidad por daños a terceros, eximiendo a la Municipalidad",
+    "categoria": "acta",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "acta-notarial-de-compromiso-de",
+    "nombre": "Acta notarial de compromiso de señalización",
+    "categoria": "acta",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "alternativa-acta-de-declaracion-jurada",
+    "nombre": "ALTERNATIVA: Acta de declaración jurada + copia de recepción de solicitud ante DGAC (si el trámite DGAC aún no ha concluido)",
+    "categoria": "acta",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "alternativa-acta-de-declaracion-jurada-2",
+    "nombre": "ALTERNATIVA: Acta de declaración jurada + copia de recepción de solicitud ante DGAC",
+    "categoria": "acta",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "autorizacion-del-delegado-de-derecho-de",
+    "nombre": "Autorización del delegado de Derecho de Vía, Asesoría Jurídica de Caminos",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "boleto-ornato",
+    "nombre": "Boleto de Ornato del profesional responsable",
+    "categoria": "pago",
+    "quien_emite": "Tesoreria municipal",
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": [
+      "Boleto de Ornato del profesional responsable",
+      "Boleto de Ornato vigente del propietario",
+      "Boleto de ornato del propietario",
+      "Boleto de ornato del planificador Y del ejecutor"
+    ]
+  },
+  {
+    "id": "carta-de-la-asociacion-de-vecinos",
+    "nombre": "Carta de la asociación de vecinos manifestando que no tiene dificultad con la obra",
+    "categoria": "gestion",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "carta-de-solicitud-al-director-general",
+    "nombre": "Carta de solicitud al Director General de Aeronáutica Civil",
+    "categoria": "gestion",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "cd-en-sobre-pegado-en-hoja-de-papel-bond",
+    "nombre": "CD en sobre pegado en hoja de papel bond",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "cert-rgp",
+    "nombre": "Certificación del Registro General de la Propiedad con historial completo, emitida en los últimos 6 meses",
+    "categoria": "registral",
+    "quien_emite": "Registro General de la Propiedad (RGP)",
+    "consejo_vencimiento": "Pedi una certificacion nueva en el Registro General de la Propiedad antes de armar el expediente. Si el proyecto va a mas de una municipalidad, gobernate por el plazo mas corto (el de Pinula, 3 meses).",
+    "consejo_formato": null,
+    "alias": [
+      "Certificación del Registro General de la Propiedad con historial completo, emitida en los últimos 6 meses",
+      "Certificación del Registro General de la Propiedad, máximo 3 MESES de emisión"
+    ]
+  },
+  {
+    "id": "certificacion-catastral-de-la-direccion",
+    "nombre": "Certificación catastral de la Dirección de Catastro de SCP",
+    "categoria": "catastral",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "certificado-de-calidad-del-agua-ag-178",
+    "nombre": "Certificado de calidad del agua (AG 178-2009)",
+    "categoria": "sanitario",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "constancia-colegiado-activo",
+    "nombre": "Constancias de colegiado activo en original",
+    "categoria": "colegiatura",
+    "quien_emite": "Colegio profesional respectivo",
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": [
+      "Constancias de colegiado activo en original",
+      "Constancia original de colegiado activo vigente",
+      "Constancia vigente de colegiado activo del planificador y del ejecutor"
+    ]
+  },
+  {
+    "id": "constancia-de-pago-del-ultimo-mes-del",
+    "nombre": "Constancia de pago del último mes del servicio de agua",
+    "categoria": "pago",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "constancia-del-abastecedor-garantizando",
+    "nombre": "Constancia del abastecedor garantizando dotación y continuidad",
+    "categoria": "sanitario",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "consulta-a-se-obtiene-en-la-ventanilla",
+    "nombre": "Consulta 'A' (se obtiene en la Ventanilla Única Municipal)",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "copia-de-planos-sellados-por-el",
+    "nombre": "Copia de planos sellados por el Ministerio (cuando aplique)",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "copia-digital-del-instrumento-ambiental",
+    "nombre": "Copia digital del instrumento ambiental completo",
+    "categoria": "ambiental",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "cronograma-general-de-ejecucion-del",
+    "nombre": "Cronograma general de ejecución del proyecto",
+    "categoria": "gestion",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "cumplimiento-de-nrd-1-nrd-2-y-nrd-3",
+    "nombre": "Cumplimiento de NRD-1, NRD-2 y NRD-3",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "declaracion-jurada-del-propietario",
+    "nombre": "Declaración jurada del propietario comprometiéndose a cumplir toda la normativa aplicable",
+    "categoria": "acta",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "detalle-de-volumen-de-tierra-a-mover-en",
+    "nombre": "Detalle de volumen de tierra a mover en metros cúbicos",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "dictamen-de-agua-y-saneamiento",
+    "nombre": "Dictamen de agua y saneamiento",
+    "categoria": "dictamen",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "dictamen-de-autorizacion-de-la-direccion",
+    "nombre": "Dictamen de autorización de la Dirección de Agua y Saneamiento",
+    "categoria": "dictamen",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "dictamen-del-ign-con-banco-de-marca-mas",
+    "nombre": "Dictamen del IGN con banco de marca más cercano",
+    "categoria": "dictamen",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "dictamen-favorable-del-inab",
+    "nombre": "Dictamen favorable del INAB",
+    "categoria": "dictamen",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "dos-juegos-de-planos-numerados-timbrados",
+    "nombre": "Dos juegos de planos numerados, timbrados, sellados y firmados",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "dpi-autenticado-del-propietario",
+    "nombre": "DPI autenticado del propietario",
+    "categoria": "identificacion",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "dpi-del-evaluador-nrd-2",
+    "nombre": "DPI del evaluador NRD-2",
+    "categoria": "identificacion",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "dpi-del-propietario-o-representante",
+    "nombre": "DPI del propietario o representante legal",
+    "categoria": "identificacion",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "duplicado-del-recibo-de-pago-por",
+    "nombre": "Duplicado del recibo de pago por factibilidad de agua potable EMPAGUA (hoja verde)",
+    "categoria": "pago",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "edicto-publicado-archivo-individual",
+    "nombre": "Edicto publicado (archivo individual)",
+    "categoria": "ambiental",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "estudio-de-cambio-de-uso-de-suelo",
+    "nombre": "Estudio de cambio de uso de suelo autorizado por INAB, con sello de recibido",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "estudio-de-impacto-vial",
+    "nombre": "Estudio de Impacto Vial",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "expediente-fisico-en-folder-color-claro",
+    "nombre": "Expediente físico en fólder color claro tamaño oficio con gancho",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "factura-electronica-dgac",
+    "nombre": "Factura Electrónica DGAC",
+    "categoria": "pago",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "fianza-de-cumplimiento-a-favor-de-la",
+    "nombre": "Fianza de cumplimiento a favor de la Municipalidad (art. 148 Código Municipal)",
+    "categoria": "legal",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "formato-de-evaluacion-nrd2",
+    "nombre": "Formato de evaluación NRD2",
+    "categoria": "formulario",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "formato-de-informacion",
+    "nombre": "Formato de información",
+    "categoria": "formulario",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "formulario-de-solicitud-de-control-de",
+    "nombre": "Formulario de Solicitud de Control de Alturas",
+    "categoria": "formulario",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "formulario-de-solicitud-de-la-direccion",
+    "nombre": "Formulario de solicitud de la Dirección Municipal de Planificación",
+    "categoria": "formulario",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "formulario-de-solicitud-fs-001-2022",
+    "nombre": "Formulario de Solicitud FS-001-2022",
+    "categoria": "formulario",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "formulario-f02-version-3-todos-los-demas",
+    "nombre": "Formulario F02 (versión 3) — todos los demás proyectos (Guía 00-F)",
+    "categoria": "formulario",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "formulario-f08-version-actual-proyectos",
+    "nombre": "Formulario F08 (versión actual) — proyectos Guía 09-F (≤ 700 m², vivienda unifamiliar)",
+    "categoria": "formulario",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "indicar-en-planos-estructurales-los",
+    "nombre": "Indicar en planos estructurales los códigos de la Norma AGIES aplicada",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "informacion-catastral-del-poligono",
+    "nombre": "Información catastral del polígono emitida por la municipalidad",
+    "categoria": "catastral",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "informe-de-caracterizacion-de-afluentes",
+    "nombre": "Informe de caracterización de afluentes (15 parámetros)",
+    "categoria": "informe",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "informe-de-estimacion-de-efluentes-15",
+    "nombre": "Informe de estimación de efluentes (15 parámetros)",
+    "categoria": "informe",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "informe-tecnico-descriptivo-de-la-ptar-a",
+    "nombre": "Informe técnico descriptivo de la PTAR a la que se conectará",
+    "categoria": "informe",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "informes-de-caracterizacion-fisica",
+    "nombre": "Informes de caracterización física, química y microbiológica (COGUANOR NTG 29001)",
+    "categoria": "informe",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "libreta-topografica-firmada",
+    "nombre": "Libreta topográfica firmada",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "localizacion-geografica-del-botadero-con",
+    "nombre": "Localización geográfica del botadero con autorización de su propietario",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "manual-de-mantenimiento",
+    "nombre": "Manual de mantenimiento",
+    "categoria": "manual",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "manual-de-mantenimiento-del-sistema",
+    "nombre": "Manual de mantenimiento del sistema",
+    "categoria": "manual",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "manual-de-operacion",
+    "nombre": "Manual de operación",
+    "categoria": "manual",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "manual-de-operacion-del-sistema",
+    "nombre": "Manual de operación del sistema",
+    "categoria": "manual",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "medidas-de-mitigacion-para-impactos",
+    "nombre": "Medidas de mitigación para impactos negativos a colindancias y vía pública",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "memoria-de-diseno-estructural-y-estudio",
+    "nombre": "Memoria de diseño estructural y estudio geotécnico",
+    "categoria": "memoria_tecnica",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "memoria-descriptiva-dct",
+    "nombre": "Memoria Descriptiva DCT",
+    "categoria": "memoria_tecnica",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "memoria-descriptiva-del-proyecto",
+    "nombre": "Memoria descriptiva del proyecto",
+    "categoria": "memoria_tecnica",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "memoria-descriptiva-detallada-de-las",
+    "nombre": "Memoria descriptiva detallada de las obras",
+    "categoria": "memoria_tecnica",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "memoria-descriptiva-y-planos-de-los",
+    "nombre": "Memoria descriptiva y planos de los factores de impacto a considerar",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "memoria-fotografica-del-proyecto",
+    "nombre": "Memoria fotográfica del proyecto",
+    "categoria": "memoria_tecnica",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "memorial-dirigido-al-alcalde-solicitando",
+    "nombre": "Memorial dirigido al Alcalde solicitando la licencia",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "memorias-de-calculo-crecimiento",
+    "nombre": "Memorias de cálculo (crecimiento poblacional, dotación)",
+    "categoria": "memoria_tecnica",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "memorias-detalladas-de-calculo-del",
+    "nombre": "Memorias detalladas de cálculo del sistema",
+    "categoria": "memoria_tecnica",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "pago-de-arancel-aa-011",
+    "nombre": "Pago de arancel AA-011",
+    "categoria": "pago",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "plan-de-aprovechamiento-forestal",
+    "nombre": "Plan de aprovechamiento forestal",
+    "categoria": "dictamen",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "plano-de-detalle-de-asientos-fijos",
+    "nombre": "Plano de detalle de asientos fijos",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "plano-de-localizacion-con-coordenadas-a4",
+    "nombre": "Plano de localización con coordenadas (>= A4)",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "plano-de-ubicacion-con-areas-libres-y",
+    "nombre": "Plano de ubicación con áreas libres y materiales (>= A4)",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "plano-de-ubicacion-del-pozo-mecanico",
+    "nombre": "Plano de ubicación del pozo mecánico: distancia radial NO MENOR A 100 m de pozos cercanos",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "planos-cad-2007",
+    "nombre": "Copia digital de todos los planos en disco compacto, formato CAD versión 2007",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": "Exportá desde tu CAD como «AutoCAD 2007 Drawing (*.dwg)» y grabalo en el disco compacto.",
+    "alias": [
+      "Copia digital de todos los planos en disco compacto, formato CAD versión 2007"
+    ]
+  },
+  {
+    "id": "planos-de-arquitectura-y-estabilizacion",
+    "nombre": "Planos de arquitectura y estabilización de taludes en un solo archivo PDF",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "planos-de-elevacion-y-seccion-con-cota-0",
+    "nombre": "Planos de elevación y sección con cota 0+00 y elevación msnm",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "planos-de-elevaciones-y-secciones-de",
+    "nombre": "Planos de elevaciones y secciones de componentes (A1)",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "planos-de-planta-general-de-la-ptar-a1",
+    "nombre": "Planos de planta general de la PTAR (A1)",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "planos-de-planta-general-del-sistema-a1",
+    "nombre": "Planos de planta general del sistema (A1)",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "planos-de-ruta-de-evacuacion-y-salidas",
+    "nombre": "Planos de ruta de evacuación y salidas de emergencia por nivel",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "planos-dwg-scp",
+    "nombre": "Copia digital de los planos en formato DWG",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": "Adjuntá el DWG además del juego impreso; un PDF no sustituye el archivo editable.",
+    "alias": [
+      "Copia digital de los planos en formato DWG"
+    ]
+  },
+  {
+    "id": "planos-firmados-sellados-y-timbrados-por",
+    "nombre": "Planos firmados, sellados y timbrados por ingeniero o arquitecto colegiado activo",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "planos-hidraulicos-autorizados-por",
+    "nombre": "Planos hidráulicos autorizados por Ingeniero Sanitario colegiado activo",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "planos-sellados-por-la-asociacion-de",
+    "nombre": "Planos sellados por la asociación de vecinos (obra mayor)",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "planos-topograficos-con-curvas-de-nivel",
+    "nombre": "Planos topográficos con curvas de nivel (A1)",
+    "categoria": "planos",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "planta-de-techos",
+    "nombre": "Planta de techos",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "presupuesto-por-renglones-de-la",
+    "nombre": "Presupuesto por renglones de la construcción",
+    "categoria": "gestion",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "pronunciamientos-de-responsabilidad",
+    "nombre": "Pronunciamientos de responsabilidad profesional (DRPSA-011-2022)",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "recibo-de-pago-de-tasa-q-350-00-por",
+    "nombre": "Recibo de pago de tasa Q 350.00 por solicitud EAP",
+    "categoria": "pago",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "recibo-de-pago-del-servicio-de-agua",
+    "nombre": "Recibo de pago del servicio de agua potable",
+    "categoria": "pago",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "redes-de-energia-electrica-e",
+    "nombre": "Redes de energía eléctrica e instalaciones especiales SUBTERRÁNEAS",
+    "categoria": "otro",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "reglamento-de-copropiedad-del-condominio",
+    "nombre": "Reglamento de copropiedad del condominio",
+    "categoria": "legal",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "resolucion-del-area-de-salud-area-norte",
+    "nombre": "Resolución del área de salud, área NORTE del MSPAS, sobre calidad de agua y tratamiento de residuales",
+    "categoria": "dictamen",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "resolucion-favorable-de-la-dgac",
+    "nombre": "Resolución favorable de la DGAC",
+    "categoria": "dictamen",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "resolucion-favorable-del-marn-y-licencia",
+    "nombre": "Resolución favorable del MARN (y Licencia Ambiental si aplica)",
+    "categoria": "dictamen",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "resolucion-favorable-del-mem-ministerio",
+    "nombre": "Resolución favorable del MEM (Ministerio de Energía y Minas)",
+    "categoria": "dictamen",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "resolucion-final-del-estudio-de-cambio",
+    "nombre": "Resolución final del Estudio de Cambio de Uso de Suelo del INAB",
+    "categoria": "dictamen",
+    "quien_emite": null,
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "solvencia-municipal",
+    "nombre": "Solvencia Municipal del inmueble, emitida en los últimos 2 meses",
+    "categoria": "financiero",
+    "quien_emite": "Tesoreria municipal",
+    "consejo_vencimiento": "Sacala de ultimo, cuando el resto del folder ya este armado -- es el documento que mas se vence mientras el expediente espera.",
+    "consejo_formato": null,
+    "alias": [
+      "Solvencia Municipal del inmueble, emitida en los últimos 2 meses",
+      "Solvencia municipal extendida por Tesorería"
+    ]
+  }
+]

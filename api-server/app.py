@@ -272,7 +272,7 @@ def _serialize_rule(rule: dict):
         "institucion": rule.get("institucion"),
         "tipo": rule.get("tipo"),
         "confianza": rule.get("confianza"),
-        "documentos": rule.get("exige", []),
+        "documentos": [d["texto"] for d in rule.get("exige", [])],
         "fuente": rule.get("fuente"),
         "nota": rule.get("nota"),
     }
@@ -598,7 +598,7 @@ def validate_project():
                 "rule_id": rule.get("id"),
                 "institution": rule.get("institucion"),
                 "capa": rule.get("capa"),
-                "document": doc,
+                "document": doc["texto"],
             })
 
     response = {
@@ -639,7 +639,7 @@ def list_requirements():
         "ok": True,
         "requirements": [_serialize_rule(rule) for rule in rules],
         "documents": [
-            {"rule_id": rule.get("id"), "document": doc, "institution": rule.get("institucion"), "capa": rule.get("capa")}
+            {"rule_id": rule.get("id"), "document": doc["texto"], "institution": rule.get("institucion"), "capa": rule.get("capa")}
             for rule in rules
             for doc in rule.get("exige", [])
         ],
