@@ -31,11 +31,14 @@ El [README](README.md) tiene el planteamiento completo.
 | [`docs/comparativa-municipal.md`](docs/comparativa-municipal.md) | **Capital vs. Santa Catarina Pinula.** La evidencia de la tesis. Empieza por aquí si necesitas convencer a alguien. |
 | [`docs/matriz-requisitos.md`](docs/matriz-requisitos.md) | Requisitos ministeriales por institución + disparadores. Validado contra VAC04. |
 | [`docs/municipal-guatemala.md`](docs/municipal-guatemala.md) | Capa municipal (Muniguate): Guía 09-F y Guía 00-F/01-F, umbrales, documentos exclusivos, costura VAC↔muni. |
+| [`docs/quetzaltenango-pot.md`](docs/quetzaltenango-pot.md) | Capa municipal (Xela): POT 2022, licencias por Art. 66, alto impacto autodeclarado, gaps de la fuente. |
 | [`docs/buenas-practicas-vum.md`](docs/buenas-practicas-vum.md) | **Presentación oficial VUM:** citas, causas de rechazo, esquema POT, PDUM Antigua Pedrera, NRD completo, hallazgos MARN 2025-2026. |
 | [`docs/normativa-muniguate.md`](docs/normativa-muniguate.md) | Índice de 107 cuerpos normativos / 420 archivos con acuerdo y fecha. La lista de vigilancia. |
 | [`docs/vac02.md`](docs/vac02.md) | Estructura del Formulario Consolidado, 8 pantallas, catálogo de 96 documentos. |
 | [`docs/fuentes/`](docs/fuentes/) | PDFs originales. Toda afirmación en los .md debe poder rastrearse aquí. |
 | [`motor/`](motor/) | Motor de requisitos: reglas como datos + ~55 líneas de filtro. |
+| [`docs/devel/limitaciones-motor.md`](docs/devel/limitaciones-motor.md) | **Desarrollo, no normativa.** Límites del DSL de reglas encontrados al integrar Xela, y extensiones propuestas por costo/beneficio. |
+| [`docs/devel/pruebas-e2e.md`](docs/devel/pruebas-e2e.md) | **Desarrollo, no normativa.** Estado de pruebas (no hay ninguna en frontend/api-server) y propuestas concretas, con los gotchas de Playwright ya documentados. |
 
 ## Nivel de confianza de los datos
 
@@ -121,6 +124,10 @@ No gastes intentos con urllib/WebFetch sobre muniguate: ya se intentó por tres 
 - Confirmar disparador exacto de NRD-1 (acta en VUM) y NRD-3
 - Requisitos de CONAP, IDAEH, MEM, INAB
 - Resolver la discrepancia de SCP: la guía de obra mayor cita AG **137-2016** para el instrumento ambiental y la de obra menor cita AG **61-2015**
+
+**Ingeniería**
+- Sin pruebas automatizadas en `frontend/` ni `api-server/` — propuestas concretas en [`docs/devel/pruebas-e2e.md`](docs/devel/pruebas-e2e.md).
+- El DSL de `reglas.json` tiene límites reales (condiciones de un solo campo, `tipo` a nivel de regla no de documento, sin tabla de parámetros por zona) — inventario completo y extensiones propuestas en [`docs/devel/limitaciones-motor.md`](docs/devel/limitaciones-motor.md).
 
 **Preguntas abiertas que cambian el producto**
 - **¿La VAC tiene API?** Define si el módulo 2 sincroniza estado real o solo lo registra en paralelo. Es la pregunta de mayor impacto.
