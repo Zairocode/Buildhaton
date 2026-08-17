@@ -143,7 +143,7 @@ def main():
     # por las dos municipalidades. Si esto deja de dispararse, la demo perdio
     # su mejor momento y hay que revisarlo antes de presentar.
     scp = revisar("PRY-2026-0052", DATOS["PRY-2026-0052"])["hallazgos"]
-    assert any(h["id"] == "registral-vencida-scp" for h in scp), \
+    assert any(h["id"] == "vencido-scp-base-cert-rgp" for h in scp), \
         "el caso de Pinula ya no dispara la certificacion vencida"
     print("\nLa certificacion de 100 dias entra en la capital y se cae en Pinula: OK")
 
