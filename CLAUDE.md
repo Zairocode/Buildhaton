@@ -31,6 +31,7 @@ El [README](README.md) tiene el planteamiento completo.
 | [`docs/comparativa-municipal.md`](docs/comparativa-municipal.md) | **Capital vs. Santa Catarina Pinula.** La evidencia de la tesis. Empieza por aquí si necesitas convencer a alguien. |
 | [`docs/matriz-requisitos.md`](docs/matriz-requisitos.md) | Requisitos ministeriales por institución + disparadores. Validado contra VAC04. |
 | [`docs/municipal-guatemala.md`](docs/municipal-guatemala.md) | Capa municipal (Muniguate): Guía 09-F y Guía 00-F/01-F, umbrales, documentos exclusivos, costura VAC↔muni. |
+| [`docs/buenas-practicas-vum.md`](docs/buenas-practicas-vum.md) | **Presentación oficial VUM:** citas, causas de rechazo, esquema POT, PDUM Antigua Pedrera, NRD completo, hallazgos MARN 2025-2026. |
 | [`docs/normativa-muniguate.md`](docs/normativa-muniguate.md) | Índice de 107 cuerpos normativos / 420 archivos con acuerdo y fecha. La lista de vigilancia. |
 | [`docs/vac02.md`](docs/vac02.md) | Estructura del Formulario Consolidado, 8 pantallas, catálogo de 96 documentos. |
 | [`docs/fuentes/`](docs/fuentes/) | PDFs originales. Toda afirmación en los .md debe poder rastrearse aquí. |
@@ -81,6 +82,17 @@ No los repitas:
 
 No gastes intentos con urllib/WebFetch sobre muniguate: ya se intentó por tres vías y todas dan 403.
 
+## Datos operativos de la VUM confirmados por presentación oficial
+
+- **Email para citas:** `vu.attvec@gmail.com` — indicar tipo (vivienda/edificio/comercio), cantidad de expedientes y nombre + teléfono de quien se presenta
+- **Gracia en cita:** 15 minutos máximo de espera; si no se presenta, reprogramar
+- **NRD1 en VUM:** El acta debe incluir **conclusiones y recomendaciones de la memoria de cálculo estructural** — el acta vacía no pasa
+- **POT tiene 4 reglamentos complementarios:** DDE (estacionamientos), Incentivos, IV (Impacto Vial — agregó Art. 25 ter), VP (Vivienda Prioritaria)
+- **PDUM Antigua Pedrera (COM-20-2023):** Plan suplementario para 23 ha, 4 sectores. Sectores CAP-1/CAP-2 hasta 64 m; Interior A/B hasta 48 m. IE máx. 8.7 / 5.7. APAUP 10% del predio en todos. Frente mínimo 15 m, superficie mínima 450 m².
+- **4ª entidad jurídica del inmueble:** además de RGP, RIC y la VUM/POT, existe **DICABI** (Dirección de Catastro y Avalúo de Bienes) — toda partición/desmembración debe avisarse a DICABI
+- **Causas de rechazo más comunes en VUM:** dependencias no coinciden con DCT, póliza incompleta, planos (áreas/cotas/memoria), acta NRD1 sin cálculo estructural, estacionamientos, incentivos
+- **MARN 2025-2026:** Requisitos exigidos fuera de TdR confirmados (listado de personal, fórmula de evaporación, estudios imposibles). Frase clave: *"El patrón no es la exigencia. Es la falta de certeza sobre qué se va a exigir."*
+
 ## PDFs locales disponibles
 
 | Archivo | Código | Contenido |
@@ -95,6 +107,7 @@ No gastes intentos con urllib/WebFetch sobre muniguate: ya se intentó por tres 
 | `docs/fuentes/VAC09_lic_ambiental.pdf` | VAC09 | Obtención de Licencia Ambiental MARN |
 | `docs/fuentes/MUNIGUATE_guia_09F.pdf` | PTLI.23 v2 | Guía 09-F — Ventanilla Única Municipal (vivienda ≤ 700 m²) |
 | `docs/fuentes/MUNIGUATE_guia_00F_01F.pdf` | PLTI.01/02 v2 | Guía 00-F/01-F — Guía General de la Ventanilla Única (todos los proyectos) |
+| `docs/fuentes/MUNIGUATE_VUM_buenas_practicas.pdf` | — | Presentación oficial VUM: buenas prácticas, citas, causas de rechazo, POT, NRD, casos MARN 2025-2026 |
 
 ## Trabajo pendiente
 
