@@ -50,8 +50,17 @@ export const FALTANTES: { campo: keyof DatosMunicipales; pregunta: string; capa:
 ];
 
 const si = (v?: string) => (v == null || v === "" ? undefined : v === "Sí");
+
+/**
+ * Primer número del texto, NO todos los dígitos sueltos. Borrar los no-dígitos
+ * convertía "18,500 m2" en 185002 y "700 m2" en 7002 — y 700 es el umbral que
+ * decide si el trámite va por la guía 09-F o por la 00-F.
+ */
+const NUMERO = /-?\d[\d,]*(?:\.\d+)?/;
 const num = (v?: string) => {
-  const n = parseFloat(String(v ?? "").replace(/[^\d.-]/g, ""));
+  const m = NUMERO.exec(String(v ?? ""));
+  if (!m) return undefined;
+  const n = parseFloat(m[0].replace(/,/g, ""));
   return Number.isFinite(n) ? n : undefined;
 };
 

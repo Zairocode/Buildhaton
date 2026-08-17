@@ -79,17 +79,23 @@ def _as_bool(value: Any):
     return None
 
 
+# Toma el PRIMER numero del texto, no todos los digitos sueltos. Borrar los
+# no-digitos convertia "18,500 m2" en 185002 (el 2 de "m2" se pegaba) y
+# "700 m2" en 7002 — justo el umbral que decide la guia municipal.
+_NUMERO = re.compile(r"-?\d[\d,]*(?:\.\d+)?")
+
+
 def _as_number(value: Any):
     if value is None or value == "":
         return None
     if isinstance(value, (int, float)) and not isinstance(value, bool):
         return float(value)
     if isinstance(value, str):
-        cleaned = re.sub(r"[^\d.-]", "", value.strip())
-        if cleaned in {"", "-", ".", "-."}:
+        encontrado = _NUMERO.search(value.strip())
+        if encontrado is None:
             return None
         try:
-            return float(cleaned)
+            return float(encontrado.group(0).replace(",", ""))
         except ValueError:
             return None
     return None
