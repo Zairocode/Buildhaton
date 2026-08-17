@@ -3,3 +3,5 @@ __pycache__/
 frontend/node_modules/
 frontend/dist/
 frontend/.vite/
+api-server/data/uploads/
+api-server/data/documents.json

@@ -6,8 +6,8 @@
  * registrados bajo el NIT que registro en su usuario"). Cuando el contratista
  * se va, el historial se queda.
  */
-import { useCallback, useState } from "react";
-import type { Proyecto } from "./motor";
+import { useCallback, useEffect, useState } from "react";
+import { docsDe, jurisdicciones, type Documento, type Jurisdiccion, type Proyecto } from "./motor";
 
 export type EstadoVac = "en_carga" | "listo_vac" | "enviado_vac" | "aprobado";
 
@@ -28,10 +28,30 @@ export const ROLES = [
 ] as const;
 export type Rol = (typeof ROLES)[number];
 
+/**
+ * Permiso dentro de Cimiento — no confundir con `Rol`, que es el cargo que el
+ * VAC02 exige nombrar en el expediente. Un Responsable de Ejecución puede ser
+ * lector acá y seguir firmando el expediente allá.
+ */
+export type Acceso = "admin" | "gestor" | "lector";
+
+export const ACCESOS: Record<Acceso, { label: string; detalle: string }> = {
+  admin: { label: "Administrador", detalle: "Gestiona usuarios, empresa y permisos" },
+  gestor: { label: "Gestor", detalle: "Crea proyectos y carga documentos" },
+  lector: { label: "Lector", detalle: "Solo consulta; no modifica el expediente" },
+};
+
+export const PUEDE: Record<Acceso, { subir: boolean; crearProyecto: boolean; administrar: boolean }> = {
+  admin: { subir: true, crearProyecto: true, administrar: true },
+  gestor: { subir: true, crearProyecto: true, administrar: false },
+  lector: { subir: false, crearProyecto: false, administrar: false },
+};
+
 export interface Usuario {
   id: string;
   nombre: string;
   rol: Rol;
+  acceso: Acceso;
   profesion: string;
   colegiado: string;
   email: string;
@@ -46,10 +66,34 @@ export interface Empresa {
   departamento: string;
 }
 
+/** Respaldo si la API no responde. La lista viva sale de `useJurisdicciones`. */
 export const MUNICIPALIDADES = [
-  { id: "muniguate", label: "Guatemala", reglas: true },
-  { id: "scp", label: "Santa Catarina Pinula", reglas: true },
-] as const;
+  { id: "muniguate", label: "Guatemala" },
+  { id: "scp", label: "Santa Catarina Pinula" },
+];
+
+/**
+ * Municipalidades con reglas cargadas, leídas del motor. Al raspar una
+ * municipalidad nueva y escribir sus reglas, aparece acá sola.
+ */
+export function useJurisdicciones() {
+  const [todas, setTodas] = useState<Jurisdiccion[] | null>(null);
+  useEffect(() => {
+    let vivo = true;
+    jurisdicciones()
+      .then((j) => vivo && setTodas(j))
+      .catch(() => vivo && setTodas([]));
+    return () => { vivo = false; };
+  }, []);
+
+  const municipales = (todas ?? []).filter((j) => j.capa === "municipal");
+  return {
+    todas: todas ?? [],
+    cargando: todas === null,
+    // "GT" es la capa ministerial, no una municipalidad donde se tramite.
+    municipalidades: municipales.length ? municipales.map((j) => ({ id: j.id, label: j.label })) : MUNICIPALIDADES,
+  };
+}
 
 export interface ProyectoPanel {
   id: string;
@@ -59,16 +103,54 @@ export interface ProyectoPanel {
   direccion: string;
   areaTerreno: number;
   estado: EstadoVac;
-  /** requisitos ya cargados; el total lo calcula el motor */
+  /** arranque de demo para los proyectos semilla; lo real se suma de `docs` */
   cargados: number;
   contactos: string[];
   datos: Proyecto;
+}
+
+/** Mensaje que sale al chat del equipo. Se guarda para poder mostrar el hilo. */
+export interface Notificacion {
+  id: string;
+  /** id del usuario destinatario */
+  para: string;
+  canal: "whatsapp" | "correo";
+  texto: string;
+  proyecto: string;
+  severidad: "bloqueante" | "riesgo" | "aviso" | "info";
+  en: string;
 }
 
 export interface Store {
   empresa: Empresa;
   usuarios: Usuario[];
   proyectos: ProyectoPanel[];
+  /** usuario activo. Sin login: el panel lo cambia a mano. */
+  sesion: string;
+  notificaciones: Notificacion[];
+}
+
+/** Cuántos requisitos tiene cubiertos: base de demo + archivos realmente subidos. */
+export const cargadosDe = (p: ProyectoPanel, docs: Documento[] = []) =>
+  p.cargados + new Set(docs.map((d) => d.documento)).size;
+
+/** Documentos subidos, agrupados por proyecto. Un solo GET para toda la cartera. */
+export function useDocs(proyecto?: string) {
+  const [docs, setDocs] = useState<Documento[]>([]);
+  const [cargando, setCargando] = useState(true);
+
+  const recargar = useCallback(() => {
+    setCargando(true);
+    return docsDe(proyecto ?? "")
+      .then(setDocs)
+      .catch(() => setDocs([]))
+      .finally(() => setCargando(false));
+  }, [proyecto]);
+
+  useEffect(() => { recargar(); }, [recargar]);
+
+  const de = useCallback((id: string) => docs.filter((d) => d.proyecto === id), [docs]);
+  return { docs, de, cargando, recargar };
 }
 
 const SEMILLA: Store = {
@@ -80,9 +162,9 @@ const SEMILLA: Store = {
     departamento: "Guatemala",
   },
   usuarios: [
-    { id: "u1", nombre: "Luan Mejía", rol: "Representante Legal", profesion: "Administrador de Empresas", colegiado: "—", email: "luan@zairo.gt", telefono: "5512-8874" },
-    { id: "u2", nombre: "Ana Lucía Ordóñez", rol: "Responsable de Planificación", profesion: "Arquitecta", colegiado: "CAG 8842", email: "aordonez@zairo.gt", telefono: "4471-2093" },
-    { id: "u3", nombre: "Marco Tulio Recinos", rol: "Responsable de Ejecución", profesion: "Ingeniero Civil", colegiado: "CIG 12507", email: "mrecinos@zairo.gt", telefono: "3308-5521" },
+    { id: "u1", nombre: "Luan Mejía", rol: "Representante Legal", acceso: "admin", profesion: "Administrador de Empresas", colegiado: "—", email: "luan@zairo.gt", telefono: "5512-8874" },
+    { id: "u2", nombre: "Ana Lucía Ordóñez", rol: "Responsable de Planificación", acceso: "gestor", profesion: "Arquitecta", colegiado: "CAG 8842", email: "aordonez@zairo.gt", telefono: "4471-2093" },
+    { id: "u3", nombre: "Marco Tulio Recinos", rol: "Responsable de Ejecución", acceso: "lector", profesion: "Ingeniero Civil", colegiado: "CIG 12507", email: "mrecinos@zairo.gt", telefono: "3308-5521" },
   ],
   proyectos: [
     {
@@ -116,9 +198,20 @@ const SEMILLA: Store = {
       },
     },
   ],
+  sesion: "u1",
+  notificaciones: [],
 };
 
-const CLAVE = "cimiento.v1";
+const CLAVE = "cimiento.v3";
+
+function leer(): Store {
+  try {
+    const guardado = localStorage.getItem(CLAVE);
+    return guardado ? (JSON.parse(guardado) as Store) : SEMILLA;
+  } catch {
+    return SEMILLA;
+  }
+}
 
 function guardar(s: Store) {
   try {
@@ -130,26 +223,34 @@ function guardar(s: Store) {
 }
 
 export function useStore() {
-  const [store, setInterno] = useState<Store>(() => {
-    try {
-      const guardado = localStorage.getItem(CLAVE);
-      return guardado ? (JSON.parse(guardado) as Store) : SEMILLA;
-    } catch {
-      return SEMILLA;
-    }
-  });
+  const [store, setInterno] = useState<Store>(leer);
 
   /**
    * Persiste dentro del setter, no en un useEffect.
    * Crear un proyecto desmonta el panel en el mismo commit (se salta al
    * formulario), y el efecto nunca llegaria a correr: el proyecto se perdia.
+   *
+   * Aplica sobre lo que hay EN DISCO, no sobre el render previo: el panel y el
+   * portal montan cada uno su propio useStore, y con `prev` el segundo en
+   * escribir borraba lo que hizo el primero.
    */
   const setStore = useCallback((f: (s: Store) => Store) => {
-    setInterno((prev) => guardar(f(prev)));
+    setInterno(guardar(f(leer())));
   }, []);
 
   return { store, setStore, reiniciar: () => setInterno(guardar(SEMILLA)) };
 }
+
+/** Usuario activo. Si el de la sesión ya no existe, cae al primero. */
+export const sesionDe = (s: Store) => s.usuarios.find((u) => u.id === s.sesion) ?? s.usuarios[0];
+
+/** Sin usuario válido no se asume nada: lectura. */
+export const permisosDe = (s: Store) => PUEDE[sesionDe(s)?.acceso ?? "lector"];
+
+/** Evita el bloqueo por quedarse sin administrador. */
+export const esUltimoAdmin = (s: Store, id: string) =>
+  s.usuarios.filter((u) => u.acceso === "admin").every((u) => u.id === id) &&
+  s.usuarios.some((u) => u.id === id && u.acceso === "admin");
 
 export function nuevoCodigo(proyectos: ProyectoPanel[]) {
   const n = proyectos.length + 41;

@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  ArrowRight, Building2, Landmark, Loader2, Plus, ScrollText, Trash2, UserPlus,
+  ArrowRight, Building2, Database, Landmark, Loader2, Plus, ScrollText, ShieldAlert, Trash2, UserPlus,
 } from "lucide-react";
 import { evaluar, type Requisito } from "../../lib/motor";
 import {
-  ESTADOS, MUNICIPALIDADES, ROLES, nuevoCodigo,
-  type ProyectoPanel, type Rol, type Store, type Usuario,
+  ACCESOS, ESTADOS, ROLES, cargadosDe, esUltimoAdmin, nuevoCodigo, permisosDe, useDocs, useJurisdicciones,
+  type Acceso, type ProyectoPanel, type Rol, type Store, type Usuario,
 } from "../../lib/estado";
 import { Barra, Boton, Campo, Chip, Etiqueta, Input, Panel, Selector, T, Titulo, mono, sans } from "./ui";
 
@@ -51,12 +51,13 @@ function Metrica({ valor, label, nota, tono }: { valor: string; label: string; n
 
 export function Dashboard({ store, onAbrir }: { store: Store; onAbrir: (p: ProyectoPanel) => void }) {
   const { mapa, cargando } = useRequisitos(store.proyectos);
+  const { de } = useDocs();
 
   const m = useMemo(() => {
     const todas = Object.values(mapa).flat();
     const reales = todas.filter((r) => r.tipo !== "aviso");
     const exigidos = contar(todas);
-    const cargados = store.proyectos.reduce((n, p) => n + p.cargados, 0);
+    const cargados = store.proyectos.reduce((n, p) => n + cargadosDe(p, de(p.id)), 0);
     const porInstitucion = new Map<string, number>();
     reales.forEach((r) => porInstitucion.set(r.institucion, (porInstitucion.get(r.institucion) ?? 0) + r.documentos.length));
     return {
@@ -65,7 +66,7 @@ export function Dashboard({ store, onAbrir }: { store: Store; onAbrir: (p: Proye
       instituciones: porInstitucion.size,
       porInstitucion: [...porInstitucion.entries()].sort((a, b) => b[1] - a[1]),
     };
-  }, [mapa, store.proyectos]);
+  }, [mapa, store.proyectos, de]);
 
   if (cargando)
     return (
@@ -116,7 +117,7 @@ export function Dashboard({ store, onAbrir }: { store: Store; onAbrir: (p: Proye
                   <div className="min-w-0">
                     <div className="truncate text-[13px] font-medium" style={{ color: T.tinta, fontFamily: sans }}>{p.nombre}</div>
                     <div className="text-[11px]" style={{ color: T.tenue, fontFamily: mono }}>
-                      {p.cargados}/{total}
+                      {cargadosDe(p, de(p.id))}/{total}
                     </div>
                   </div>
                   <Chip tono={ESTADOS[p.estado].tono}>{ESTADOS[p.estado].label}</Chip>
@@ -137,6 +138,7 @@ export function Proyectos({
   store, onAbrir, onNuevo,
 }: { store: Store; onAbrir: (p: ProyectoPanel) => void; onNuevo: () => void }) {
   const { mapa, cargando } = useRequisitos(store.proyectos);
+  const { de } = useDocs();
   const [q, setQ] = useState("");
   const lista = store.proyectos.filter(
     (p) => p.nombre.toLowerCase().includes(q.toLowerCase()) || p.municipalidadLabel.toLowerCase().includes(q.toLowerCase())
@@ -146,9 +148,11 @@ export function Proyectos({
     <>
       <div className="mb-7 flex items-start justify-between gap-4">
         <Titulo sub="Cada proyecto se evalúa contra la normativa de su municipalidad">Proyectos</Titulo>
-        <Boton onClick={onNuevo}>
-          <Plus size={15} /> Nuevo proyecto
-        </Boton>
+        {permisosDe(store).crearProyecto && (
+          <Boton onClick={onNuevo}>
+            <Plus size={15} /> Nuevo proyecto
+          </Boton>
+        )}
       </div>
 
       <div className="mb-5 max-w-sm">
@@ -185,9 +189,9 @@ export function Proyectos({
                     ) : (
                       <div className="w-40">
                         <div className="mb-1.5 text-[12.5px]" style={{ color: T.medio, fontFamily: mono }}>
-                          {p.cargados}/{total}
+                          {cargadosDe(p, de(p.id))}/{total}
                         </div>
-                        <Barra pct={total ? (p.cargados / total) * 100 : 0} />
+                        <Barra pct={total ? (cargadosDe(p, de(p.id)) / total) * 100 : 0} />
                       </div>
                     )}
                   </td>
@@ -214,7 +218,8 @@ export function NuevoProyecto({
     areaTerreno: "", areaConstruccion: "", altura: "", contactos: [] as string[],
   });
   const set = (k: string) => (v: string) => setF((s) => ({ ...s, [k]: v }));
-  const muni = MUNICIPALIDADES.find((x) => x.id === f.municipalidad);
+  const { municipalidades } = useJurisdicciones();
+  const muni = municipalidades.find((x) => x.id === f.municipalidad);
   const listo = f.nombre && f.municipalidad && f.tipo && f.areaConstruccion;
 
   function crear() {
@@ -270,7 +275,7 @@ export function NuevoProyecto({
           <Selector
             value={f.municipalidad}
             onChange={set("municipalidad")}
-            opciones={MUNICIPALIDADES.map((x) => ({ v: x.id, l: x.label }))}
+            opciones={municipalidades.map((x) => ({ v: x.id, l: x.label }))}
           />
         </Campo>
         <Campo label="Tipo de obra" ancho="mitad">
@@ -343,10 +348,14 @@ export function NuevoProyecto({
 
 export function Usuarios({ store, setStore }: { store: Store; setStore: (f: (s: Store) => Store) => void }) {
   const [abierto, setAbierto] = useState(false);
-  const vacio = { nombre: "", rol: "" as Rol | "", profesion: "", colegiado: "", email: "", telefono: "" };
+  const vacio = {
+    nombre: "", rol: "" as Rol | "", acceso: "gestor" as Acceso,
+    profesion: "", colegiado: "", email: "", telefono: "",
+  };
   const [f, setF] = useState(vacio);
   const set = (k: string) => (v: string) => setF((s) => ({ ...s, [k]: v }));
   const listo = f.nombre && f.rol;
+  const admin = permisosDe(store).administrar;
 
   function crear() {
     const u: Usuario = { id: `u${Date.now()}`, ...(f as Omit<Usuario, "id">) };
@@ -360,11 +369,24 @@ export function Usuarios({ store, setStore }: { store: Store; setStore: (f: (s: 
   return (
     <>
       <div className="mb-7 flex items-start justify-between gap-4">
-        <Titulo sub="Los cinco roles que el VAC02 exige nombrar en cada expediente">Usuarios</Titulo>
-        <Boton onClick={() => setAbierto((v) => !v)}>
-          <UserPlus size={15} /> {abierto ? "Cerrar" : "Agregar usuario"}
-        </Boton>
+        <Titulo sub="Rol en el expediente (VAC02) y acceso dentro de Cimiento son dos cosas distintas">
+          Usuarios
+        </Titulo>
+        {admin && (
+          <Boton onClick={() => setAbierto((v) => !v)}>
+            <UserPlus size={15} /> {abierto ? "Cerrar" : "Agregar usuario"}
+          </Boton>
+        )}
       </div>
+
+      {!admin && (
+        <div className="mb-6 flex gap-2.5 rounded-[4px] border p-3.5" style={{ borderColor: T.linea, background: T.blanco }}>
+          <ShieldAlert size={15} style={{ color: T.tenue, flexShrink: 0, marginTop: 1 }} />
+          <p className="text-[12.5px]" style={{ color: T.tenue, fontFamily: sans }}>
+            Estás viendo el directorio en modo consulta. Solo un administrador cambia usuarios y accesos.
+          </p>
+        </div>
+      )}
 
       <Panel className="mb-6 p-5">
         <Etiqueta>Empresa</Etiqueta>
@@ -396,6 +418,13 @@ export function Usuarios({ store, setStore }: { store: Store; setStore: (f: (s: 
             <Campo label="Rol en el expediente" ancho="mitad">
               <Selector value={f.rol} onChange={set("rol")} opciones={ROLES.map((r) => ({ v: r, l: r }))} />
             </Campo>
+            <Campo label="Acceso en Cimiento" ancho="mitad">
+              <Selector
+                value={f.acceso}
+                onChange={set("acceso")}
+                opciones={Object.entries(ACCESOS).map(([v, a]) => ({ v, l: `${a.label} — ${a.detalle}` }))}
+              />
+            </Campo>
             <Campo label="Profesión" ancho="mitad"><Input value={f.profesion} onChange={set("profesion")} placeholder="Arquitecto, Ingeniero Civil…" /></Campo>
             <Campo label="Colegiado activo" ancho="mitad"><Input value={f.colegiado} onChange={set("colegiado")} placeholder="CAG / CIG · NA si no aplica" /></Campo>
             <Campo label="Correo" ancho="mitad"><Input value={f.email} onChange={set("email")} type="email" /></Campo>
@@ -412,20 +441,46 @@ export function Usuarios({ store, setStore }: { store: Store; setStore: (f: (s: 
         <table className="w-full border-collapse text-left" style={{ fontFamily: sans }}>
           <thead>
             <tr className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: T.tenue }}>
-              {["Nombre", "Rol VAC02", "Profesión", "Colegiado", "Proyectos", ""].map((h) => (
+              {["Nombre", "Rol VAC02", "Acceso", "Profesión", "Colegiado", "Proyectos", ""].map((h) => (
                 <th key={h} className="border-b px-5 py-3" style={{ borderColor: T.linea }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {store.usuarios.map((u) => (
+            {store.usuarios.map((u) => {
+              const ultimo = esUltimoAdmin(store, u.id);
+              return (
               <tr key={u.id}>
                 <td className="border-b px-5 py-3.5" style={{ borderColor: T.linea }}>
-                  <div className="text-[14px] font-medium" style={{ color: T.tinta }}>{u.nombre}</div>
+                  <div className="text-[14px] font-medium" style={{ color: T.tinta }}>
+                    {u.nombre}
+                    {u.id === store.sesion && <span className="ml-2 text-[11px]" style={{ color: T.acento }}>· vos</span>}
+                  </div>
                   <div className="text-[11.5px]" style={{ color: T.tenue }}>{u.email}</div>
                 </td>
                 <td className="border-b px-5 py-3.5" style={{ borderColor: T.linea }}>
                   <Chip>{u.rol}</Chip>
+                </td>
+                <td className="border-b px-5 py-3.5" style={{ borderColor: T.linea }}>
+                  {admin && !ultimo ? (
+                    <div className="w-36">
+                      <Selector
+                        value={u.acceso}
+                        onChange={(v) =>
+                          setStore((s) => ({
+                            ...s,
+                            usuarios: s.usuarios.map((x) => (x.id === u.id ? { ...x, acceso: v as Acceso } : x)),
+                          }))
+                        }
+                        opciones={Object.entries(ACCESOS).map(([v, a]) => ({ v, l: a.label }))}
+                      />
+                    </div>
+                  ) : (
+                    <Chip tono={u.acceso === "admin" ? "curso" : "neutro"}>
+                      {ACCESOS[u.acceso]?.label ?? u.acceso}
+                      {ultimo && " · único"}
+                    </Chip>
+                  )}
                 </td>
                 <td className="border-b px-5 py-3.5 text-[13px]" style={{ borderColor: T.linea, color: T.medio }}>{u.profesion}</td>
                 <td className="border-b px-5 py-3.5 text-[13px]" style={{ borderColor: T.linea, color: T.medio, fontFamily: mono }}>{u.colegiado}</td>
@@ -433,19 +488,22 @@ export function Usuarios({ store, setStore }: { store: Store; setStore: (f: (s: 
                   {enUso(u.id).length}
                 </td>
                 <td className="border-b px-5 py-3.5" style={{ borderColor: T.linea }}>
-                  <button
-                    onClick={() => setStore((s) => ({
-                      ...s,
-                      usuarios: s.usuarios.filter((x) => x.id !== u.id),
-                      proyectos: s.proyectos.map((p) => ({ ...p, contactos: p.contactos.filter((c) => c !== u.id) })),
-                    }))}
-                    title="Quitar"
-                  >
-                    <Trash2 size={14} style={{ color: T.tenue }} />
-                  </button>
+                  {admin && !ultimo && (
+                    <button
+                      onClick={() => setStore((s) => ({
+                        ...s,
+                        usuarios: s.usuarios.filter((x) => x.id !== u.id),
+                        proyectos: s.proyectos.map((p) => ({ ...p, contactos: p.contactos.filter((c) => c !== u.id) })),
+                      }))}
+                      title="Quitar"
+                    >
+                      <Trash2 size={14} style={{ color: T.tenue }} />
+                    </button>
+                  )}
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </Panel>
@@ -455,6 +513,107 @@ export function Usuarios({ store, setStore }: { store: Store; setStore: (f: (s: 
         Un profesional puede ocupar varios roles. Si la empresa no tiene alguna de las figuras, el VAC02
         pide consignar <span style={{ fontFamily: mono }}>NA</span> en vez de dejarlo vacío.
       </p>
+    </>
+  );
+}
+
+/* ===================== ADMINISTRACIÓN ===================== */
+
+export function Administracion({
+  store, setStore,
+}: { store: Store; setStore: (f: (s: Store) => Store) => void }) {
+  const { todas, cargando } = useJurisdicciones();
+  const { docs } = useDocs();
+  const set = (k: keyof Store["empresa"]) => (v: string) =>
+    setStore((s) => ({ ...s, empresa: { ...s.empresa, [k]: v } }));
+
+  const mb = (docs.reduce((n, d) => n + d.bytes, 0) / 1_048_576).toFixed(1);
+
+  return (
+    <>
+      <Titulo sub="Datos de la empresa, cobertura normativa cargada y archivos del expediente">
+        Administración
+      </Titulo>
+
+      <Panel className="mb-6 p-5">
+        <Etiqueta>Empresa solicitante</Etiqueta>
+        <p className="mb-4 mt-1 text-[11.5px]" style={{ color: T.tenue, fontFamily: sans }}>
+          Se copian a cada expediente nuevo. Deben coincidir con la patente y el RTU.
+        </p>
+        <div className="grid grid-cols-2 gap-4">
+          <Campo label="Razón social" ancho="mitad"><Input value={store.empresa.razonSocial} onChange={set("razonSocial")} /></Campo>
+          <Campo label="Nombre comercial" ancho="mitad"><Input value={store.empresa.nombreComercial} onChange={set("nombreComercial")} /></Campo>
+          <Campo label="NIT" ancho="mitad"><Input value={store.empresa.nit} onChange={set("nit")} /></Campo>
+          <Campo label="Representante legal" ancho="mitad"><Input value={store.empresa.representante} onChange={set("representante")} /></Campo>
+          <Campo label="Departamento" ancho="mitad"><Input value={store.empresa.departamento} onChange={set("departamento")} /></Campo>
+        </div>
+      </Panel>
+
+      <Panel className="mb-6 p-5">
+        <div className="flex items-center gap-2">
+          <Database size={14} style={{ color: T.tenue }} />
+          <Etiqueta>Cobertura del motor de reglas</Etiqueta>
+        </div>
+        <p className="mb-4 mt-1 text-[11.5px]" style={{ color: T.tenue, fontFamily: sans }}>
+          Sale de <span style={{ fontFamily: mono }}>reglas.json</span>. Cada jurisdicción que se investiga y
+          se escribe aparece acá y en el selector de proyectos, sin tocar la app.
+        </p>
+
+        {cargando ? (
+          <div className="flex items-center gap-2 text-[13px]" style={{ color: T.tenue, fontFamily: sans }}>
+            <Loader2 size={14} className="animate-spin" /> consultando el motor…
+          </div>
+        ) : (
+          <table className="w-full border-collapse text-left" style={{ fontFamily: sans }}>
+            <thead>
+              <tr className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: T.tenue }}>
+                {["Jurisdicción", "Capa", "Reglas", "Documentos", "Sin confirmar", "Fuentes"].map((h) => (
+                  <th key={h} className="border-b px-3 py-2.5" style={{ borderColor: T.linea }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {todas.map((j) => (
+                <tr key={j.id}>
+                  <td className="border-b px-3 py-3" style={{ borderColor: T.linea }}>
+                    <div className="text-[13.5px] font-medium" style={{ color: T.tinta }}>{j.label}</div>
+                    <div className="text-[11px]" style={{ color: T.tenue, fontFamily: mono }}>{j.id}</div>
+                  </td>
+                  <td className="border-b px-3 py-3" style={{ borderColor: T.linea }}>
+                    <Chip tono={j.capa === "municipal" ? "curso" : "neutro"}>{j.capa}</Chip>
+                  </td>
+                  <td className="border-b px-3 py-3 text-[13px]" style={{ borderColor: T.linea, color: T.medio, fontFamily: mono }}>{j.reglas}</td>
+                  <td className="border-b px-3 py-3 text-[13px]" style={{ borderColor: T.linea, color: T.medio, fontFamily: mono }}>{j.documentos}</td>
+                  <td className="border-b px-3 py-3" style={{ borderColor: T.linea }}>
+                    {j.sin_confirmar ? <Chip tono="alerta">{j.sin_confirmar}</Chip> : <span className="text-[13px]" style={{ color: T.tenue, fontFamily: mono }}>0</span>}
+                  </td>
+                  <td className="border-b px-3 py-3 text-[11px] leading-snug" style={{ borderColor: T.linea, color: T.tenue, fontFamily: mono }}>
+                    {j.fuentes.join(" · ")}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </Panel>
+
+      <Panel className="p-5">
+        <Etiqueta>Archivos del expediente</Etiqueta>
+        <div className="mt-3 flex gap-8">
+          <div>
+            <div className="text-[26px] font-semibold leading-none" style={{ color: T.tinta, fontFamily: mono }}>{docs.length}</div>
+            <div className="mt-1.5 text-[12px]" style={{ color: T.tenue, fontFamily: sans }}>documentos cargados</div>
+          </div>
+          <div>
+            <div className="text-[26px] font-semibold leading-none" style={{ color: T.tinta, fontFamily: mono }}>{mb}</div>
+            <div className="mt-1.5 text-[12px]" style={{ color: T.tenue, fontFamily: sans }}>MB en el servidor</div>
+          </div>
+        </div>
+        <p className="mt-4 border-t pt-3.5 text-[11.5px] leading-snug" style={{ borderColor: T.linea, color: T.tenue, fontFamily: sans }}>
+          Los archivos viven en la API, no en el navegador. El expediente municipal sigue entregándose
+          físico — esto es la copia digital que evita rearmar la carpeta en cada corrección.
+        </p>
+      </Panel>
     </>
   );
 }

@@ -1,7 +1,8 @@
 import json
 import os
+import re
 import sys
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -11,14 +12,31 @@ if ROOT_DIR not in sys.path:
 
 DATA_DIR = Path(ROOT_DIR) / "api-server" / "data"
 STATUS_STORE_PATH = DATA_DIR / "project_statuses.json"
+DOCS_STORE_PATH = DATA_DIR / "documents.json"
+BITACORA_STORE_PATH = DATA_DIR / "bitacora.json"
+UPLOADS_DIR = DATA_DIR / "uploads"
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
+from werkzeug.utils import secure_filename
 
-from motor.motor import informe, requisitos
+from motor.motor import REGLAS, informe, requisitos
+from motor.fallas import resumen, revisar
 
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 25 * 1024 * 1024  # 25 MB por archivo
 
-VALID_MUNICIPALITIES = {"GT", "muniguate", "scp"}
+# Se derivan de reglas.json: al cargar reglas de una municipalidad nueva,
+# la API y el selector del panel la aceptan sin tocar codigo.
+VALID_MUNICIPALITIES = {r["jurisdiccion"] for r in REGLAS}
+
+# "GT" es la capa ministerial (VAC), no una municipalidad.
+NOMBRES_JURISDICCION = {
+    "GT": "Gobierno central (VAC)",
+    "muniguate": "Guatemala",
+    "scp": "Santa Catarina Pinula",
+}
+
+ID_SEGURO = re.compile(r"^[A-Za-z0-9._-]{1,64}$")
 
 
 @app.after_request
@@ -26,7 +44,7 @@ def _cors(response):
     """El frontend corre en otro puerto (vite:5173). Sin esto el browser lo bloquea."""
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, DELETE, OPTIONS"
     return response
 
 
@@ -147,13 +165,13 @@ def _serialize_rule(rule: dict):
     }
 
 
-def _load_status_store() -> list:
+def _load_store(path: Path) -> list:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    if not STATUS_STORE_PATH.exists():
+    if not path.exists():
         return []
 
     try:
-        with STATUS_STORE_PATH.open("r", encoding="utf-8") as fh:
+        with path.open("r", encoding="utf-8") as fh:
             data = json.load(fh)
     except (OSError, json.JSONDecodeError):
         return []
@@ -161,18 +179,218 @@ def _load_status_store() -> list:
     return data if isinstance(data, list) else []
 
 
-def _save_status_store(items: list) -> None:
+def _save_store(path: Path, items: list) -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    temp_path = STATUS_STORE_PATH.with_suffix(".json.tmp")
+    temp_path = path.with_suffix(".json.tmp")
     with temp_path.open("w", encoding="utf-8") as fh:
         json.dump(items, fh, ensure_ascii=False, indent=2)
         fh.write("\n")
-    os.replace(temp_path, STATUS_STORE_PATH)
+    os.replace(temp_path, path)
+
+
+def _load_status_store() -> list:
+    return _load_store(STATUS_STORE_PATH)
+
+
+def _save_status_store(items: list) -> None:
+    _save_store(STATUS_STORE_PATH, items)
 
 
 @app.get("/health")
 def health():
     return jsonify({"ok": True, "service": "buildhaton-rule-api", "status": "healthy"})
+
+
+@app.get("/api/jurisdicciones")
+def list_jurisdicciones():
+    """Que jurisdicciones tienen reglas cargadas. Sale de reglas.json, no de una
+    lista fija: es el tablero de avance del raspado de municipalidades."""
+    conteo: dict[str, dict] = {}
+    for regla in REGLAS:
+        jur = regla["jurisdiccion"]
+        fila = conteo.setdefault(
+            jur,
+            {
+                "id": jur,
+                "label": NOMBRES_JURISDICCION.get(jur, jur),
+                "capa": regla.get("capa"),
+                "reglas": 0,
+                "documentos": 0,
+                "sin_confirmar": 0,
+                "fuentes": set(),
+            },
+        )
+        fila["reglas"] += 1
+        if regla.get("tipo") != "aviso":
+            fila["documentos"] += len(regla.get("exige", []))
+        if regla.get("confianza") == "SIN_CONFIRMAR":
+            fila["sin_confirmar"] += 1
+        if regla.get("fuente"):
+            fila["fuentes"].add(regla["fuente"])
+
+    items = []
+    for fila in conteo.values():
+        fila["fuentes"] = sorted(fila["fuentes"])
+        items.append(fila)
+    items.sort(key=lambda f: (f["capa"] != "ministerial", f["label"]))
+
+    return jsonify({"ok": True, "items": items, "count": len(items)})
+
+
+def _doc_dir(proyecto: str) -> Path:
+    return UPLOADS_DIR / proyecto
+
+
+@app.get("/api/documentos")
+def list_documentos():
+    proyecto = (request.args.get("proyecto") or "").strip()
+    items = _load_store(DOCS_STORE_PATH)
+    if proyecto:
+        items = [d for d in items if d.get("proyecto") == proyecto]
+    return jsonify({"ok": True, "items": items, "count": len(items)})
+
+
+@app.post("/api/documentos")
+def upload_documento():
+    """Sube el archivo de un requisito. multipart: proyecto, requisito, documento, archivo."""
+    archivo = request.files.get("archivo")
+    proyecto = (request.form.get("proyecto") or "").strip()
+    documento = (request.form.get("documento") or "").strip()
+
+    if archivo is None or not archivo.filename:
+        return jsonify({"ok": False, "error": _field_error("archivo", "missing_file", "Falta el archivo.")}), 400
+    if not ID_SEGURO.match(proyecto):
+        return jsonify({"ok": False, "error": _field_error("proyecto", "invalid_id", "'proyecto' invalido o ausente.")}), 400
+    if not documento:
+        return jsonify({"ok": False, "error": _field_error("documento", "missing_field", "Falta el nombre del requisito.")}), 400
+
+    # La fecha de emision alimenta las reglas de vigencia del motor de fallas.
+    # Si viene mal escrita se guarda vacia: el motor prefiere decir "no se sabe"
+    # antes que afirmar que un documento esta vigente.
+    fecha_emision = (request.form.get("fecha_emision") or "").strip()[:10] or None
+    if fecha_emision is not None:
+        try:
+            date.fromisoformat(fecha_emision)
+        except ValueError:
+            return jsonify({"ok": False, "error": _field_error(
+                "fecha_emision", "invalid_date", "La fecha de emision debe ser AAAA-MM-DD.")}), 400
+
+    nombre = secure_filename(archivo.filename) or "documento"
+    destino_dir = _doc_dir(proyecto)
+    destino_dir.mkdir(parents=True, exist_ok=True)
+
+    items = _load_store(DOCS_STORE_PATH)
+    doc_id = f"doc-{int(datetime.now(timezone.utc).timestamp() * 1000)}"
+    ruta = destino_dir / f"{doc_id}-{nombre}"
+    archivo.save(ruta)
+
+    registro = {
+        "id": doc_id,
+        "proyecto": proyecto,
+        "requisito": (request.form.get("requisito") or "").strip() or None,
+        "documento": documento,
+        "archivo": nombre,
+        "bytes": ruta.stat().st_size,
+        "fecha_emision": fecha_emision,
+        "subido_por": (request.form.get("usuario") or "").strip() or None,
+        "subido_en": datetime.now(timezone.utc).isoformat(),
+    }
+    items.append(registro)
+    _save_store(DOCS_STORE_PATH, items)
+
+    return jsonify({"ok": True, "documento": registro}), 201
+
+
+@app.get("/api/documentos/<doc_id>/archivo")
+def download_documento(doc_id: str):
+    items = _load_store(DOCS_STORE_PATH)
+    registro = next((d for d in items if d.get("id") == doc_id), None)
+    if registro is None:
+        return jsonify({"ok": False, "error": _field_error("id", "not_found", "Documento inexistente.")}), 404
+
+    ruta = _doc_dir(registro["proyecto"]) / f"{registro['id']}-{registro['archivo']}"
+    if not ruta.exists():
+        return jsonify({"ok": False, "error": _field_error("id", "file_missing", "El archivo ya no esta en disco.")}), 404
+    return send_file(ruta, as_attachment=True, download_name=registro["archivo"])
+
+
+@app.delete("/api/documentos/<doc_id>")
+def delete_documento(doc_id: str):
+    items = _load_store(DOCS_STORE_PATH)
+    registro = next((d for d in items if d.get("id") == doc_id), None)
+    if registro is None:
+        return jsonify({"ok": False, "error": _field_error("id", "not_found", "Documento inexistente.")}), 404
+
+    ruta = _doc_dir(registro["proyecto"]) / f"{registro['id']}-{registro['archivo']}"
+    ruta.unlink(missing_ok=True)
+    _save_store(DOCS_STORE_PATH, [d for d in items if d.get("id") != doc_id])
+    return jsonify({"ok": True, "id": doc_id})
+
+
+@app.get("/api/bitacora")
+def get_bitacora():
+    """Memoria de rechazos. `demo` avisa que todavia no hay rechazos reales
+    cargados: los contadores que se muestran arriba salen de datos sembrados."""
+    items = _load_store(BITACORA_STORE_PATH)
+    return jsonify({
+        "ok": True,
+        "items": items,
+        "count": len(items),
+        "demo": all(i.get("origen") == "demo" for i in items) if items else True,
+    })
+
+
+@app.post("/api/bitacora")
+def add_bitacora():
+    """Registra un rechazo real. Es lo que convierte el motor de fallas en
+    memoria: la proxima revision de cualquier proyecto ya lo toma en cuenta."""
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict) or not str(payload.get("falla") or "").strip():
+        return jsonify({"ok": False, "error": _field_error(
+            "falla", "missing_field", "Se requiere el id de la falla que causo el rechazo.")}), 400
+
+    items = _load_store(BITACORA_STORE_PATH)
+    registro = {
+        "id": f"bit-{len(items) + 1}",
+        "falla": str(payload["falla"]).strip()[:120],
+        "proyecto": str(payload.get("proyecto") or "").strip()[:64] or None,
+        "fecha": str(payload.get("fecha") or date.today().isoformat())[:10],
+        "institucion": str(payload.get("institucion") or "").strip()[:120] or None,
+        "nota": str(payload.get("nota") or "").strip()[:500] or None,
+        "origen": "real",
+    }
+    items.append(registro)
+    _save_store(BITACORA_STORE_PATH, items)
+    return jsonify({"ok": True, "registro": registro}), 201
+
+
+@app.post("/api/revision")
+def revisar_expediente():
+    """Motor de fallas: cruza los requisitos del proyecto con los archivos ya
+    cargados y devuelve que va a fallar. Body: {proyecto: <id>, datos: {...}}."""
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        return jsonify({"ok": False, "error": _field_error(
+            "body", "invalid_json", "Se espera un objeto JSON.")}), 400
+
+    proyecto_id = str(payload.get("proyecto") or "").strip()
+    datos = payload.get("datos")
+    if not isinstance(datos, dict):
+        return jsonify({"ok": False, "error": _field_error(
+            "datos", "missing_field", "Falta 'datos' con la informacion del proyecto.")}), 400
+
+    cargados = [d for d in _load_store(DOCS_STORE_PATH) if d.get("proyecto") == proyecto_id]
+    bitacora = _load_store(BITACORA_STORE_PATH)
+    hallazgos = revisar(_normalize_project(datos), cargados, bitacora=bitacora)
+
+    return jsonify({
+        "ok": True,
+        "proyecto": proyecto_id,
+        "hallazgos": hallazgos,
+        "resumen": resumen(hallazgos),
+        "cargados": len(cargados),
+        "bitacora_demo": all(i.get("origen") == "demo" for i in bitacora) if bitacora else True,
+    })
 
 
 @app.get("/api/project-status")

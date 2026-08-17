@@ -109,3 +109,143 @@ export async function evaluar(proyecto: Proyecto): Promise<Respuesta> {
   });
   return r.json();
 }
+
+/* ===================== JURISDICCIONES ===================== */
+
+/** Sale de reglas.json, no de una lista fija: es el avance del raspado. */
+export interface Jurisdiccion {
+  id: string;
+  label: string;
+  capa: "ministerial" | "municipal";
+  reglas: number;
+  documentos: number;
+  sin_confirmar: number;
+  fuentes: string[];
+}
+
+export async function jurisdicciones(): Promise<Jurisdiccion[]> {
+  const r = await fetch(`${API}/api/jurisdicciones`);
+  const j = await r.json();
+  return j.items ?? [];
+}
+
+/* ===================== DOCUMENTOS ===================== */
+
+export interface Documento {
+  id: string;
+  proyecto: string;
+  requisito: string | null;
+  /** nombre del requisito que satisface — es la llave contra la lista del motor */
+  documento: string;
+  archivo: string;
+  bytes: number;
+  /** alimenta las reglas de vigencia del motor de fallas; null = "no se sabe" */
+  fecha_emision: string | null;
+  subido_por: string | null;
+  subido_en: string;
+}
+
+/** Requisitos cuyo nombre declara un plazo: solo a esos se les pide la fecha. */
+export const pideFecha = (nombre: string) => /meses|emitid|vigenc/i.test(nombre);
+
+export async function docsDe(proyecto: string): Promise<Documento[]> {
+  const r = await fetch(`${API}/api/documentos?proyecto=${encodeURIComponent(proyecto)}`);
+  const j = await r.json();
+  return j.items ?? [];
+}
+
+export async function subirDoc(campos: {
+  proyecto: string;
+  documento: string;
+  requisito?: string;
+  usuario?: string;
+  fechaEmision?: string;
+  archivo: File;
+}): Promise<Documento> {
+  const fd = new FormData();
+  fd.append("proyecto", campos.proyecto);
+  fd.append("documento", campos.documento);
+  if (campos.requisito) fd.append("requisito", campos.requisito);
+  if (campos.usuario) fd.append("usuario", campos.usuario);
+  if (campos.fechaEmision) fd.append("fecha_emision", campos.fechaEmision);
+  fd.append("archivo", campos.archivo);
+
+  const r = await fetch(`${API}/api/documentos`, { method: "POST", body: fd });
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error?.message ?? "No se pudo subir el archivo");
+  return j.documento;
+}
+
+export async function borrarDoc(id: string): Promise<void> {
+  await fetch(`${API}/api/documentos/${id}`, { method: "DELETE" });
+}
+
+export const urlDoc = (id: string) => `${API}/api/documentos/${id}/archivo`;
+
+/* ===================== MOTOR DE FALLAS ===================== */
+
+export type Severidad = "bloqueante" | "riesgo" | "aviso";
+
+export interface Hallazgo {
+  id: string;
+  severidad: Severidad;
+  titulo: string;
+  detalle: string;
+  remedio: string | null;
+  fuente: string | null;
+  /** requisito afectado, si la falla es sobre un documento concreto */
+  documento: string | null;
+  /** veces que esta falla causó un rechazo en la bitácora */
+  veces: number;
+}
+
+export interface Revision {
+  hallazgos: Hallazgo[];
+  resumen: { bloqueante: number; riesgo: number; aviso: number; total: number; listo: boolean };
+  cargados: number;
+  /** true mientras la bitácora solo tenga rechazos sembrados, no reales */
+  bitacora_demo: boolean;
+}
+
+export const SEVERIDADES: Record<Severidad, { label: string; tono: "peligro" | "alerta" | "neutro" }> = {
+  bloqueante: { label: "Bloqueante", tono: "peligro" },
+  riesgo: { label: "Riesgo", tono: "alerta" },
+  aviso: { label: "Aviso", tono: "neutro" },
+};
+
+/** Cruza los requisitos del proyecto con lo ya cargado. */
+export async function revisar(proyecto: string, datos: Proyecto): Promise<Revision> {
+  const r = await fetch(`${API}/api/revision`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ proyecto, datos }),
+  });
+  return r.json();
+}
+
+export interface Rechazo {
+  id: string;
+  falla: string;
+  proyecto: string | null;
+  fecha: string;
+  institucion: string | null;
+  nota: string | null;
+  origen: "demo" | "real";
+}
+
+export async function bitacora(): Promise<{ items: Rechazo[]; demo: boolean }> {
+  const r = await fetch(`${API}/api/bitacora`);
+  const j = await r.json();
+  return { items: j.items ?? [], demo: j.demo ?? true };
+}
+
+/** Registrar un rechazo real es lo que hace que el motor aprenda. */
+export async function registrarRechazo(r: {
+  falla: string; proyecto?: string; institucion?: string; nota?: string;
+}): Promise<void> {
+  await fetch(`${API}/api/bitacora`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(r),
+  });
+}

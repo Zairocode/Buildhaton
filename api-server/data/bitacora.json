@@ -1,0 +1,13 @@
+[
+  { "id": "bit-1", "falla": "solvencia-vencida-gt", "proyecto": "PRY-2025-0018", "fecha": "2025-11-04", "institucion": "Muniguate — Ventanilla Única", "nota": "Solvencia de 2 meses vencida mientras el expediente esperaba resolución MARN.", "origen": "demo" },
+  { "id": "bit-2", "falla": "solvencia-vencida-gt", "proyecto": "PRY-2025-0024", "fecha": "2026-01-22", "institucion": "Muniguate — Ventanilla Única", "nota": "Misma causa, otro expediente. Se sacó la solvencia al inicio del trámite.", "origen": "demo" },
+  { "id": "bit-3", "falla": "solvencia-vencida-gt", "proyecto": "PRY-2026-0009", "fecha": "2026-03-11", "institucion": "Muniguate — Ventanilla Única", "nota": "Tercera vez. Se movió la solvencia al final de la lista de armado.", "origen": "demo" },
+  { "id": "bit-4", "falla": "registral-vencida-scp", "proyecto": "PRY-2025-0031", "fecha": "2025-12-02", "institucion": "SCP — Dirección Municipal de Planificación", "nota": "Certificación de 4 meses: válida en la capital, rechazada en Pinula.", "origen": "demo" },
+  { "id": "bit-5", "falla": "registral-vencida-scp", "proyecto": "PRY-2026-0014", "fecha": "2026-04-18", "institucion": "SCP — Dirección Municipal de Planificación", "nota": "Se reusó el fólder de un proyecto de la capital sin revisar el plazo.", "origen": "demo" },
+  { "id": "bit-6", "falla": "planos-cad-gt", "proyecto": "PRY-2025-0027", "fecha": "2026-02-06", "institucion": "Muniguate — Ventanilla Única", "nota": "CD entregado con DWG 2018; la guía pide versión 2007.", "origen": "demo" },
+  { "id": "bit-7", "falla": "dgac-por-torre", "proyecto": "PRY-2025-0022", "fecha": "2025-10-15", "institucion": "DGAC", "nota": "Un solo formulario para tres torres. Se pagaron dos formularios adicionales.", "origen": "demo" },
+  { "id": "bit-8", "falla": "expediente-fisico", "proyecto": "PRY-2026-0011", "fecha": "2026-05-20", "institucion": "Muniguate — Ventanilla Única", "nota": "Fólder tamaño carta en vez de oficio. Devuelto sin revisar el contenido.", "origen": "demo" },
+  { "id": "bit-9", "falla": "gestion-scp-asociacion-vecinos", "proyecto": "PRY-2026-0014", "fecha": "2026-06-09", "institucion": "SCP — Dirección Municipal de Planificación", "nota": "La asociación de vecinos tardó 7 semanas en firmar. No hay plazo normado.", "origen": "demo" },
+  { "id": "bit-10", "falla": "pozo-calidad-agua", "proyecto": "PRY-2025-0019", "fecha": "2025-09-30", "institucion": "MSPAS", "nota": "Dictamen sanitario favorable anulado: la calidad de agua se presentó fuera de plazo.", "origen": "demo" },
+  { "id": "bit-11", "falla": "vac05-datos", "proyecto": "PRY-2026-0009", "fecha": "2026-03-25", "institucion": "Administración VAC", "nota": "NIT mal digitado. Corrección por correo: 6 días hábiles de espera.", "origen": "demo" }
+]
