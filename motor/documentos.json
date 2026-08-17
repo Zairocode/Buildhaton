@@ -908,5 +908,53 @@
       "Solvencia Municipal del inmueble, emitida en los últimos 2 meses",
       "Solvencia municipal extendida por Tesorería"
     ]
+  },
+  {
+    "id": "cert-eval-parametros-pot-xela",
+    "nombre": "Certificación de evaluación de parámetros normativos del predio",
+    "categoria": "dictamen",
+    "quien_emite": "Departamento de Control de Obras, Municipalidad de Quetzaltenango",
+    "consejo_vencimiento": "Vigencia de 6 meses desde su emisión (Art. 53, POT Quetzaltenango 2022).",
+    "consejo_formato": null,
+    "alias": [
+      "Certificación de evaluación de parámetros normativos del predio",
+      "Certificación factible de evaluación de parámetros normativos"
+    ]
+  },
+  {
+    "id": "informe-asesoria-alto-impacto-xela",
+    "nombre": "Informe de Asesoría para proyectos de alto impacto",
+    "categoria": "dictamen",
+    "quien_emite": "Municipalidad de Quetzaltenango (varias dependencias, coordina Control de Obras)",
+    "consejo_vencimiento": "Vigencia de 6 meses desde su emisión (Art. 53, POT Quetzaltenango 2022).",
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "dictamen-departamento-ordenamiento-territorial-xela",
+    "nombre": "Dictamen del Departamento de Ordenamiento Territorial",
+    "categoria": "dictamen",
+    "quien_emite": "Departamento de Ordenamiento Territorial, Municipalidad de Quetzaltenango",
+    "consejo_vencimiento": "Es de carácter obligatorio para todo proyecto de alto impacto: el Art. 60 del POT dice que nunca se dispensa.",
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "plan-manejo-ambiental-xela",
+    "nombre": "Plan de Manejo Ambiental",
+    "categoria": "ambiental",
+    "quien_emite": "Dirección de Servicios Ambientales, Municipalidad de Quetzaltenango",
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "estudio-geotecnico-conred-xela",
+    "nombre": "Estudio geotécnico y autorización favorable de habitabilidad de CONRED",
+    "categoria": "dictamen",
+    "quien_emite": "Profesional colegiado + CONRED",
+    "consejo_vencimiento": "Solo aplica para regularizar obras existentes en zonas especiales de riesgo (ESP-Q6/Q7/Q8), no para obra nueva.",
+    "consejo_formato": null,
+    "alias": []
   }
 ]

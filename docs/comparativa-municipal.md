@@ -6,6 +6,11 @@ Fuentes: [`fuentes/MUNIGUATE_guia_09F.pdf`](fuentes/MUNIGUATE_guia_09F.pdf) · [
 
 Esto es la evidencia de la tesis del proyecto. Si alguien duda de que la autonomía municipal rompe el proceso, esta página lo cierra.
 
+> Un tercer municipio, Quetzaltenango (Xela), confirma el mismo patrón — otro eje de
+> clasificación, otra vigencia para la misma certificación registral (3 meses, como Pinula,
+> no 6 como la capital), y la misma cláusula de discrecionalidad incrustada en la ley. Ver
+> [`quetzaltenango-pot.md`](quetzaltenango-pot.md).
+
 ---
 
 ## Ni siquiera clasifican las obras igual

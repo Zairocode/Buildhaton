@@ -70,6 +70,7 @@ export interface Empresa {
 export const MUNICIPALIDADES = [
   { id: "muniguate", label: "Guatemala" },
   { id: "scp", label: "Santa Catarina Pinula" },
+  { id: "xela", label: "Quetzaltenango" },
 ];
 
 /**
@@ -195,6 +196,16 @@ const SEMILLA: Store = {
         municipalidad: "muniguate", tipo_solicitud: "Plaza Comercial", area_construccion_m2: 9800,
         altura_m: 24, uso_publico: true, categoria_ambiental: "B1", asientos_fijos: false,
         corte_arboles_m3: 18, poligono_irregular: true,
+      },
+    },
+    {
+      id: "PRY-2026-0067", nombre: "Residencial Altos de Xelajú", municipalidadLabel: "Quetzaltenango",
+      tipo: "Residencial", direccion: "Zona 3, Quetzaltenango", areaTerreno: 1800,
+      estado: "en_carga", cargados: 2, contactos: ["u1", "u2"],
+      datos: {
+        municipalidad: "xela", tipo_solicitud: "Residencial", area_construccion_m2: 420, altura_m: 9,
+        uso_publico: false, categoria_ambiental: "B2", categoria_uso_suelo_xela: "residencial",
+        zona_macro_pot: "urbana", alto_impacto_pot: false, movimiento_tierra_m3: 12,
       },
     },
   ],

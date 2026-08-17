@@ -970,5 +970,229 @@
     ],
     "fuente": "SCP gran magnitud incisos l y m; construcción mayor",
     "confianza": "confirmada"
+  },
+  {
+    "id": "xela-permiso-obra-ligera",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango (Departamento de Control de Obras)",
+    "tipo": "gestion",
+    "cuando": {
+      "area_construccion_m2": { "<": 20 }
+    },
+    "exige": [
+      "Permiso de obra ligera ante el Departamento de Control de Obras. Vigencia de 1 mes. No aplica a proyectos de alto impacto ni a usos de suelo condicionados."
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 66.f",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "xela-licencia-construccion",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango (Departamento de Control de Obras)",
+    "tipo": "gestion",
+    "cuando": {
+      "area_construccion_m2": { ">=": 20 }
+    },
+    "exige": [
+      "Licencia de obra de construcción ante el Departamento de Control de Obras (obras y pavimentaciones desde 20 m² en adelante)."
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 66.e",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "xela-movimiento-tierra",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango (Departamento de Control de Obras)",
+    "tipo": "gestion",
+    "cuando": {
+      "movimiento_tierra_m3": { ">=": 4 }
+    },
+    "exige": [
+      "Licencia de obra de movimiento de tierra y excavaciones (transporte de 4 m³ de material en adelante)."
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 66.b",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "xela-urbanizacion",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango (Concejo Municipal)",
+    "tipo": "gestion",
+    "cuando": {
+      "desmembraciones_con_apertura_calle": { ">": 5 }
+    },
+    "exige": [
+      "Licencia de obra de urbanización, aprobada por el Concejo Municipal en dos etapas: anteproyecto y proyecto (este último solo una vez ejecutadas al 100% las obras de urbanización)."
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 55, 66.c",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "xela-uso-suelo-residencial",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango (Departamento de Control de Obras)",
+    "tipo": "gestion",
+    "cuando": {
+      "categoria_uso_suelo_xela": "residencial"
+    },
+    "exige": [
+      "Licencia de uso del suelo residencial. Vigencia indefinida."
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 74, 80",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "xela-uso-suelo-ordinario",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango (Departamento de Control de Obras)",
+    "tipo": "gestion",
+    "cuando": {
+      "categoria_uso_suelo_xela": "ordinario"
+    },
+    "exige": [
+      "Licencia de uso del suelo ordinario. Vigencia de 4 años."
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 74, 80",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "xela-uso-suelo-condicionado",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango (Departamento de Control de Obras)",
+    "tipo": "gestion",
+    "cuando": {
+      "categoria_uso_suelo_xela": "condicionado"
+    },
+    "exige": [
+      "Licencia de uso del suelo condicionado. Vigencia de 3 años; el Departamento de Ordenamiento Territorial puede fijar condiciones especiales."
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 27.C.b, 74, 80",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "xela-cert-eval-parametros",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango (Departamento de Control de Obras)",
+    "cuando": {},
+    "exige": [
+      {
+        "documento": "cert-eval-parametros-pot-xela",
+        "detalle": "Certificación de evaluación de parámetros normativos del predio",
+        "vigencia_meses": 6
+      }
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 53",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "xela-cert-rgp",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango (Departamento de Control de Obras)",
+    "cuando": {},
+    "exige": [
+      {
+        "documento": "cert-rgp",
+        "detalle": "Certificación del Segundo Registro de la Propiedad del predio, expedida con antelación no mayor de 3 meses",
+        "vigencia_meses": 3
+      }
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 148",
+    "confianza": "confirmada",
+    "nota": "Mismo plazo que Santa Catarina Pinula (3 meses), no el de 6 meses de la capital."
+  },
+  {
+    "id": "xela-alto-impacto-equipo",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango (Mesa Técnica de Ordenamiento Territorial)",
+    "tipo": "gestion",
+    "cuando": {
+      "alto_impacto_pot": true
+    },
+    "exige": [
+      "Equipo multidisciplinario de profesionales colegiados (estructural, sanitario, hidráulico, eléctrico, ambiental) y revisión obligatoria por la Mesa Técnica de Ordenamiento Territorial."
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 60, 130",
+    "confianza": "confirmada",
+    "nota": "Esto no se resuelve subiendo un archivo: es una revisión colegiada, no un documento."
+  },
+  {
+    "id": "xela-alto-impacto-dictamenes",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango (Departamento de Ordenamiento Territorial)",
+    "cuando": {
+      "alto_impacto_pot": true
+    },
+    "exige": [
+      {
+        "documento": "informe-asesoria-alto-impacto-xela",
+        "detalle": "Informe de Asesoría para proyectos de alto impacto",
+        "vigencia_meses": 6
+      },
+      {
+        "documento": "dictamen-departamento-ordenamiento-territorial-xela",
+        "detalle": "Dictamen del Departamento de Ordenamiento Territorial (obligatorio, nunca dispensable para proyectos de alto impacto)"
+      }
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 53, 60",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "xela-impacto-vial",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango (Departamento de Vía Pública)",
+    "cuando": {
+      "alto_impacto_pot": true
+    },
+    "exige": [
+      {
+        "documento": "estudio-de-impacto-vial",
+        "detalle": "Estudio de Impacto Vial, o una Revisión de Impacto Vial más ligera según lo determine el Departamento de Vía Pública"
+      }
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 38",
+    "confianza": "SIN_CONFIRMAR",
+    "nota": "El Art. 38 no da un umbral objetivo entre 'revisión' (solo chequeo de planos) y 'estudio' completo: lo decide el Departamento de Vía Pública caso por caso. Se marca como disparador aproximado (todo alto impacto) hasta confirmar el criterio real."
+  },
+  {
+    "id": "xela-zona-rural-forestal",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango (Dirección de Servicios Ambientales)",
+    "cuando": {
+      "zona_macro_pot": { "in": ["rural", "forestal"] }
+    },
+    "exige": [
+      {
+        "documento": "plan-manejo-ambiental-xela",
+        "detalle": "Plan de Manejo Ambiental, aprobado por la Dirección de Servicios Ambientales"
+      }
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 41, 42, 46",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "xela-discrecionalidad",
+    "capa": "municipal",
+    "jurisdiccion": "xela",
+    "institucion": "Municipalidad de Quetzaltenango",
+    "tipo": "aviso",
+    "cuando": {},
+    "exige": [
+      "Esta lista NO es completa: \"Todo proyecto está sujeto a la ampliación de requisitos, según sea el caso, a criterio de las dependencias responsables y con una base técnica justificada\" (Art. 61); casos no contemplados los resuelve la Mesa Técnica con aprobación del Concejo Municipal (Art. 155)."
+    ],
+    "fuente": "POT Quetzaltenango 2022 · Art. 61, 155",
+    "confianza": "confirmada"
   }
 ]

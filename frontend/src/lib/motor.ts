@@ -13,7 +13,7 @@ export type Proyecto = Record<string, string | number | boolean | null>;
 
 /** Datos municipales que el VAC02 nunca pregunta. Se piden aparte. */
 export interface DatosMunicipales {
-  municipalidad?: "muniguate" | "scp";
+  municipalidad?: "muniguate" | "scp" | "xela";
   categoria_obra_scp?: "menor" | "mayor" | "gran_magnitud";
   fuente_agua?: "nueva" | "existente";
   fuente_agua_scp?: "empresa_privada" | "municipal" | "pozo";
@@ -28,6 +28,10 @@ export interface DatosMunicipales {
   asientos_fijos?: boolean;
   corte_arboles_m3?: number;
   movimiento_tierra_m3?: number;
+  alto_impacto_pot?: boolean;
+  categoria_uso_suelo_xela?: "residencial" | "ordinario" | "condicionado";
+  zona_macro_pot?: "urbana" | "rural" | "forestal" | "especial";
+  desmembraciones_con_apertura_calle?: number;
 }
 
 /** Los 15 campos que el formulario consolidado no cubre. */
@@ -47,6 +51,10 @@ export const FALTANTES: { campo: keyof DatosMunicipales; pregunta: string; capa:
   { campo: "asientos_fijos",              pregunta: "¿Tiene asientos fijos?",                                capa: "ministerial" },
   { campo: "corte_arboles_m3",            pregunta: "Volumen de corte de árboles (m³)",                      capa: "municipal" },
   { campo: "movimiento_tierra_m3",        pregunta: "Volumen de movimiento de tierra (m³)",                  capa: "municipal" },
+  { campo: "alto_impacto_pot",            pregunta: "¿Es un proyecto de alto impacto? (Xela, Art. 130 POT)", capa: "xela" },
+  { campo: "categoria_uso_suelo_xela",    pregunta: "Categoría de uso del suelo (Xela)",                     capa: "xela" },
+  { campo: "zona_macro_pot",              pregunta: "Zona del predio: urbana, rural, forestal o especial (Xela)", capa: "xela" },
+  { campo: "desmembraciones_con_apertura_calle", pregunta: "Desmembraciones con apertura de calle (Xela)",   capa: "xela" },
 ];
 
 const si = (v?: string) => (v == null || v === "" ? undefined : v === "Sí");

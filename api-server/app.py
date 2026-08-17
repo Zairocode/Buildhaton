@@ -34,6 +34,7 @@ NOMBRES_JURISDICCION = {
     "GT": "Gobierno central (VAC)",
     "muniguate": "Guatemala",
     "scp": "Santa Catarina Pinula",
+    "xela": "Quetzaltenango",
 }
 
 ID_SEGURO = re.compile(r"^[A-Za-z0-9._-]{1,64}$")

@@ -16,6 +16,8 @@ REGLAS = json.loads((pathlib.Path(__file__).parent / "reglas.json").read_text(en
 OPS = {
     ">":  lambda v, a: v is not None and v > a,
     "<":  lambda v, a: v is not None and v < a,
+    ">=": lambda v, a: v is not None and v >= a,
+    "<=": lambda v, a: v is not None and v <= a,
     "in": lambda v, a: v in a,
 }
 
@@ -133,6 +135,29 @@ def demo():
     # Ninguna lista publicada es completa, y ambas munis lo dicen por escrito.
     for p in (en_capital, en_pinula):
         assert any(r.get("tipo") == "aviso" for r in requisitos(p))
+
+    # La tesis, tercer caso: Quetzaltenango (POT 2022) tampoco cruza ids con las otras dos.
+    en_xela = {**obra, "municipalidad": "xela"}
+    ids_xela = {r["id"] for r in requisitos(en_xela)}
+    assert not (ids_xela & ids_cap) and not (ids_xela & ids_scp), \
+        "las reglas de xela no deben cruzarse con las de otra jurisdiccion"
+    assert any(r.get("tipo") == "aviso" for r in requisitos(en_xela))
+
+    # 20 m² es el corte legal (Art. 66): "desde 20 m2 en adelante" es licencia, no permiso.
+    obra_ligera = {"municipalidad": "xela", "area_construccion_m2": 15}
+    licencia = {"municipalidad": "xela", "area_construccion_m2": 25}
+    ids_ligera = {r["id"] for r in requisitos(obra_ligera)}
+    ids_licencia = {r["id"] for r in requisitos(licencia)}
+    assert "xela-permiso-obra-ligera" in ids_ligera and "xela-licencia-construccion" not in ids_ligera
+    assert "xela-licencia-construccion" in ids_licencia and "xela-permiso-obra-ligera" not in ids_licencia
+
+    # Alto impacto (Art. 130) es autodeclarado: dispara equipo + dictámenes + impacto vial.
+    alto = {"municipalidad": "xela", "alto_impacto_pot": True}
+    bajo = {"municipalidad": "xela", "alto_impacto_pot": False}
+    ids_alto = {r["id"] for r in requisitos(alto)}
+    ids_bajo = {r["id"] for r in requisitos(bajo)}
+    assert {"xela-alto-impacto-equipo", "xela-alto-impacto-dictamenes", "xela-impacto-vial"} <= ids_alto
+    assert not ({"xela-alto-impacto-equipo", "xela-alto-impacto-dictamenes", "xela-impacto-vial"} & ids_bajo)
 
     print("self-check OK\n")
     print(f"Caso: EAP {torre['area_construccion_m2']} m², {torre['altura_m']} m de altura, PTAR nueva")

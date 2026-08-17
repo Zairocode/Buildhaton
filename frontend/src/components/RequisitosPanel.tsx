@@ -12,6 +12,7 @@ const INK = "#1A2332";
 const MUNIS = [
   { id: "muniguate", nombre: "Guatemala (capital)" },
   { id: "scp", nombre: "Santa Catarina Pinula" },
+  { id: "xela", nombre: "Quetzaltenango" },
 ] as const;
 
 /** Solo se pregunta lo que la municipalidad elegida realmente usa. */
@@ -25,6 +26,15 @@ function preguntasDe(muni?: string) {
       { campo: "categoria_obra_scp", label: "Categoría de obra", opciones: ["menor", "mayor", "gran_magnitud"] },
       { campo: "fuente_agua_scp", label: "Fuente de agua", opciones: ["empresa_privada", "municipal", "pozo"] },
       { campo: "en_residencial_o_condominio", label: "¿En residencial o condominio?", bool: true },
+      ...comunes,
+    ];
+  if (muni === "xela")
+    return [
+      { campo: "alto_impacto_pot", label: "¿Proyecto de alto impacto? (Art. 130 POT)", bool: true },
+      { campo: "categoria_uso_suelo_xela", label: "Categoría de uso del suelo", opciones: ["residencial", "ordinario", "condicionado"] },
+      { campo: "zona_macro_pot", label: "Zona del predio", opciones: ["urbana", "rural", "forestal", "especial"] },
+      { campo: "desmembraciones_con_apertura_calle", label: "Desmembraciones con apertura de calle", num: true },
+      { campo: "movimiento_tierra_m3", label: "Movimiento de tierra (m³)", num: true },
       ...comunes,
     ];
   return [
