@@ -171,4 +171,6 @@ def demo():
 
 
 if __name__ == "__main__":
+    import sys                              # la consola de Windows es cp1252 y no traga "≤"
+    sys.stdout.reconfigure(encoding="utf-8")
     demo()
