@@ -1,0 +1,1149 @@
+{
+  "version": 1,
+  "descripcion": "Glosario de términos técnicos, campos del motor y valores que confunden en Buildhaton.",
+  "categorias": {
+    "campo_proyecto": "Variable del objeto proyecto que evalúa el motor (snake_case)",
+    "campo_wizard": "Campo del formulario VAC02 traducido en motor.ts",
+    "jurisdiccion": "Identificador de municipio o capa GT en reglas.json",
+    "institucion": "Organismo emisor o actor del trámite",
+    "norma": "Norma técnica o acuerdo gubernativo citado",
+    "concepto": "Término de dominio o procedimiento",
+    "umbral": "Número con efecto normativo (m², m³, m, plazos)",
+    "metadata": "Campos del catálogo, reglas, fallas o API"
+  },
+  "entradas": [
+    {
+      "id": "capa_ministerial",
+      "termino": "Capa ministerial",
+      "categoria": "concepto",
+      "definicion": "Requisitos de instituciones centralizadas en la VAC (CONRED, DGAC, MSPAS, MARN, etc.). Se tramitan en app.vac.com.gt con un expediente por institución.",
+      "por_que_importa": "La municipalidad exige la salida de esta capa como entrada al trámite local.",
+      "fuente": "README.md; municipal-guatemala.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "capa_municipal",
+      "termino": "Capa municipal",
+      "categoria": "concepto",
+      "definicion": "Requisitos propios de la municipalidad donde se edifica. No están unificados en la VAC; cada municipio tiene guías, umbrales y vigencias distintas.",
+      "por_que_importa": "Es la mitad no resuelta del trámite y donde está la variabilidad que justifica Buildhaton.",
+      "fuente": "CLAUDE.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "jurisdiccion_GT",
+      "termino": "GT",
+      "categoria": "jurisdiccion",
+      "definicion": "Identificador de reglas ministeriales (nacionales) en reglas.json. Siempre se evalúa junto con la municipalidad elegida.",
+      "valores": [
+        "GT"
+      ],
+      "fuente": "motor/reglas.json",
+      "confianza": "alta"
+    },
+    {
+      "id": "jurisdiccion_muniguate",
+      "termino": "muniguate",
+      "categoria": "jurisdiccion",
+      "definicion": "Municipalidad de Guatemala (capital). Guías 09-F (F08, ≤700 m²) y 00-F/01-F (F02 v3, resto de proyectos).",
+      "valores": [
+        "muniguate"
+      ],
+      "fuente": "docs/municipal-guatemala.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "jurisdiccion_scp",
+      "termino": "scp",
+      "categoria": "jurisdiccion",
+      "definicion": "Santa Catarina Pinula. Clasifica obras por categoría cualitativa (menor / mayor / gran magnitud), no solo por m².",
+      "valores": [
+        "scp"
+      ],
+      "fuente": "docs/comparativa-municipal.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "jurisdiccion_xela",
+      "termino": "xela",
+      "categoria": "jurisdiccion",
+      "definicion": "Quetzaltenango. Reglas basadas en el POT 2022 (COM-008-2026): alto impacto autodeclarado, zonas macro, vigencias distintas.",
+      "valores": [
+        "xela"
+      ],
+      "fuente": "docs/quetzaltenango-pot.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "municipalidad",
+      "termino": "municipalidad",
+      "categoria": "campo_proyecto",
+      "definicion": "Municipio donde se tramita la licencia de construcción. El VAC02 no lo pregunta; es uno de los FALTANTES del panel.",
+      "valores": [
+        "muniguate",
+        "scp",
+        "xela"
+      ],
+      "por_que_importa": "Activa un conjunto distinto de reglas municipales; la misma obra cambia de lista completa al cambiar municipio.",
+      "fuente": "frontend/src/lib/motor.ts FALTANTES",
+      "confianza": "alta"
+    },
+    {
+      "id": "uso_publico",
+      "termino": "uso_publico",
+      "categoria": "campo_proyecto",
+      "definicion": "Si la edificación permite acceso de personal (empleados, contratistas) o de usuarios (clientes, compradores). Dispara NRD-2 de CONRED.",
+      "valores": [
+        true,
+        false
+      ],
+      "por_que_importa": "Una vivienda unifamiliar privada queda fuera; una plaza comercial entra. No es default true.",
+      "relacionado": [
+        "conred-nrd2",
+        "tipoUso"
+      ],
+      "fuente": "VAC04 CONRED; matriz-requisitos.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "asientos_fijos",
+      "termino": "asientos_fijos",
+      "categoria": "campo_proyecto",
+      "definicion": "Si el proyecto incluye asientos fijos (auditorios, salas, etc.). Dispara plano de detalle adicional CONRED.",
+      "valores": [
+        true,
+        false
+      ],
+      "fuente": "VAC04 CONRED núm. 10",
+      "confianza": "alta"
+    },
+    {
+      "id": "altura_m",
+      "termino": "altura_m",
+      "categoria": "campo_proyecto",
+      "definicion": "Altura del edificio en metros. Umbral crítico: >16 m dispara DGAC (marcado SIN_CONFIRMAR en alcance nacional vs. Departamento de Guatemala).",
+      "por_que_importa": "También activa requisitos municipales en Guía 00-F. VAC07: un formulario y un pago DGAC por cada torre.",
+      "relacionado": [
+        "dgac-altura",
+        "en_cono_la_aurora"
+      ],
+      "fuente": "VAC02; VAC07; Guía 00-F",
+      "confianza": "SIN_CONFIRMAR"
+    },
+    {
+      "id": "area_construccion_m2",
+      "termino": "area_construccion_m2",
+      "categoria": "campo_proyecto",
+      "definicion": "Área de construcción en metros cuadrados. En Muniguate: >30 m² planos colegiados; >200 m² CAD 2007; >700 m² fuera de Guía 09-F. En Xela: ≥20 m² licencia de obra.",
+      "por_que_importa": "Parsear mal este número rompe umbrales (ej. «700 m²» mal leído como 7002).",
+      "relacionado": [
+        "muni-gt-colegiado",
+        "muni-gt-cad-digital",
+        "muni-gt-fuera-de-guia"
+      ],
+      "fuente": "Guía 09-F; POT Quetzaltenango Art. 66",
+      "confianza": "alta"
+    },
+    {
+      "id": "genera_aguas_pluviales",
+      "termino": "genera_aguas_pluviales",
+      "categoria": "campo_proyecto",
+      "definicion": "Si el proyecto genera o modifica recolección de aguas pluviales. Uno de los cuatro disparadores base de MSPAS en VAC02.",
+      "valores": [
+        true,
+        false
+      ],
+      "relacionado": [
+        "mspas-base"
+      ],
+      "fuente": "VAC02 v2 §3g; VAC04 MSPAS",
+      "confianza": "alta"
+    },
+    {
+      "id": "afecta_salud_circunvecina",
+      "termino": "afecta_salud_circunvecina",
+      "categoria": "campo_proyecto",
+      "definicion": "Si la obra puede afectar la salud de personas en el entorno. Disparador MSPAS.",
+      "valores": [
+        true,
+        false
+      ],
+      "fuente": "VAC02 v2 §3g",
+      "confianza": "alta"
+    },
+    {
+      "id": "almacena_agua_combustible_lubricantes",
+      "termino": "almacena_agua_combustible_lubricantes",
+      "categoria": "campo_proyecto",
+      "definicion": "Si almacena agua, combustible, lubricantes u otros materiales. Disparador MSPAS y posiblemente MEM.",
+      "valores": [
+        true,
+        false
+      ],
+      "relacionado": [
+        "mspas-base",
+        "requiere_mem"
+      ],
+      "fuente": "VAC02 v2 §3g",
+      "confianza": "alta"
+    },
+    {
+      "id": "impacto_social",
+      "termino": "impacto_social",
+      "categoria": "campo_proyecto",
+      "definicion": "Si el proyecto tiene impacto social relevante. Disparador MSPAS.",
+      "valores": [
+        true,
+        false
+      ],
+      "fuente": "VAC02 v2 §3g",
+      "confianza": "alta"
+    },
+    {
+      "id": "abastecimiento_agua_consumo_humano",
+      "termino": "abastecimiento_agua_consumo_humano",
+      "categoria": "campo_proyecto",
+      "definicion": "Si incluye abastecimiento de agua para consumo humano. Activa paquetes MSPAS 1–3 (planos, certificado AG 178, constancias).",
+      "valores": [
+        true,
+        false
+      ],
+      "relacionado": [
+        "fuente_agua",
+        "mspas-agua-consumo-humano"
+      ],
+      "fuente": "VAC04 MSPAS paquete 1",
+      "confianza": "alta"
+    },
+    {
+      "id": "fuente_agua",
+      "termino": "fuente_agua",
+      "categoria": "campo_proyecto",
+      "definicion": "Eje ministerial MSPAS: sistema de agua totalmente nuevo vs. conexión a red existente.",
+      "valores": [
+        {
+          "valor": "nueva",
+          "significado": "Sistema nuevo o al menos una fuente nueva → certificado calidad AG 178-2009"
+        },
+        {
+          "valor": "existente",
+          "significado": "Conexión a abastecimiento existente → constancia del abastecedor + informes NTG 29001"
+        }
+      ],
+      "por_que_importa": "Duplica ramas de documentos; era el error más grande de la primera versión del motor.",
+      "fuente": "VAC04 MSPAS paquetes 2 y 3; matriz-requisitos.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "tratamiento_aguas_residuales",
+      "termino": "tratamiento_aguas_residuales",
+      "categoria": "campo_proyecto",
+      "definicion": "Cómo se resuelven las aguas residuales del proyecto a nivel MSPAS.",
+      "valores": [
+        {
+          "valor": "nueva",
+          "significado": "PTAR nueva → paquete 8 completo (15 parámetros, planos A1, manuales)"
+        },
+        {
+          "valor": "conexion_existente",
+          "significado": "Conexión a PTAR existente → informe técnico descriptivo de la planta receptora"
+        }
+      ],
+      "fuente": "VAC04 MSPAS paquetes 8 y 9",
+      "confianza": "alta"
+    },
+    {
+      "id": "categoria_ambiental",
+      "termino": "categoria_ambiental",
+      "categoria": "campo_proyecto",
+      "definicion": "Categoría del instrumento ambiental MARN según tamaño y listado taxativo.",
+      "valores": [
+        {
+          "valor": "A",
+          "significado": "Mayor impacto; exige edicto publicado"
+        },
+        {
+          "valor": "B1",
+          "significado": "Impacto intermedio; exige edicto publicado"
+        },
+        {
+          "valor": "B2",
+          "significado": "Menor impacto; edicto exento"
+        }
+      ],
+      "relacionado": [
+        "marn-edicto",
+        "tipoLicencia"
+      ],
+      "fuente": "VAC04 MARN; matriz-requisitos.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "cercano_area_bosque",
+      "termino": "cercano_area_bosque",
+      "categoria": "campo_proyecto",
+      "definicion": "Si el predio está cerca de área de bosque. Dispara plan de aprovechamiento forestal INAB en VAC02; INAB no está integrado a la plataforma VAC.",
+      "valores": [
+        true,
+        false
+      ],
+      "fuente": "VAC02 §3j",
+      "confianza": "alta"
+    },
+    {
+      "id": "tipo_solicitud",
+      "termino": "tipo_solicitud",
+      "categoria": "campo_proyecto",
+      "definicion": "Tipo de trámite municipal en Muniguate. Valores usados por reglas: EAP (establecimiento abierto al público), fraccionamiento.",
+      "valores": [
+        "EAP",
+        "fraccionamiento"
+      ],
+      "relacionado": [
+        "muni-gt-eap-tasa",
+        "muni-gt-cad-digital"
+      ],
+      "fuente": "Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "categoria_obra_scp",
+      "termino": "categoria_obra_scp",
+      "categoria": "campo_proyecto",
+      "definicion": "Clasificación cualitativa de obra en Santa Catarina Pinula. Reemplaza los umbrales en m² de la capital como eje principal.",
+      "valores": [
+        {
+          "valor": "menor",
+          "significado": "Obra menor — lista reducida"
+        },
+        {
+          "valor": "mayor",
+          "significado": "Obra mayor — asociación de vecinos, acta notarial, DWG"
+        },
+        {
+          "valor": "gran_magnitud",
+          "significado": "Proyecto de gran magnitud — fianza, impacto vial, NRD 1+2+3, etc."
+        }
+      ],
+      "fuente": "SCP guías; comparativa-municipal.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "fuente_agua_scp",
+      "termino": "fuente_agua_scp",
+      "categoria": "campo_proyecto",
+      "definicion": "Origen del agua potable en Pinula. Tres ramas municipales distintas (paralelo al eje MSPAS pero con documentos locales).",
+      "valores": [
+        {
+          "valor": "empresa_privada",
+          "significado": "Dictamen de agua y saneamiento de empresa privada"
+        },
+        {
+          "valor": "municipal",
+          "significado": "Constancia de pago del último mes al proveedor municipal"
+        },
+        {
+          "valor": "pozo",
+          "significado": "Dictamen Dirección de Agua y Saneamiento + plano pozo ≥100 m radial"
+        }
+      ],
+      "fuente": "SCP construcción mayor",
+      "confianza": "alta"
+    },
+    {
+      "id": "en_residencial_o_condominio",
+      "termino": "en_residencial_o_condominio",
+      "categoria": "campo_proyecto",
+      "definicion": "Si el inmueble está en residencial o condominio. En SCP puede exigir carta y sello de asociación de vecinos — requisito social inexistente en la capital.",
+      "valores": [
+        true,
+        false
+      ],
+      "fuente": "SCP guías; comparativa-municipal.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "en_centro_historico",
+      "termino": "en_centro_historico",
+      "categoria": "campo_proyecto",
+      "definicion": "Si está en Centro Histórico, Conjunto Histórico o Área de Amortiguamiento. Excluye Guía 09-F; activa requisitos IDAEH en Guía 00-F.",
+      "valores": [
+        true,
+        false
+      ],
+      "fuente": "Guía 09-F alcance",
+      "confianza": "alta"
+    },
+    {
+      "id": "en_cono_la_aurora",
+      "termino": "en_cono_la_aurora",
+      "categoria": "campo_proyecto",
+      "definicion": "Si el predio está en el cono de aproximación al Aeropuerto La Aurora. Segundo disparador DGAC (geográfico, sin umbral de altura). Límites del cono no están en la guía.",
+      "valores": [
+        true,
+        false
+      ],
+      "confianza": "SIN_CONFIRMAR",
+      "fuente": "Guía 00-F; matriz-requisitos.md"
+    },
+    {
+      "id": "poligono_irregular",
+      "termino": "poligono_irregular",
+      "categoria": "campo_proyecto",
+      "definicion": "Si el polígono del terreno es irregular. En Muniguate dispara copia digital CAD 2007 junto con >200 m² y fraccionamiento.",
+      "valores": [
+        true,
+        false
+      ],
+      "fuente": "Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "giro_exento",
+      "termino": "giro_exento",
+      "categoria": "campo_proyecto",
+      "definicion": "Si el giro comercial está exento de la tasa Q350 de solicitud EAP.",
+      "valores": [
+        true,
+        false
+      ],
+      "por_que_importa": "Exentos: tiendas, abarroterías, panaderías, farmacias, librerías, centros educativos, centros comunitarios e iglesias.",
+      "fuente": "Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "con_empagua",
+      "termino": "con_empagua",
+      "categoria": "campo_proyecto",
+      "definicion": "Si requiere factibilidad de agua potable de EMPAGUA. Dispara duplicado del recibo de pago (hoja verde) en Guía 00-F.",
+      "valores": [
+        true,
+        false
+      ],
+      "fuente": "Guía 00-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "requiere_mem",
+      "termino": "requiere_mem",
+      "categoria": "campo_proyecto",
+      "definicion": "Si aplica normativa del Ministerio de Energía y Minas. Disparador en Guía 00-F sin criterio explícito en el texto; VAC04 no publica requisitos MEM.",
+      "valores": [
+        true,
+        false
+      ],
+      "confianza": "SIN_CONFIRMAR",
+      "fuente": "Guía 00-F; matriz-requisitos.md"
+    },
+    {
+      "id": "aplica_nrd3",
+      "termino": "aplica_nrd3",
+      "categoria": "campo_proyecto",
+      "definicion": "Si aplica NRD-3 (riesgo en edificaciones existentes, Acuerdo SE-02-2013). Acta de declaración jurada firmada por propietario y ejecutor en VUM.",
+      "valores": [
+        true,
+        false
+      ],
+      "confianza": "SIN_CONFIRMAR",
+      "fuente": "Guía 00-F actas CONRED"
+    },
+    {
+      "id": "corte_arboles_m3",
+      "termino": "corte_arboles_m3",
+      "categoria": "campo_proyecto",
+      "definicion": "Volumen de corte de árboles en m³. Umbral Muniguate: >10 m³ → dictamen INAB; menor → Guía 04 municipal.",
+      "fuente": "Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "movimiento_tierra_m3",
+      "termino": "movimiento_tierra_m3",
+      "categoria": "campo_proyecto",
+      "definicion": "Volumen de movimiento de tierra en m³. Umbral Muniguate Guía 00-F: >900 m³ → memoria y planos de impacto y mitigación.",
+      "fuente": "Guía 00-F; municipal-guatemala.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "alto_impacto_pot",
+      "termino": "alto_impacto_pot",
+      "categoria": "campo_proyecto",
+      "definicion": "Autodeclaración de proyecto de alto impacto según Art. 130 POT Quetzaltenango (~30 sub-umbrales por rubro). El motor no calcula el umbral; el usuario se clasifica.",
+      "valores": [
+        true,
+        false
+      ],
+      "relacionado": [
+        "informe-asesoria-alto-impacto-xela",
+        "dictamen-departamento-ordenamiento-territorial-xela"
+      ],
+      "fuente": "POT Quetzaltenango Art. 130; quetzaltenango-pot.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "categoria_uso_suelo_xela",
+      "termino": "categoria_uso_suelo_xela",
+      "categoria": "campo_proyecto",
+      "definicion": "Tipo de licencia de uso del suelo en Quetzaltenango.",
+      "valores": [
+        {
+          "valor": "residencial",
+          "significado": "Licencia de uso residencial — vigencia indefinida (Art. 80)"
+        },
+        {
+          "valor": "ordinario",
+          "significado": "Uso ordinario — vigencia 4 años"
+        },
+        {
+          "valor": "condicionado",
+          "significado": "Uso condicionado — vigencia 3 años; procedimiento reforzado"
+        }
+      ],
+      "fuente": "POT Quetzaltenango Art. 80",
+      "confianza": "alta"
+    },
+    {
+      "id": "zona_macro_pot",
+      "termino": "zona_macro_pot",
+      "categoria": "campo_proyecto",
+      "definicion": "Macro-clasificación del suelo en Xela. Rural o forestal puede exigir Plan de Manejo Ambiental.",
+      "valores": [
+        {
+          "valor": "urbana",
+          "significado": "Suelo urbano (URB-Q1…Q7, etc.)"
+        },
+        {
+          "valor": "rural",
+          "significado": "Suelo rural — posible PMA"
+        },
+        {
+          "valor": "forestal",
+          "significado": "Adyacente a forestal — PMA"
+        },
+        {
+          "valor": "especial",
+          "significado": "Protección especial ESP-Q6/Q7/Q8 — reglas CONRED geotécnico"
+        }
+      ],
+      "fuente": "POT Quetzaltenango Arts. 41-49",
+      "confianza": "alta"
+    },
+    {
+      "id": "desmembraciones_con_apertura_calle",
+      "termino": "desmembraciones_con_apertura_calle",
+      "categoria": "campo_proyecto",
+      "definicion": "Cantidad de desmembraciones con apertura de nueva calle. Más de 5 exige licencia de urbanización además del fraccionamiento (Art. 55 POT).",
+      "fuente": "POT Quetzaltenango Art. 55",
+      "confianza": "alta"
+    },
+    {
+      "id": "tipoUso",
+      "termino": "tipoUso (wizard)",
+      "categoria": "campo_wizard",
+      "definicion": "Tipo de uso en pantalla 03 del VAC02. Se traduce a tipo_solicitud y uso_publico en motor.ts.",
+      "valores": [
+        {
+          "valor": "Vivienda",
+          "significado": "Uso privado; uso_publico=false típicamente"
+        },
+        {
+          "valor": "Plaza Comercial",
+          "significado": "uso_publico=true"
+        },
+        {
+          "valor": "Oficina",
+          "significado": "uso_publico=true"
+        },
+        {
+          "valor": "Industrial",
+          "significado": "uso_publico=true"
+        },
+        {
+          "valor": "Mixto",
+          "significado": "uso_publico=true"
+        },
+        {
+          "valor": "Apartamentos",
+          "significado": "Evaluar acceso común; no mapeado automático a uso_publico"
+        }
+      ],
+      "relacionado": [
+        "uso_publico"
+      ],
+      "fuente": "frontend/src/lib/motor.ts USO_PUBLICO",
+      "confianza": "alta"
+    },
+    {
+      "id": "tipoLicencia",
+      "termino": "tipoLicencia (wizard)",
+      "categoria": "campo_wizard",
+      "definicion": "Categoría ambiental MARN en pantalla 04. Se traduce a categoria_ambiental.",
+      "valores": [
+        "A",
+        "B1",
+        "B2"
+      ],
+      "relacionado": [
+        "categoria_ambiental"
+      ],
+      "fuente": "VacWizard.tsx; motor.ts",
+      "confianza": "alta"
+    },
+    {
+      "id": "consumoAguaPotable",
+      "termino": "consumoAguaPotable (wizard)",
+      "categoria": "campo_wizard",
+      "definicion": "Respuesta Sí/No en VAC02 sobre consumo de agua potable. Traduce a abastecimiento_agua_consumo_humano.",
+      "fuente": "motor.ts desdeWizard",
+      "confianza": "alta"
+    },
+    {
+      "id": "tratamientoAR",
+      "termino": "tratamientoAR (wizard)",
+      "categoria": "campo_wizard",
+      "definicion": "Si hay tratamiento de aguas residuales en formulario ambiental. Si true, motor fija tratamiento_aguas_residuales=nueva (no distingue conexión existente — hay que completar en panel FALTANTES).",
+      "por_que_importa": "Brecha conocida: conexión a PTAR existente requiere valor conexion_existente que el wizard no captura.",
+      "fuente": "motor.ts desdeWizard",
+      "confianza": "alta"
+    },
+    {
+      "id": "umbral_16m_dgac",
+      "termino": "16 m (DGAC)",
+      "categoria": "umbral",
+      "definicion": "Altura a partir de la cual VAC02 y Guía 00-F exigen autorización DGAC. VAC02 dice «especialmente en el Departamento de Guatemala» — alcance nacional no confirmado en VAC04.",
+      "valores": [
+        {
+          "operador": ">",
+          "campo": "altura_m",
+          "efecto": "Regla dgac-altura + resolución municipal"
+        }
+      ],
+      "confianza": "SIN_CONFIRMAR",
+      "fuente": "VAC02; Guía 00-F"
+    },
+    {
+      "id": "umbral_30m2_colegiado",
+      "termino": "30 m² (planos colegiados)",
+      "categoria": "umbral",
+      "definicion": "Obras mayores a 30 m² en Muniguate requieren planos firmados por ingeniero o arquitecto colegiado activo.",
+      "valores": [
+        {
+          "operador": ">",
+          "campo": "area_construccion_m2",
+          "efecto": "muni-gt-colegiado"
+        }
+      ],
+      "fuente": "Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "umbral_200m2_cad",
+      "termino": "200 m² (CAD 2007)",
+      "categoria": "umbral",
+      "definicion": "Proyectos >200 m², fraccionamientos o polígonos irregulares → CD con planos AutoCAD 2007 en Muniguate.",
+      "fuente": "Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "umbral_700m2_guia09f",
+      "termino": "700 m² (techo Guía 09-F)",
+      "categoria": "umbral",
+      "definicion": "Techo de la Guía 09-F / F08. Arriba de esto aplica Guía 00-F u otras guías.",
+      "valores": [
+        {
+          "operador": ">",
+          "campo": "area_construccion_m2",
+          "efecto": "Aviso muni-gt-fuera-de-guia"
+        }
+      ],
+      "fuente": "Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "umbral_20m2_xela",
+      "termino": "20 m² (licencia obra Xela)",
+      "categoria": "umbral",
+      "definicion": "En Quetzaltenango, licencia de obra de construcción aplica desde 20 m² inclusive (operador >= en motor).",
+      "fuente": "POT Art. 66",
+      "confianza": "alta"
+    },
+    {
+      "id": "umbral_10m3_arboles",
+      "termino": "10 m³ (corte de árboles)",
+      "categoria": "umbral",
+      "definicion": "Corte mayor a 10 m³ → dictamen INAB en capital; menor → trámite municipal Guía 04.",
+      "valores": [
+        {
+          "operador": ">",
+          "campo": "corte_arboles_m3"
+        }
+      ],
+      "fuente": "Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "umbral_100m_pozo",
+      "termino": "100 m (pozo mecánico)",
+      "categoria": "umbral",
+      "definicion": "Distancia radial mínima entre pozo mecánico nuevo y pozos cercanos en SCP gran magnitud.",
+      "fuente": "SCP gran magnitud; comparativa-municipal.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "plazo_72h_marn",
+      "termino": "72 horas (boleta MARN)",
+      "categoria": "umbral",
+      "definicion": "Plazo para pagar la boleta de licencia ambiental tras generarla en VAC; si vence, hay que regenerar.",
+      "fuente": "VAC09; matriz-requisitos.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "vigencia_cert_rgp",
+      "termino": "Vigencia certificación registral",
+      "categoria": "umbral",
+      "definicion": "Plazo máximo desde emisión de la certificación del Registro de la Propiedad.",
+      "valores": [
+        {
+          "jurisdiccion": "muniguate",
+          "meses": 6
+        },
+        {
+          "jurisdiccion": "scp",
+          "meses": 3
+        },
+        {
+          "jurisdiccion": "xela",
+          "meses": 3,
+          "nota": "Segundo Registro de la Propiedad, Art. 148 POT"
+        }
+      ],
+      "fuente": "comparativa-municipal.md; quetzaltenango-pot.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "vigencia_solvencia",
+      "termino": "Vigencia solvencia municipal",
+      "categoria": "umbral",
+      "definicion": "Plazo máximo de la solvencia del inmueble.",
+      "valores": [
+        {
+          "jurisdiccion": "muniguate/scp",
+          "meses": 2,
+          "emisor": "Tesorería"
+        },
+        {
+          "jurisdiccion": "xela",
+          "meses": 1,
+          "emisor": "Departamento de Catastro"
+        }
+      ],
+      "fuente": "Guía 09-F; POT Art. 53",
+      "confianza": "alta"
+    },
+    {
+      "id": "VAC",
+      "termino": "VAC",
+      "categoria": "institucion",
+      "definicion": "Ventanilla Ágil de la Construcción. Plataforma app.vac.com.gt que unifica trámites ministeriales en un Formulario Consolidado (VAC02) y genera un expediente por institución.",
+      "fuente": "README.md; vac02.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "VUM",
+      "termino": "VUM",
+      "categoria": "institucion",
+      "definicion": "Ventanilla Única Municipal. Trámite físico local (Muniguate: PBX 2285-8500, vu.attvec@gmail.com para citas).",
+      "fuente": "buenas-practicas-vum.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "CONRED",
+      "termino": "CONRED",
+      "categoria": "institucion",
+      "definicion": "Coordinadora Nacional para la Reducción de Desastres. Normas NRD-1 (estructural), NRD-2 (uso público), NRD-3 (riesgo en existentes).",
+      "relacionado": [
+        "NRD-1",
+        "NRD-2",
+        "NRD-3"
+      ],
+      "fuente": "VAC04; municipal-guatemala.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "NRD-1",
+      "termino": "NRD-1",
+      "categoria": "norma",
+      "definicion": "Norma de sismorresistencia estructural. En VUM capital: acta de declaración jurada (estructural + ejecutor), no resolución CONRED.",
+      "fuente": "Guía 00-F actas CONRED",
+      "confianza": "alta"
+    },
+    {
+      "id": "NRD-2",
+      "termino": "NRD-2",
+      "categoria": "norma",
+      "definicion": "Norma para edificaciones de uso público. Requiere resolución favorable CONRED vía expediente VAC.",
+      "relacionado": [
+        "uso_publico",
+        "conred-nrd2"
+      ],
+      "fuente": "VAC04 CONRED",
+      "confianza": "alta"
+    },
+    {
+      "id": "NRD-3",
+      "termino": "NRD-3",
+      "categoria": "norma",
+      "definicion": "Norma de riesgo en edificaciones existentes (Acuerdo SE-02-2013). Acta VUM firmada por propietario y ejecutor.",
+      "confianza": "SIN_CONFIRMAR",
+      "fuente": "Guía 00-F"
+    },
+    {
+      "id": "MSPAS",
+      "termino": "MSPAS",
+      "categoria": "institucion",
+      "definicion": "Ministerio de Salud Pública y Asistencia Social. Dictamen sanitario / agua y saneamiento. Formulario FS-001-2022, norma DRPSA-011-2022.",
+      "fuente": "VAC04",
+      "confianza": "alta"
+    },
+    {
+      "id": "MARN",
+      "termino": "MARN",
+      "categoria": "institucion",
+      "definicion": "Ministerio de Ambiente y Recursos Naturales. Instrumento ambiental, resolución y licencia (DIGARN).",
+      "fuente": "VAC04; VAC09",
+      "confianza": "alta"
+    },
+    {
+      "id": "DGAC",
+      "termino": "DGAC",
+      "categoria": "institucion",
+      "definicion": "Dirección General de Aeronáutica Civil. Control de alturas, torres y rótulos. Exige coordenadas WGS-84, dictamen IGN, acta notarial de señalización.",
+      "fuente": "VAC04 DGAC",
+      "confianza": "alta"
+    },
+    {
+      "id": "INAB",
+      "termino": "INAB",
+      "categoria": "institucion",
+      "definicion": "Instituto Nacional de Bosques. Plan de aprovechamiento forestal, dictamen de tala, cambio de uso de suelo. No integrado a VAC (2026).",
+      "confianza": "alta",
+      "fuente": "VAC02; comparativa-municipal.md"
+    },
+    {
+      "id": "MEM",
+      "termino": "MEM",
+      "categoria": "institucion",
+      "definicion": "Ministerio de Energía y Minas. Formularios ALE-01/ALE-11 en Anexo I VAC02; sin requisitos publicados en VAC04.",
+      "confianza": "SIN_CONFIRMAR",
+      "fuente": "matriz-requisitos.md"
+    },
+    {
+      "id": "RGP",
+      "termino": "RGP / Registro General de la Propiedad",
+      "categoria": "institucion",
+      "definicion": "Emite certificación de historial registral del inmueble. En Xela se cita como Segundo Registro de la Propiedad.",
+      "fuente": "Guía 09-F; POT Art. 148",
+      "confianza": "alta"
+    },
+    {
+      "id": "EMPAGUA",
+      "termino": "EMPAGUA",
+      "categoria": "institucion",
+      "definicion": "Empresa Municipal de Agua. Emite recibo de factibilidad de agua (hoja verde) exigido en Guía 00-F cuando aplica.",
+      "fuente": "Guía 00-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "PTAR",
+      "termino": "PTAR",
+      "categoria": "concepto",
+      "definicion": "Planta de Tratamiento de Aguas Residuales. Conexión nueva vs. existente cambia el paquete MSPAS completo vs. un solo informe descriptivo.",
+      "relacionado": [
+        "tratamiento_aguas_residuales"
+      ],
+      "fuente": "VAC04 MSPAS paquetes 8-9",
+      "confianza": "alta"
+    },
+    {
+      "id": "EAP",
+      "termino": "EAP",
+      "categoria": "concepto",
+      "definicion": "Establecimiento Abierto al Público. Tipo de trámite en Guía 09-F; tasa Q350 salvo giros exentos.",
+      "relacionado": [
+        "tipo_solicitud",
+        "muni-gt-eap-tasa"
+      ],
+      "fuente": "Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "DCT",
+      "termino": "DCT",
+      "categoria": "institucion",
+      "definicion": "Dirección de Control de Trámites (Muniguate). Dependencia de la Ventanilla Única Municipal citada en guías 09-F/00-F.",
+      "fuente": "Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "DRPSA-011-2022",
+      "termino": "DRPSA-011-2022",
+      "categoria": "norma",
+      "definicion": "Norma técnica MSPAS para pronunciamientos de responsabilidad profesional. Formato en sitio MSPAS.",
+      "fuente": "VAC04 MSPAS §11",
+      "confianza": "alta"
+    },
+    {
+      "id": "AG-178-2009",
+      "termino": "AG 178-2009",
+      "categoria": "norma",
+      "definicion": "Acuerdo gubernativo sobre calidad de agua para consumo humano. Certificado post-perforación de pozo; si no se presenta a tiempo, anula dictamen sanitario favorable.",
+      "fuente": "VAC04 MSPAS §18",
+      "confianza": "alta"
+    },
+    {
+      "id": "costura_vac_muni",
+      "termino": "Costura VAC ↔ municipal",
+      "categoria": "concepto",
+      "definicion": "La municipalidad exige resoluciones ministeriales como entrada (MARN, MSPAS, planos sellados). El expediente municipal no sustituye al VAC.",
+      "por_que_importa": "Define el orden del cronograma: ministerial primero, salvo válvulas de escape.",
+      "fuente": "municipal-guatemala.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "valvula_escape",
+      "termino": "Válvula de escape",
+      "categoria": "concepto",
+      "definicion": "Ingreso municipal con acta de declaración jurada (formato VUM) + copia de recepción de solicitud ante MARN o DGAC si el trámite ministerial aún no concluyó.",
+      "por_que_importa": "Permite paralelizar trámites; conocimiento de oficio no visible en VAC02.",
+      "fuente": "Guía 09-F; Guía 00-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "colegiado_activo",
+      "termino": "Colegiado activo",
+      "categoria": "concepto",
+      "definicion": "Profesional con constancia vigente emitida por su colegio (ingenieros, arquitectos, sanitarios). Planos y memorias deben llevar firma, sello y timbre.",
+      "fuente": "VAC04; Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "instrumento_ambiental",
+      "termino": "Instrumento ambiental",
+      "categoria": "concepto",
+      "definicion": "Estudio o evaluación ambiental MARN (EIA, DIA, etc.) según categoría A/B1/B2. Incluye documentos internos, edicto (A/B1), planos y fotografías.",
+      "fuente": "VAC04 MARN",
+      "confianza": "alta"
+    },
+    {
+      "id": "discrecionalidad_municipal",
+      "termino": "Discrecionalidad municipal",
+      "categoria": "concepto",
+      "definicion": "Cláusula en guías: «Se podrán requerir requisitos adicionales según sea el caso». Tres municipios independientes, mismo patrón.",
+      "por_que_importa": "Ninguna lista publicada es la lista completa; justifica el módulo 3 (bitácora de rechazos).",
+      "fuente": "Guía 09-F; POT Art. 61; comparativa-municipal.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "FALTANTES",
+      "termino": "FALTANTES",
+      "categoria": "concepto",
+      "definicion": "Campos que el VAC02 no captura pero el motor necesita — principalmente municipales. Se preguntan en el panel lateral del wizard.",
+      "fuente": "frontend/src/lib/motor.ts",
+      "confianza": "alta"
+    },
+    {
+      "id": "confianza_confirmada",
+      "termino": "confirmada",
+      "categoria": "metadata",
+      "definicion": "Marca en reglas.json: requisito validado contra instructivo oficial (VAC04 o guía municipal raspada).",
+      "valores": [
+        "confirmada"
+      ],
+      "fuente": "motor/reglas.json",
+      "confianza": "alta"
+    },
+    {
+      "id": "confianza_sin_confirmar",
+      "termino": "SIN_CONFIRMAR",
+      "categoria": "metadata",
+      "definicion": "Marca en reglas.json: dato presente pero no verificado en fuente primaria suficiente. Mostrar al usuario, no tratar como hecho.",
+      "valores": [
+        "SIN_CONFIRMAR"
+      ],
+      "fuente": "CLAUDE.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "tipo_regla_aviso",
+      "termino": "aviso (tipo de regla)",
+      "categoria": "metadata",
+      "definicion": "Regla que no exige documento sino advertencia (fuera de guía, discrecionalidad, exclusión de alcance). Aparece en ADVERTENCIAS del informe.",
+      "fuente": "motor/motor.py MARCA",
+      "confianza": "alta"
+    },
+    {
+      "id": "tipo_regla_gestion",
+      "termino": "gestion (tipo de regla)",
+      "categoria": "metadata",
+      "definicion": "Requisito que no se resuelve subiendo PDF: trámite presencial, negociación (asociación de vecinos), equipo multidisciplinario.",
+      "por_que_importa": "El motor de fallas lo marca como riesgo: «no es un documento que emita una institución».",
+      "fuente": "motor/fallas.py",
+      "confianza": "alta"
+    },
+    {
+      "id": "vigencia_meses",
+      "termino": "vigencia_meses",
+      "categoria": "metadata",
+      "definicion": "Plazo en meses definido en la regla (reglas.json), no en el catálogo global. Mismo documento_id puede tener 6 meses en capital y 3 en Pinula.",
+      "relacionado": [
+        "cert-rgp",
+        "solvencia-municipal"
+      ],
+      "fuente": "motor/catalogo.py resuelve()",
+      "confianza": "alta"
+    },
+    {
+      "id": "extensiones_validas",
+      "termino": "extensiones_validas",
+      "categoria": "metadata",
+      "definicion": "Extensiones de archivo aceptadas para una ocurrencia del documento en una regla (ej. .dwg para planos-cad-2007).",
+      "valores": [
+        ".dwg",
+        ".pdf"
+      ],
+      "fuente": "motor/reglas.json",
+      "confianza": "alta"
+    },
+    {
+      "id": "severidad_bloqueante",
+      "termino": "bloqueante",
+      "categoria": "metadata",
+      "definicion": "Severidad en motor de fallas: el expediente se devuelve en ventanilla si no se corrige.",
+      "fuente": "motor/fallas.py",
+      "confianza": "alta"
+    },
+    {
+      "id": "severidad_riesgo",
+      "termino": "riesgo",
+      "categoria": "metadata",
+      "definicion": "Severidad en motor de fallas: puede pasar ventanilla pero falla después o cuesta dinero extra (vigencia vencida, gestión pendiente).",
+      "fuente": "motor/fallas.py",
+      "confianza": "alta"
+    },
+    {
+      "id": "quien_emite",
+      "termino": "quien_emite",
+      "categoria": "metadata",
+      "definicion": "Campo en documentos.json: entidad que extiende el documento oficial, o persona que lo firma/elabora. Ver docs/catalogo-documentos.md.",
+      "relacionado": [
+        "catalogo-documentos"
+      ],
+      "fuente": "motor/catalogo.py",
+      "confianza": "alta"
+    },
+    {
+      "id": "categoria_documento_acta",
+      "termino": "acta (categoría documento)",
+      "categoria": "metadata",
+      "definicion": "Actas notariales o declaraciones juradas (NRD, responsabilidad, válvulas de escape).",
+      "fuente": "motor/documentos.json",
+      "confianza": "alta"
+    },
+    {
+      "id": "categoria_documento_dictamen",
+      "termino": "dictamen (categoría documento)",
+      "categoria": "metadata",
+      "definicion": "Resoluciones, dictámenes o certificaciones emitidas por una dependencia que aprueba o evalúa el proyecto.",
+      "fuente": "motor/documentos.json",
+      "confianza": "alta"
+    },
+    {
+      "id": "categoria_documento_gestion",
+      "termino": "gestion (categoría documento)",
+      "categoria": "metadata",
+      "definicion": "No confundir con tipo de regla: en documentos.json no se usa; en reglas.json «gestion» es trámite no archivable.",
+      "fuente": "motor/documentos.json; motor/reglas.json",
+      "confianza": "alta"
+    },
+    {
+      "id": "Guia_09-F",
+      "termino": "Guía 09-F (PTLI.23)",
+      "categoria": "concepto",
+      "definicion": "Guía Muniguate para vivienda unifamiliar ≤700 m², EAP, fraccionamiento ≤4 predios. Formulario F08. Fuente secundaria approvato.com.gt 2019.",
+      "confianza": "media",
+      "fuente": "MUNIGUATE_guia_09F.pdf"
+    },
+    {
+      "id": "Guia_00-F",
+      "termino": "Guía 00-F / 01-F",
+      "categoria": "concepto",
+      "definicion": "Guía padre Muniguate para todos los demás proyectos. Formulario F02 v3. Incluye actas CONRED, válvulas DGAC/MARN, >16 m, cono La Aurora.",
+      "confianza": "media",
+      "fuente": "MUNIGUATE_guia_00F_01F.pdf"
+    },
+    {
+      "id": "F08",
+      "termino": "Formulario F08",
+      "categoria": "concepto",
+      "definicion": "Formulario municipal Muniguate para alcance Guía 09-F. Sin borrones ni corrector.",
+      "fuente": "Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "F02",
+      "termino": "Formulario F02 v3",
+      "categoria": "concepto",
+      "definicion": "Formulario municipal Muniguate para proyectos fuera del alcance 09-F.",
+      "fuente": "Guía 00-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "FS-001-2022",
+      "termino": "FS-001-2022",
+      "categoria": "concepto",
+      "definicion": "Formulario de solicitud MSPAS. Firma y datos deben coincidir en todo el expediente. Sección IV incluye compromiso de certificado de pozo.",
+      "fuente": "VAC04 MSPAS §1",
+      "confianza": "alta"
+    },
+    {
+      "id": "Consulta_A",
+      "termino": "Consulta «A»",
+      "categoria": "concepto",
+      "definicion": "Documento que solo se obtiene presencialmente en la Ventanilla Única Municipal de la capital. No tiene descarga en línea.",
+      "fuente": "Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "Memoria_DCT",
+      "termino": "Memoria Descriptiva DCT",
+      "categoria": "concepto",
+      "definicion": "Memoria según lineamientos que entrega la ventanilla municipal. No es el mismo formato que memoria MSPAS o CONRED.",
+      "fuente": "Guía 09-F",
+      "confianza": "alta"
+    },
+    {
+      "id": "Boleto_ornato",
+      "termino": "Boleto de ornato",
+      "categoria": "concepto",
+      "definicion": "Comprobante de pago del arbitrio municipal personal. Se presenta el de la municipalidad donde se pagó, no necesariamente donde se tramita.",
+      "por_que_importa": "Capital pide propietario + profesional; Pinula pide propietario + planificador + ejecutor.",
+      "fuente": "Guía 09-F; comparativa-municipal.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "operador_cuando",
+      "termino": "Operadores en reglas (>, >=, in)",
+      "categoria": "metadata",
+      "definicion": "Sintaxis del campo «cuando» en reglas.json. Ej: {\"altura_m\": {\">\": 16}}. Xela usa >= para 20 m² inclusive.",
+      "valores": [
+        ">",
+        "<",
+        ">=",
+        "<=",
+        "in",
+        "any"
+      ],
+      "fuente": "motor/motor.py OPS",
+      "confianza": "alta"
+    }
+  ]
+}

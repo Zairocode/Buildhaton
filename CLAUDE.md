@@ -36,6 +36,7 @@ El [README](README.md) tiene el planteamiento completo.
 | [`docs/normativa-muniguate.md`](docs/normativa-muniguate.md) | Índice de 107 cuerpos normativos / 420 archivos con acuerdo y fecha. La lista de vigilancia. |
 | [`docs/vac02.md`](docs/vac02.md) | Estructura del Formulario Consolidado, 8 pantallas, catálogo de 96 documentos. |
 | [`docs/catalogo-documentos.md`](docs/catalogo-documentos.md) | **Emisor y contexto operativo** de cada entrada de `motor/documentos.json` (`quien_emite`, consejos, fuente). |
+| [`docs/glosario.md`](docs/glosario.md) | **Glosario técnico** — campos del motor, valores enum, umbrales, siglas (`motor/glosario.json`). |
 | [`docs/fuentes/`](docs/fuentes/) | PDFs originales. Toda afirmación en los .md debe poder rastrearse aquí. |
 | [`motor/`](motor/) | Motor de requisitos: reglas como datos + ~55 líneas de filtro. |
 | [`docs/devel/limitaciones-motor.md`](docs/devel/limitaciones-motor.md) | **Desarrollo, no normativa.** Límites del DSL de reglas encontrados al integrar Xela, y extensiones propuestas por costo/beneficio. |
