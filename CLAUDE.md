@@ -146,7 +146,7 @@ frontend/src/lib/motor.ts               TRADUCTOR + cliente HTTP
         ↓ proyecto (snake_case, tipado)
 api-server/app.py                       POST /api/validate
         ↓
-motor/motor.py + reglas.json            35 reglas, 3 jurisdicciones
+motor/motor.py + reglas.json            49 reglas, 4 jurisdicciones
 ```
 
 `frontend/src/lib/motor.ts` es la pieza clave y la más fácil de romper: el wizard usa
