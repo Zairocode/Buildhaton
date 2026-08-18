@@ -83,24 +83,22 @@ Ese es el objetivo de fondo — **cerrar la brecha de conocimiento civil en un �
 
 **Dentro:**
 - **Módulo 1 sobre el VAC02 real** — la matriz de disparadores ya está extraída, es la demo más fuerte y la que menos depende de datos que no tenemos
-- 2 municipalidades como piloto (una con normativa desarrollada, una sin) para demostrar que el problema es la variabilidad
-- 1 tipo de obra, no todos
-- Los 3 módulos conectados sobre un expediente realista
+- 3 municipalidades como piloto (una con normativa desarrollada, otra solamente POT, una con normativa aun faltante) para demostrar que el problema es la variabilidad
+- Tipos de obra simples
+- Los 3 módulos conectados sobre expedientes realistas de prueba.
 
-**Fuera:**
+**Desarollos a futuro:**
 - Cobertura nacional de los 340 municipios
 - Integración oficial con VAC o con sistemas municipales
-- Cualquier cosa que se parezca a asesoría legal vinculante
+- NO INCLUYE: cualquier forma de asesoría legal vinculante
 
 ---
 
-## Preguntas abiertas
+## Preguntas a futuro
 
-- **¿La VAC tiene API?** Define si el módulo 2 sincroniza estado real o solo lo registra en paralelo. Es la pregunta que más cambia el producto.
-- ¿El código de trazabilidad municipal es consultable, o solo se ve en ventanilla?
-- ¿Quién carga la bitácora — el contratista, o se extrae de las resoluciones de rechazo?
-- ¿Producto para constructoras, para arquitectos independientes, o para la municipalidad? Cambia a quién le sirve el módulo 1.
-- ¿Cómo se mantiene el índice municipal actualizado sin un equipo dedicado?
+- **¿La VAC tiene API?** Utilizamos directamente la interfaz grafica de la VAC conectandonos via una extension de navegador. Planeamos exportar archivos planos a PDF para presentar impreso y mejores integraciones a futuro. 
+- **¿Cómo se mantiene el índice municipal actualizado sin un equipo dedicado? ¿El código de trazabilidad municipal es consultable, o solo se ve en ventanilla?** Buscamos toda la información disponible en linea, pero planeamos confirmar en una fase siguiente la realidad en campo.
+- **¿Quién carga la bitácora: el contratista, o se extrae de las resoluciones de rechazo?** Ambas: el contratista puede agregar anotaciones o nuevas versiones; pero el sistema implementará interceptar las respuestas de la comunicación via e-mail para pre-cargar el estado de las resoluciones.
 
 ---
 
@@ -165,7 +163,7 @@ ADVERTENCIAS
 
 ## Estado
 
-**Módulo 1 funcionando, con dos municipalidades y self-check verde.** El motor demuestra la tesis en código: la misma obra en la capital y en Pinula produce dos listas sin un solo requisito en común.
+**Módulo de reglas inicial funcional, con tres municipalidades y pruebas de integración.** El motor demuestra la tesis en código: la misma obra en la capital y en Pinula produce dos listas sin un solo requisito en común. Modulo de interfaz y manejo de documentos aun en desarollo.
 
 ```
 MISMA OBRA (450 m², pozo, en condominio) EN CADA MUNICIPALIDAD
