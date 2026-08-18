@@ -134,9 +134,9 @@ python motor/motor.py    # self-check + informe de ejemplo
 
 Las reglas viven en [`motor/reglas.json`](motor/reglas.json) como **datos, no código** — quien mantiene la normativa municipal no es quien escribe Python. [`motor/motor.py`](motor/motor.py) son ~40 líneas: filtra reglas contra las respuestas del proyecto y agrupa por capa.
 
-28 reglas de tres jurisdicciones — ministerial, capital y Santa Catarina Pinula — cada una con su `fuente` y su `confianza`. Las no verificadas salen marcadas `[SIN CONFIRMAR]` en vez de fingir certeza, y las que no se resuelven con papel (la carta de la asociación de vecinos) salen marcadas `[NO ES UN DOCUMENTO]`.
+49 reglas de cuatro jurisdicciones — ministerial, capital, Santa Catarina Pinula y Quetzaltenango — cada una con su `fuente` y su `confianza`. Las no verificadas salen marcadas `[SIN CONFIRMAR]` en vez de fingir certeza, y las que no se resuelven con papel (la carta de la asociación de vecinos) salen marcadas `[NO ES UN DOCUMENTO]`.
 
-Ambas municipalidades se reservan por escrito el derecho de pedir más. El motor lo dice en la salida en vez de fingir completitud:
+Las tres municipalidades se reservan por escrito el derecho de pedir más. El motor lo dice en la salida en vez de fingir completitud:
 
 ```
 ADVERTENCIAS
