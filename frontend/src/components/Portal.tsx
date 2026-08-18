@@ -13,7 +13,7 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import {
-  Blocks, Check, ChevronLeft, CloudDownload, Download, Globe, Loader2, Paperclip,
+  Check, ChevronLeft, CloudDownload, Download, Globe, Loader2, Paperclip,
   Pencil, Plus, Send, ShieldCheck, ThumbsUp, Trash2, UserCheck, Building2, Leaf, Users,
 } from "lucide-react";
 import type { Empresa, ProyectoPanel } from "../lib/estado";
@@ -272,20 +272,22 @@ export default function Portal({
   const [paso, setPaso] = useState(0);
   const [enviado, setEnviado] = useState(false);
 
-  // Una pieza cada 55 ms, y el stepper avanza solo al terminar cada pantalla.
+  /** ultima pieza de la pantalla actual: la extension llena hasta aca y se detiene */
+  const meta = inicio[paso] + PASOS[paso].n;
+
+  // Una pieza cada 55 ms, pero SOLO de la pantalla actual. Avanzar es del humano:
+  // el jurado tiene que ver quien confirma, no una barra que corre sola hasta el final.
   useEffect(() => {
     if (!corriendo) return;
-    if (llenos >= total) { setCorriendo(false); return; }
-    const t = setTimeout(() => {
-      const sig = llenos + 1;
-      setLlenos(sig);
-      const en = inicio.findIndex((ini, i) => sig > ini && sig <= ini + PASOS[i].n);
-      if (en >= 0) setPaso(en);
-    }, 55);
+    if (llenos >= meta) { setCorriendo(false); return; }
+    const t = setTimeout(() => setLlenos((n) => n + 1), 55);
     return () => clearTimeout(t);
-  }, [corriendo, llenos, total, inicio, PASOS]);
+  }, [corriendo, llenos, meta]);
 
   const listo = llenos >= total && total > 0;
+  /** la pantalla ya se lleno y espera que el humano le de Siguiente */
+  const pantallaLista = !corriendo && llenos > 0 && llenos >= meta && !listo;
+  const avanzar = () => { setPaso((k) => Math.min(7, k + 1)); setCorriendo(true); };
   const S = PASOS[paso];
   /** cuántas piezas de ESTA pantalla ya se pintaron */
   const hechos = Math.max(0, Math.min(S.n, llenos - inicio[paso]));
@@ -629,8 +631,9 @@ export default function Portal({
               Anterior
             </button>
             {paso < 7 && (
-              <button onClick={() => setPaso((k) => Math.min(7, k + 1))}
-                      className="rounded-[3px] px-6 py-1.5 text-[12.5px] text-white" style={{ background: NAVY }}>
+              <button onClick={avanzar} disabled={corriendo}
+                      className="rounded-[3px] px-6 py-1.5 text-[12.5px] text-white transition-shadow disabled:opacity-50"
+                      style={{ background: NAVY, boxShadow: pantallaLista ? "0 0 0 3px rgba(15,118,110,0.45)" : "none" }}>
                 Siguiente
               </button>
             )}
@@ -645,8 +648,7 @@ export default function Portal({
           va centrado), y el stepper es clickeable, asi que nunca bloquea. */}
       <div className="fixed bottom-5 right-5 w-[300px] rounded-[6px] border bg-white shadow-2xl" style={{ borderColor: LINEA }}>
         <div className="flex items-center gap-2 rounded-t-[6px] px-4 py-2.5" style={{ background: "#0F766E" }}>
-          <Blocks size={15} color="#FFFFFF" />
-          <span className="text-[13px] font-semibold text-white">Cimiento</span>
+          <img src="/cimiento-blanco.png" alt="Cimiento" className="h-[15px] w-auto" />
           <span className="ml-auto text-[10px] text-white opacity-70">extensión</span>
         </div>
 
@@ -665,7 +667,19 @@ export default function Portal({
             {llenos} / {total} campos · pantalla {paso + 1} de 8
           </div>
 
-          {!listo ? (
+          {pantallaLista ? (
+            /* La extension termino su pantalla y cede el turno. Este es el momento
+               que el jurado tiene que ver: Cimiento redacta, la persona aprueba. */
+            <div className="mt-2.5 rounded-[3px] border p-2.5" style={{ borderColor: "#0F766E", background: "#F0FDFA" }}>
+              <div className="flex items-center gap-1.5 text-[12px] font-semibold" style={{ color: "#0F766E" }}>
+                <Check size={13} /> Pantalla {paso + 1} de 8 lista
+              </div>
+              <p className="mt-1 text-[10.5px] leading-snug" style={{ color: "#3F6B66" }}>
+                Revisá los datos y dale <strong>Siguiente</strong>. Cimiento no avanza
+                ni envía nada por su cuenta.
+              </p>
+            </div>
+          ) : !listo ? (
             <button
               onClick={() => { setPaso(0); setLlenos(0); setCorriendo(true); }}
               disabled={corriendo}
