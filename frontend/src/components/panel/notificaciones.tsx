@@ -6,7 +6,7 @@
  * real a un chat es un POST a un webhook — está aislado en `enviarAlChat`.
  */
 import { useState } from "react";
-import { Bell, Loader2, MessageSquare, Trash2 } from "lucide-react";
+import { Bell, CheckCheck, Inbox, Loader2, Mail, Trash2 } from "lucide-react";
 import { revisar } from "../../lib/motor";
 import type { Notificacion, Store, Usuario } from "../../lib/estado";
 import { Boton, Chip, Etiqueta, Panel, T, Titulo, mono, sans } from "./ui";
@@ -99,39 +99,137 @@ export function avisoEnvio(store: Store, proyecto: string): Notificacion[] {
   }));
 }
 
-function Burbuja({ n, u }: { n: Notificacion; u?: Usuario }) {
-  const hora = new Date(n.en).toLocaleTimeString("es-GT", { hour: "2-digit", minute: "2-digit" });
+/**
+ * Un color estable por persona, derivado del id. El mismo tono la identifica en
+ * el hilo de WhatsApp y en la bandeja, que es como uno reconoce a alguien de un
+ * vistazo sin leer el nombre.
+ */
+const PALETA = ["#0F766E", "#B45309", "#7C3AED", "#BE123C", "#1D4ED8", "#0369A1", "#4D7C0F", "#A21CAF"];
+const colorDe = (id: string) => PALETA[[...id].reduce((a, c) => a + c.charCodeAt(0), 0) % PALETA.length];
+
+const hora = (iso: string) => new Date(iso).toLocaleTimeString("es-GT", { hour: "2-digit", minute: "2-digit" });
+const inicial = (u?: Usuario) => (u?.nombre ?? "?").trim().slice(0, 1).toUpperCase();
+
+/** Asunto del correo: tiene que decir algo parado en la bandeja, sin abrirlo. */
+const ASUNTO: Record<Notificacion["severidad"], string> = {
+  bloqueante: "Bloquea el ingreso del expediente",
+  riesgo: "Riesgo detectado antes de ingresar",
+  aviso: "Revisión recomendada",
+  info: "Actualización del expediente",
+};
+
+/* Colores propios de WhatsApp: no salen del tema del panel a proposito, la
+   gracia es que se reconozca el canal antes de leer nada. */
+const WA = {
+  fondo: "#EFEAE2",
+  cabecera: "#075E54",
+  burbuja: "#D9FDD3",
+  tinta: "#111B21",
+  tenue: "#667781",
+  visto: "#53BDEB",
+};
+
+function HiloWhatsApp({ ns, porId }: { ns: Notificacion[]; porId: Map<string, Usuario> }) {
   return (
-    <div className="flex gap-2.5">
-      <div
-        className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold"
-        style={{ background: T.acentoSuave, color: T.acento, fontFamily: sans }}
-      >
-        {(u?.nombre ?? "?").slice(0, 1)}
-      </div>
-      <div className="min-w-0 flex-1">
-        <div className="mb-1 flex flex-wrap items-center gap-2">
-          <span className="text-[12px] font-semibold" style={{ color: T.tinta, fontFamily: sans }}>
-            {u?.nombre ?? "—"}
-          </span>
-          <Chip tono={TONO[n.severidad]}>{n.canal === "whatsapp" ? "WhatsApp" : "Correo"}</Chip>
-          <span className="text-[10.5px]" style={{ color: T.tenue, fontFamily: mono }}>{hora}</span>
+    <Panel className="overflow-hidden">
+      <div className="flex items-center gap-2.5 px-4 py-2.5" style={{ background: WA.cabecera }}>
+        {/* El C1 hace de foto de contacto, que es lo que va en esta esquina. */}
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full" style={{ background: "rgba(255,255,255,0.18)" }}>
+          <img src="/c1_w.png" alt="" className="h-[15px] w-auto" />
         </div>
-        <div
-          className="rounded-[4px] rounded-tl-none border px-3 py-2 text-[12.5px] leading-relaxed"
-          style={{ borderColor: T.linea, background: T.blanco, color: T.medio, fontFamily: sans }}
-        >
-          {n.texto}
+        <div className="min-w-0">
+          <img src="/cimiento-blanco.png" alt="Cimiento" className="h-[13px] w-auto" />
+          <div className="mt-1 text-[10.5px] text-white opacity-70" style={{ fontFamily: sans }}>WhatsApp Business</div>
         </div>
+        <span className="ml-auto text-[10.5px] text-white opacity-70" style={{ fontFamily: mono }}>{ns.length}</span>
       </div>
-    </div>
+
+      {/* Cronologico: un hilo se lee del mas viejo al mas nuevo. */}
+      <div className="space-y-2 px-3.5 py-4" style={{ background: WA.fondo, minHeight: 240 }}>
+        {ns.length === 0 ? (
+          <p className="py-10 text-center text-[12px]" style={{ color: WA.tenue, fontFamily: sans }}>
+            Sin alertas por este canal.
+          </p>
+        ) : (
+          ns.map((n) => (
+            <div key={n.id} className="flex justify-end">
+              <div className="max-w-[86%] rounded-[7.5px] rounded-tr-none px-2.5 py-1.5"
+                   style={{ background: WA.burbuja, boxShadow: "0 1px 0.5px rgba(11,20,26,0.13)" }}>
+                <div className="text-[11.5px] font-semibold" style={{ color: colorDe(n.para), fontFamily: sans }}>
+                  {porId.get(n.para)?.nombre ?? "Destinatario eliminado"}
+                </div>
+                <p className="mt-0.5 text-[12.5px] leading-[1.45]" style={{ color: WA.tinta, fontFamily: sans }}>
+                  {n.texto}
+                </p>
+                <div className="mt-0.5 flex items-center justify-end gap-1">
+                  <span className="text-[10px]" style={{ color: WA.tenue, fontFamily: sans }}>{hora(n.en)}</span>
+                  <CheckCheck size={13} color={WA.visto} />
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </Panel>
+  );
+}
+
+function Bandeja({ ns, porId }: { ns: Notificacion[]; porId: Map<string, Usuario> }) {
+  return (
+    <Panel className="overflow-hidden">
+      <div className="flex items-center gap-2.5 border-b px-4 py-3" style={{ borderColor: T.linea, background: T.papel }}>
+        <Mail size={15} color={T.medio} />
+        <div className="text-[12.5px] font-semibold" style={{ color: T.tinta, fontFamily: sans }}>Correo</div>
+        <span className="ml-auto text-[10.5px]" style={{ color: T.tenue, fontFamily: mono }}>{ns.length}</span>
+      </div>
+
+      <div style={{ minHeight: 240 }}>
+        {ns.length === 0 ? (
+          <p className="flex items-center justify-center gap-2 py-14 text-[12px]" style={{ color: T.tenue, fontFamily: sans }}>
+            <Inbox size={14} /> Sin correos por este canal.
+          </p>
+        ) : (
+          ns.map((n) => {
+            const u = porId.get(n.para);
+            return (
+              <article key={n.id} className="flex gap-3 border-b px-4 py-3 last:border-b-0" style={{ borderColor: T.linea }}>
+                <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[12px] font-semibold text-white"
+                     style={{ background: colorDe(n.para), fontFamily: sans }}>
+                  {inicial(u)}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-baseline gap-2">
+                    <span className="truncate text-[12.5px] font-semibold" style={{ color: T.tinta, fontFamily: sans }}>
+                      {u?.nombre ?? "Destinatario eliminado"}
+                    </span>
+                    <span className="ml-auto shrink-0 text-[10.5px]" style={{ color: T.tenue, fontFamily: mono }}>{hora(n.en)}</span>
+                  </div>
+                  <div className="truncate text-[10.5px]" style={{ color: T.tenue, fontFamily: mono }}>{u?.email ?? "—"}</div>
+
+                  <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                    <Chip tono={TONO[n.severidad]}>{n.proyecto}</Chip>
+                    <span className="text-[12px] font-semibold" style={{ color: T.tinta, fontFamily: sans }}>
+                      {ASUNTO[n.severidad]}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-[12px] leading-relaxed" style={{ color: T.medio, fontFamily: sans }}>{n.texto}</p>
+                </div>
+              </article>
+            );
+          })
+        )}
+      </div>
+    </Panel>
   );
 }
 
 export function Notificaciones({ store, setStore }: { store: Store; setStore: (f: (s: Store) => Store) => void }) {
   const [corriendo, setCorriendo] = useState(false);
-  const ns = [...store.notificaciones].reverse();
   const porId = new Map(store.usuarios.map((u) => [u.id, u]));
+
+  const wa = store.notificaciones.filter((n) => n.canal === "whatsapp");
+  const correo = [...store.notificaciones].reverse().filter((n) => n.canal === "correo");
+  const total = store.notificaciones.length;
 
   const correr = () => {
     setCorriendo(true);
@@ -139,10 +237,6 @@ export function Notificaciones({ store, setStore }: { store: Store; setStore: (f
       .then((nuevas) => setStore((s) => ({ ...s, notificaciones: [...s.notificaciones, ...nuevas] })))
       .finally(() => setCorriendo(false));
   };
-
-  // El destinatario puede haber sido borrado despues de recibir el mensaje.
-  const conDestino = ns.find((n) => porId.has(n.para));
-  const ejemplo = conDestino ? enviarAlChat(conDestino, porId.get(conDestino.para)!) : null;
 
   return (
     <>
@@ -155,55 +249,35 @@ export function Notificaciones({ store, setStore }: { store: Store; setStore: (f
           {corriendo ? <><Loader2 size={13} className="animate-spin" /> Revisando la cartera…</>
                      : <><Bell size={13} /> Revisar y notificar</>}
         </Boton>
-        {ns.length > 0 && (
+        {total > 0 && (
           <Boton variante="texto" onClick={() => setStore((s) => ({ ...s, notificaciones: [] }))}>
             <Trash2 size={13} /> Limpiar hilo
           </Boton>
         )}
         <span className="text-[12px]" style={{ color: T.tenue, fontFamily: mono }}>
-          {ns.length} mensaje{ns.length === 1 ? "" : "s"}
+          {total} mensaje{total === 1 ? "" : "s"} · {wa.length} WhatsApp · {correo.length} correo
         </span>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <Panel className="p-5">
-          {ns.length === 0 ? (
-            <div className="flex items-center gap-2 py-6 text-[13px]" style={{ color: T.tenue, fontFamily: sans }}>
-              <MessageSquare size={15} /> Sin mensajes todavía. Corré «Revisar y notificar».
-            </div>
-          ) : (
-            <div className="space-y-5">
-              {ns.map((n) => <Burbuja key={n.id} n={n} u={porId.get(n.para)} />)}
-            </div>
-          )}
-        </Panel>
-
-        <div>
-          <Panel className="p-4">
-            <Etiqueta>Reparto</Etiqueta>
-            <ul className="mt-2.5 space-y-1.5 text-[12px] leading-snug" style={{ color: T.medio, fontFamily: sans }}>
-              <li><strong>Bloqueante</strong> → WhatsApp a admin y gestores</li>
-              <li><strong>Riesgo</strong> → correo a gestores</li>
-              <li><strong>Envío</strong> → a todo el equipo</li>
-              <li style={{ color: T.tenue }}>Un lector no recibe tareas: solo consulta.</li>
-            </ul>
-          </Panel>
-
-          <Panel className="mt-4 p-4">
-            <Etiqueta>Salida al proveedor de chat</Etiqueta>
-            <pre
-              className="mt-2.5 overflow-x-auto rounded-[3px] border p-3 text-[10.5px] leading-relaxed"
-              style={{ borderColor: T.linea, background: T.papel, color: T.medio, fontFamily: mono }}
-            >
-{ejemplo ? JSON.stringify(ejemplo, null, 2) : "// corré una revisión para ver el payload"}
-            </pre>
-            <p className="mt-2 text-[11px] leading-snug" style={{ color: T.alerta, fontFamily: sans }}>
-              El mensaje se arma completo pero todavía no sale: falta el token del proveedor. Es un
-              <code style={{ fontFamily: mono }}> POST </code> y nada más cambia.
-            </p>
-          </Panel>
-        </div>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <HiloWhatsApp ns={wa} porId={porId} />
+        <Bandeja ns={correo} porId={porId} />
       </div>
+
+      <Panel className="mt-6 p-4">
+        <Etiqueta>Reparto</Etiqueta>
+        <ul className="mt-2.5 grid gap-1.5 text-[12px] leading-snug sm:grid-cols-2 lg:grid-cols-4"
+            style={{ color: T.medio, fontFamily: sans }}>
+          <li><strong>Bloqueante</strong> → WhatsApp a admin y gestores</li>
+          <li><strong>Riesgo</strong> → correo a gestores</li>
+          <li><strong>Envío</strong> → a todo el equipo</li>
+          <li style={{ color: T.tenue }}>Un lector no recibe tareas: solo consulta.</li>
+        </ul>
+        <p className="mt-3 border-t pt-2.5 text-[11px] leading-snug"
+           style={{ borderColor: T.linea, color: T.alerta, fontFamily: sans }}>
+          Entorno de demostración: los mensajes se arman completos pero no salen del navegador.
+        </p>
+      </Panel>
     </>
   );
 }
