@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Cimiento — Transformando la tramitología</title>
+<meta name="description" content="Sabé exactamente qué papeles te van a pedir en tu trámite de construcción, antes de que te los pidan." />
+<meta name="theme-color" content="#0E1012" />
+<link rel="icon" href="img/favicon.png" />
+
+<meta property="og:title" content="Cimiento — Transformando la tramitología" />
+<meta property="og:description" content="Qué papeles te van a pedir de verdad, antes de que te los pidan." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="pics/hero.webp" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="preload" as="image" href="pics/hero.webp" />
+<link rel="stylesheet" href="css/estilo.css" />
+<script>document.documentElement.className += " js";</script>
+</head>
+<body>
+
+<i class="progreso" id="progreso" aria-hidden="true"></i>
+
+<header class="barra">
+  <img class="barra-marca" id="barraMarca" src="img/cimiento.svg" alt="Cimiento" />
+</header>
+
+<main>
+
+  <!-- portada -->
+  <section class="escena portada" id="inicio">
+    <div class="fondo" data-parallax style="background-image:url('pics/hero.webp'), var(--colado)"></div>
+    <div class="velo"></div>
+    <div class="cuerpo">
+      <img class="marca-hero" id="marcaHero" src="img/cimiento.svg" alt="Cimiento" />
+      <h1 id="tituloHero">Transformando la&nbsp;tramitología</h1>
+      <p class="entrada revelar">Sabé exactamente qué papeles te van a pedir. <strong>Antes de que te los pidan.</strong></p>
+      <div class="insignia revelar">
+        <img class="iso" src="img/camara.png" alt="Cámara Guatemalteca de la Construcción" />
+        <span class="texto">
+          <b>Primer lugar</b>
+          <span>Buildathon · Semana de la Construcción 2026</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- el problema -->
+  <section class="escena" id="problema">
+    <div class="fondo" data-parallax style="background-image:url('pics/escombro.webp'), var(--colado)"></div>
+    <div class="velo"></div>
+    <div class="cuerpo">
+      <h2 class="revelar">¿Cuántas veces te devolvieron el mismo expediente?</h2>
+      <p class="revelar">El requisito publicado y el requisito real no siempre son el mismo papel. Hoy lo que decide si pasás a la primera es a quién conocés, no qué tan bien hiciste tu trabajo.</p>
+      <ul class="reglones">
+        <li class="reglon revelar">
+          <h3>Reprocesos</h3>
+          <p>Volvés a la ventanilla por un documento que nadie te dijo que faltaba, o por una vigencia que se venció mientras esperabas.</p>
+        </li>
+        <li class="reglon revelar">
+          <h3>Incertidumbre</h3>
+          <p>Arrancás sin saber cuánto papeleo te espera de verdad, y el tiempo del proyecto se presupuesta a ojo.</p>
+        </li>
+        <li class="reglon revelar">
+          <h3>La experiencia se va</h3>
+          <p>Termina la obra, se va quien la tramitó, y el siguiente equipo tropieza exactamente con la misma piedra.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- qué hacemos -->
+  <section class="escena" id="solucion">
+    <div class="fondo" data-parallax style="background-image:url('pics/cimentacion.webp'), var(--colado)"></div>
+    <div class="velo"></div>
+    <div class="cuerpo">
+      <h2 class="revelar">Certeza desde el primer día de la obra.</h2>
+      <p class="revelar">Nos contás cómo es el proyecto. Te decimos qué te van a pedir, quién lo pide y en qué orden conviene sacarlo.</p>
+      <ul class="reglones">
+        <li class="reglon revelar">
+          <h3>Tu lista, no una lista</h3>
+          <p>De todo lo que se puede pedir, calculamos lo que aplica a <em>tu</em> obra. Nada de listas genéricas que no dicen si te toca o no.</p>
+        </li>
+        <li class="reglon revelar">
+          <h3>Donde de verdad se construye</h3>
+          <p>Cada municipalidad pide lo suyo, con sus formatos y sus vigencias. Cambiás el municipio y la lista se recalcula sola.</p>
+        </li>
+        <li class="reglon revelar">
+          <h3>Los plazos, a la vista</h3>
+          <p>Certificaciones que caducan y pagos con fecha límite dejan de ser sorpresa: te avisamos antes, no después.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- la prueba -->
+  <section class="escena" id="prueba">
+    <div class="fondo" data-parallax style="background-image:url('pics/obra.webp'), var(--colado)"></div>
+    <div class="velo"></div>
+    <div class="cuerpo">
+      <h2 class="revelar">La misma obra, en dos municipios vecinos.</h2>
+      <p class="revelar">450 m², veinte metros de alto, pozo propio, dentro de un condominio. Lo único que cambia es dónde se construye.</p>
+      <div class="duelo">
+        <div class="lado revelar">
+          <h3>Ciudad de Guatemala</h3>
+          <div class="marcador" data-conteo="44">0<small>documentos</small></div>
+          <ul>
+            <li>Certificación del Registro con seis meses de vigencia</li>
+            <li>Planos en CAD versión 2007</li>
+            <li>Clasifica la obra por metros cuadrados</li>
+          </ul>
+        </div>
+        <div class="lado revelar">
+          <h3>Santa Catarina Pinula</h3>
+          <div class="marcador" data-conteo="39">0<small>documentos</small></div>
+          <ul>
+            <li>Certificación del Registro con tres meses de vigencia</li>
+            <li>Planos en DWG</li>
+            <li>Y una carta firmada por la asociación de vecinos</li>
+          </ul>
+        </div>
+      </div>
+      <div class="veredicto revelar">
+        <span class="enorme">0</span>
+        <p>requisitos municipales en común. Ni los formatos, ni las vigencias, ni la forma de clasificar la obra. <strong>Por eso la experiencia de un municipio no te sirve en el de al lado.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- integración -->
+  <section class="escena" id="vac">
+    <div class="fondo" data-parallax style="background-image:url('pics/interior.webp'), var(--colado)"></div>
+    <div class="velo"></div>
+    <div class="cuerpo">
+      <h2 class="revelar">Sumar, no duplicar.</h2>
+      <p class="revelar">La Ventanilla Ágil de la Construcción ya unificó a los ministerios en un solo formulario: eso está resuelto y nadie tiene que rehacerlo. <strong>Nuestro plan es integrarnos con ella</strong> y hacernos cargo de lo que todavía queda fuera — la parte municipal, que es donde cambia todo.</p>
+      <hr class="cota revelar" />
+      <ul class="reglones">
+        <li class="reglon revelar">
+          <h3>Lo ministerial, ya resuelto</h3>
+          <p>Un solo trámite concentra a las instituciones de gobierno central. Trabajamos sobre eso, no contra eso.</p>
+        </li>
+        <li class="reglon revelar">
+          <h3>Lo municipal, lo nuestro</h3>
+          <p>Cada municipio tiene su normativa y su criterio. Ahí ponemos el trabajo, municipio por municipio.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- cifras -->
+  <section class="escena centro" id="cifras">
+    <div class="fondo" data-parallax style="background-image:url('pics/ladera.webp'), var(--colado)"></div>
+    <div class="velo"></div>
+    <div class="cuerpo">
+      <h2 class="revelar">No es una idea. Ya funciona.</h2>
+      <div class="cifras">
+        <div class="cifra revelar"><b data-conteo="96">0</b><span>documentos posibles</span></div>
+        <div class="cifra revelar"><b data-conteo="49">0</b><span>reglas cargadas</span></div>
+        <div class="cifra revelar"><b data-conteo="107">0</b><span>normas vigiladas</span></div>
+        <div class="cifra revelar"><b data-conteo="4">0</b><span>jurisdicciones</span></div>
+      </div>
+      <p class="revelar">Cada regla nace de un instructivo o de una guía oficial y guarda de dónde salió. Lo que todavía no está confirmado se muestra marcado: preferimos decirte que dudamos, a decirte algo que no es.</p>
+    </div>
+  </section>
+
+
+  <!-- quiénes somos -->
+  <section class="escena" id="equipo">
+    <div class="fondo" data-parallax style="background-image:url('pics/equipo.webp'), var(--colado)"></div>
+    <div class="velo"></div>
+    <div class="cuerpo">
+      <h2 class="revelar">Detrás de esto hay tres personas.</h2>
+      <p class="revelar">Cimiento nace de la necesidad de impulsar a toda la industria de la construcción: derribar la barrera de una tramitología que cansa y devolverle productividad a quien construye. Leemos los datos y unificamos la experiencia en un solo lugar.</p>
+      <p class="revelar">Somos <strong>Luis</strong>, <strong>Sebas</strong> y <strong>Diego</strong>. Nos metimos en el trámite real, convertimos normativa dispersa en algo que funciona, y le dimos forma.</p>
+      <hr class="cota revelar" />
+      <p class="revelar cierre">¿Tramitás licencias de construcción, o querés construir esto con nosotros?</p>
+      <a class="boton grande revelar" href="https://forms.gle/6X8TQqUuvye379uX6" target="_blank" rel="noopener">
+        Sumarme al proyecto
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pie">
+  <div class="pie-fila">
+    <img class="marca-pie" src="img/cimiento.svg" alt="Cimiento" />
+    <div class="insignia">
+      <img class="iso" src="img/camara.png" alt="Cámara Guatemalteca de la Construcción" />
+      <span class="texto">
+        <b>Primer lugar</b>
+        <span>Buildathon · Semana de la Construcción 2026</span>
+      </span>
+    </div>
+  </div>
+  <hr class="cota" />
+  <small>
+    Guatemala, 2026 &nbsp;·&nbsp; <a href="https://forms.gle/6X8TQqUuvye379uX6" target="_blank" rel="noopener">Escribinos</a> &nbsp;·&nbsp; <a href="https://zairocode.com" target="_blank" rel="noopener">Zairocode</a>
+  </small>
+</footer>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
