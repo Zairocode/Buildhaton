@@ -30,12 +30,15 @@ Un motor de reglas no puede tener un solo eje de clasificación. **La categoría
 | Documento | Muniguate | Santa Catarina Pinula |
 |---|---|---|
 | Certificación del Registro General de la Propiedad | **6 meses** de vigencia | **3 meses** de vigencia |
-| Planos digitales | CD, **CAD versión 2007** | **DWG** (`acad.dwg`) en disco compacto |
+| Copia digital de planos | DWG, **versión 2007** obligatoria, en CD | DWG, **sin versión especificada** |
 | Boleto de ornato | propietario + profesional responsable | propietario + **planificador + ejecutor** (dos profesionales) |
 | Responsabilidad ante terceros | **Póliza de seguro** según tabla de costos municipal | **Acta notarial** eximiendo a la municipalidad |
 | Certificación catastral | de la municipalidad respectiva | de la **Dirección de Catastro de SCP** |
 
 Un expediente preparado para la capital se rechaza en Pinula por la fecha de la certificación registral. Tres meses de diferencia, mismo documento.
+
+El formato de los planos **no** es la diferencia: las dos piden DWG. La capital fija la versión
+(Guía 09-F: *"EN FORMATO CAD VERSIÓN 2007"*); SCP no especifica ninguna.
 
 ---
 

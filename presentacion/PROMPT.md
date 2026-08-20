@@ -59,7 +59,7 @@ La capa ministerial sale idéntica. La municipal **no comparte una sola regla**.
 
 Diferencias concretas del mismo documento:
 - Certificación del Registro de la Propiedad: **6 meses** de vigencia en la capital, **3 meses** en Pinula
-- Planos digitales: **CAD versión 2007** en la capital, **DWG** en Pinula
+- Planos digitales: las dos piden **DWG**, pero la capital exige **versión 2007** y Pinula no especifica versión
 - Clasificación de obra: la capital por m² (30 / 200 / 700), Pinula por categoría (menor / mayor / gran magnitud)
 
 **Y un requisito que no es un documento:** Pinula exige **carta de la asociación de vecinos**

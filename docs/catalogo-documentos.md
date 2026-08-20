@@ -266,7 +266,7 @@ Documentos que **arma o aporta el solicitante** sin emisor institucional único:
 |---|---|---|
 | `cert-rgp` | RGP, 6 m / 3 m | Segundo Registro de la Propiedad, 3 m (Art. 148) |
 | `solvencia-municipal` | Tesorería, 2 m | Departamento de Catastro, 1 m (Art. 53) |
-| `planos-cad-2007` vs `planos-dwg-scp` | CAD 2007 (capital) | DWG editable (Pinula) |
+| `planos-cad-2007` vs `planos-dwg-scp` | DWG en ambas: **versión 2007** (capital) · **sin versión especificada** (Pinula) | — |
 
 ## Mantenimiento
 
