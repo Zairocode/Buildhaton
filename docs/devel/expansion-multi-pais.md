@@ -46,6 +46,26 @@ sin que cada instancia cargue normativa que no le corresponde.
   [`motor/paises/cl/reglas-borrador.json`](../../motor/paises/cl/reglas-borrador.json)
   (validado con un smoke test contra el `aplica()` real de `motor.py`, sin modificarlo
   — ningún cambio de DSL fue necesario para modelar lo encontrado).
+- **Perú confirma el mismo patrón que Chile, y con más fuerza — verificado contra
+  fuente primaria (TUO de la Ley 29090, no un resumen).** El propio texto legal
+  declara la uniformidad nacional como principio explícito: *"los procedimientos...
+  son únicos y de aplicación obligatoria a nivel nacional... los requisitos... son
+  únicos y se aplican a nivel nacional"*. Es un caso más fuerte que Chile para la
+  hipótesis de capa municipal delgada, porque ahí se infirió de que la OGUC no tiene
+  cláusula de discrecionalidad general; acá la ley lo dice directamente. Pendiente de
+  confirmar antes de escribir reglas: si algún distrito ejerce en la práctica algo
+  parecido a la cláusula "según sea el caso" de Guatemala pese al mandato legal — de
+  no encontrarse, Perú podría no necesitar ninguna regla de capa municipal, un caso
+  todavía no visto en este proyecto.
+
+  Con una particularidad de dominio análoga a la curaduría colombiana: la revisión del
+  proyecto no la hace una oficina municipal (el DCT de Guatemala, la DOM de Chile) sino
+  que se ha ido delegando a colegios profesionales — primero una Comisión Técnica
+  (delegados del Colegio de Arquitectos y el Colegio de Ingenieros más un representante
+  municipal), y cada vez más a **Revisores Urbanos** certificados individualmente cuyo
+  informe favorable ya basta sin pasar por la Comisión. Mismo efecto que Colombia sobre
+  el campo `institucion`/`quien_emite` — no requiere cambio de esquema, sí un valor que
+  no es "una dirección municipal" cuando se cargue el dato real.
 - **Colombia tiene una particularidad de dominio que no rompe el modelo de
   jurisdicción, pero sí afecta un campo existente.** El trámite de licencia en
   Colombia pasa por **Curadurías Urbanas** — profesionales privados que ejercen una
@@ -54,7 +74,32 @@ sin que cada instancia cargue normativa que no le corresponde.
   el valor de `institucion`/`quien_emite` en las reglas y el catálogo de documentos de
   Colombia se va a leer distinto ("Curaduría Urbana N.º 3 de Bogotá" no es un
   ministerio ni una dirección municipal) — anotarlo para quien empiece esa carga de
-  datos, no requiere ningún cambio de esquema.
+  datos, no requiere ningún cambio de esquema. Verificado con más detalle: la
+  curaduría no es universal — solo es obligatoria en municipios con más de 100,000
+  habitantes (designado por acto administrativo de MinVivienda); por debajo de ese
+  umbral, el trámite lo lleva directamente la Secretaría/Oficina de Planeación
+  municipal. Es el mismo campo `institucion` variando según el municipio, no dos
+  formas de trámite distintas — coherente con el modelo, pero confirma que la carga de
+  datos de Colombia va a necesitar ese dato (población del municipio, o directamente
+  si tiene curaduría) para decidir qué valor poner.
+- **Costa Rica introduce un caso que el modelo país→municipio todavía puede
+  representar, pero que `pais.json` (punto 2 abajo) no tiene dónde anotar: quién opera
+  la plataforma que unifica el trámite no es necesariamente un ministerio.** La
+  licencia sigue siendo municipal (Ley de Construcciones N.º 833 + Reglamento INVU), con
+  una lista de documentos base fijada a nivel nacional por decreto interministerial —
+  hasta ahí, la misma forma de Guatemala. Pero las municipalidades siguen agregando sus
+  propios requisitos encima (variabilidad estilo Guatemala, no estilo Chile/Perú), y
+  **todo el trámite — el prerrequisito nacional, la certificación profesional y la
+  solicitud municipal misma — se enruta a través de una sola plataforma (APC) operada
+  por el CFIA, un colegio profesional de colegiación obligatoria, no una entidad de
+  gobierno.** Ni PRONACOM/MINECO (Guatemala) ni un ministerio (Chile, Perú): un tercer
+  tipo de operador. No requiere ningún cambio al esquema de `reglas.json` — `capa`,
+  `institucion` y `fuente` siguen alcanzando para modelar los documentos — pero si
+  `pais.json` va a describir contexto institucional además de estructura de
+  jurisdicción, hoy no tiene campo para "quién opera la capa nacional" (ministerio vs.
+  colegio profesional vs. sin plataforma unificada). Mismo criterio que el punto 5
+  (glosario): no se resuelve aquí sin un segundo caso real que lo necesite — Costa Rica
+  es ese caso, así que queda anotado para cuando se decida cargar sus datos.
 - **Explícitamente fuera del alcance del motor de requisitos:** certificaciones de
   sostenibilidad (CES de Chile, EDGE en Colombia/Perú) y marcos de concesión para obra
   pública. Son mecanismos voluntarios o de otro tipo de proyecto (infraestructura
@@ -146,6 +191,13 @@ lugares, no aislada en un solo archivo:
    Costo: bajo. Es un archivo nuevo chico por país más un cambio contenido en
    `motor.py` (una constante que deja de ser literal) y en `api-server/app.py`
    (`NOMBRES_JURISDICCION` se deriva de `pais.json` en vez de vivir en Python).
+
+   **Pendiente, no resuelto aquí:** el caso de Costa Rica (ver "Alcance decidido"
+   arriba) muestra que `capa_nacional` no siempre la opera un ministerio — puede ser un
+   colegio profesional con autoridad delegada. `pais.json` tal como está arriba no
+   tiene dónde anotar eso. Mismo criterio que el punto 5 (glosario): no se agrega un
+   campo `operador` especulativo sin un segundo caso real que lo necesite — se decide
+   cuando se cargue Costa Rica o cualquier país con el mismo patrón, no antes.
 
 3. **Nuevo self-check: los `jurisdiccion` de `reglas.json` están todos declarados en
    `pais.json`.**
