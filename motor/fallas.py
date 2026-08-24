@@ -17,9 +17,9 @@ from collections import Counter
 from datetime import date
 
 try:                                  # importado como paquete (api-server)
-    from motor.motor import aplica, requisitos
+    from motor.motor import aplica, requisitos, REGLAS as _REGLAS
 except ImportError:                   # corrido como script desde motor/
-    from motor import aplica, requisitos
+    from motor import aplica, requisitos, REGLAS as _REGLAS
 
 FALLAS = json.loads((pathlib.Path(__file__).parent / "fallas.json").read_text(encoding="utf-8"))
 
@@ -59,7 +59,8 @@ def revisar(proyecto, cargados=(), hoy=None, bitacora=()):
             continue
         for d in r["exige"]:
             nombre = d["texto"]
-            if r.get("tipo") == "gestion":
+            tipo_d = d.get("tipo") or r.get("tipo")
+            if tipo_d == "gestion":
                 out.append(_h(
                     f"gestion-{r['id']}", "riesgo", "Esto no se resuelve subiendo un archivo",
                     f"«{nombre}» no es un documento que emita una institución: hay que conseguirlo. "
@@ -114,6 +115,14 @@ def revisar(proyecto, cargados=(), hoy=None, bitacora=()):
                 f"La regla {r['id']} ({r['institucion']}) sale de una fuente secundaria y no está "
                 "verificada contra el instructivo oficial vigente.",
                 "Confirmalo en ventanilla antes de presupuestar el trámite con este dato.",
+                r.get("fuente"),
+            ))
+        if r.get("revisar_si"):
+            out.append(_h(
+                f"revisar-{r['id']}", "aviso", "Esta regla puede estar desactualizada",
+                f"La regla {r['id']} ({r['institucion']}) depende de una norma marcada para "
+                f"revisión: {r['revisar_si']}",
+                "Confirmá contra la fuente vigente antes de presupuestar el trámite con este dato.",
                 r.get("fuente"),
             ))
 
@@ -180,6 +189,19 @@ def demo():
     alto = {**base, "municipalidad": "muniguate", "altura_m": 42}
     assert "dgac-por-torre" in {h["id"] for h in revisar(alto, hoy=HOY)}
     assert "dgac-por-torre" not in {h["id"] for h in revisar({**base, "municipalidad": "muniguate"}, hoy=HOY)}
+
+    # revisar_si: aviso de que una regla depende de una norma marcada para revisión
+    # (p. ej. CONRED tras el Acuerdo CN-3-2025), sin bloquear el expediente.
+    _REGLAS.append({
+        "id": "prueba-revisar-si", "capa": "ministerial", "jurisdiccion": "GT",
+        "institucion": "TEST", "cuando": {}, "exige": [], "confianza": "confirmada",
+        "fuente": "prueba", "revisar_si": "cambia si la norma de prueba se actualiza",
+    })
+    try:
+        ids = {h["id"] for h in revisar({**base, "municipalidad": "muniguate"}, hoy=HOY)}
+        assert "revisar-prueba-revisar-si" in ids
+    finally:
+        _REGLAS.pop()
 
     # La bitacora ordena, no inventa: sube el hallazgo mas repetido, no agrega ninguno.
     log = [{"falla": "expediente-fisico"}] * 9

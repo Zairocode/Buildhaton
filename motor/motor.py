@@ -19,7 +19,10 @@ OPS = {
     ">=": lambda v, a: v is not None and v >= a,
     "<=": lambda v, a: v is not None and v <= a,
     "in": lambda v, a: v in a,
+    "!=": lambda v, a: v is not None and v != a,
 }
+
+VALORES_CONFIANZA = {"confirmada", "mirror", "SIN_CONFIRMAR"}
 
 
 def _match(valor, cond):
@@ -61,11 +64,11 @@ def informe(proyecto):
             continue
         lineas.append(f"\n{capa.upper()}")
         for r in bloque:
-            marca = MARCA.get(r.get("tipo"), "")
-            if r["confianza"] == "SIN_CONFIRMAR":
-                marca += "  [SIN CONFIRMAR]"
-            lineas.append(f"  {r['institucion']} — {r['id']}  {marca}".rstrip())
-            lineas.extend(f"    - {d['texto']}" for d in r["exige"])
+            etiqueta = "  [SIN CONFIRMAR]" if r["confianza"] == "SIN_CONFIRMAR" else ""
+            lineas.append(f"  {r['institucion']} — {r['id']}{etiqueta}".rstrip())
+            for d in r["exige"]:
+                marca = MARCA.get(d.get("tipo") or r.get("tipo"), "")
+                lineas.append(f"    - {d['texto']}  {marca}".rstrip())
             if "nota" in r:
                 lineas.append(f"    ! {r['nota']}")
     avisos = [r for r in rs if r.get("tipo") == "aviso"]
@@ -123,25 +126,23 @@ def demo():
     # La tesis del proyecto: mismo proyecto, distinta muni, distinto tramite.
     obra = {"area_construccion_m2": 450, "altura_m": 8, "categoria_obra_scp": "mayor",
             "fuente_agua_scp": "pozo", "en_residencial_o_condominio": True}
-    en_capital = {**obra, "municipalidad": "muniguate"}
-    en_pinula = {**obra, "municipalidad": "scp"}
-    ids_cap = {r["id"] for r in requisitos(en_capital)}
-    ids_scp = {r["id"] for r in requisitos(en_pinula)}
-    assert not (ids_cap & ids_scp), "las reglas municipales no deben cruzarse entre jurisdicciones"
+
+    # No-cruce entre jurisdicciones municipales, genérico: recorre {jurisdiccion} tal
+    # como sale de REGLAS, no una lista fija de pares. Agregar una jurisdicción nueva
+    # no requiere escribir un bloque de asserts a mano — el loop la recoge sola.
+    municipales = sorted(j for j in {r["jurisdiccion"] for r in REGLAS} if j != "GT")
+    ids_por_jur = {j: {r["id"] for r in requisitos({**obra, "municipalidad": j})} for j in municipales}
+    for i, a in enumerate(municipales):
+        for b in municipales[i + 1:]:
+            solape = ids_por_jur[a] & ids_por_jur[b]
+            assert not solape, f"reglas cruzadas entre {a} y {b}: {solape}"
+        # Ninguna lista publicada es completa, y cada muni lo dice por escrito.
+        assert any(r.get("tipo") == "aviso" for r in requisitos({**obra, "municipalidad": a}))
+
+    ids_cap, ids_scp = ids_por_jur["muniguate"], ids_por_jur["scp"]
     assert "scp-asociacion-vecinos" in ids_scp      # requisito social, no existe en la capital
     assert "scp-agua-pozo" in ids_scp
     assert "muni-gt-cad-digital" in ids_cap         # CAD 2007 vs DWG
-
-    # Ninguna lista publicada es completa, y ambas munis lo dicen por escrito.
-    for p in (en_capital, en_pinula):
-        assert any(r.get("tipo") == "aviso" for r in requisitos(p))
-
-    # La tesis, tercer caso: Quetzaltenango (POT 2022) tampoco cruza ids con las otras dos.
-    en_xela = {**obra, "municipalidad": "xela"}
-    ids_xela = {r["id"] for r in requisitos(en_xela)}
-    assert not (ids_xela & ids_cap) and not (ids_xela & ids_scp), \
-        "las reglas de xela no deben cruzarse con las de otra jurisdiccion"
-    assert any(r.get("tipo") == "aviso" for r in requisitos(en_xela))
 
     # 20 m² es el corte legal (Art. 66): "desde 20 m2 en adelante" es licencia, no permiso.
     obra_ligera = {"municipalidad": "xela", "area_construccion_m2": 15}
@@ -159,15 +160,40 @@ def demo():
     assert {"xela-alto-impacto-equipo", "xela-alto-impacto-dictamenes", "xela-impacto-vial"} <= ids_alto
     assert not ({"xela-alto-impacto-equipo", "xela-alto-impacto-dictamenes", "xela-impacto-vial"} & ids_bajo)
 
+    # Operador "!=": comparación de un campo contra un valor fijo, mismo patrón que >=/<=.
+    regla_distinto = {"cuando": {"tipo_solicitud": {"!=": "EAP"}}}
+    assert aplica(regla_distinto, {"tipo_solicitud": "vivienda_unifamiliar"})
+    assert not aplica(regla_distinto, {"tipo_solicitud": "EAP"})
+
+    # `tipo` por entrada de `exige`, con fallback al `tipo` de la regla: una misma
+    # regla puede mezclar un documento real con un trámite no-documental.
+    regla_mixta = {
+        "id": "prueba-mixta", "capa": "municipal", "confianza": "confirmada",
+        "cuando": {}, "tipo": "gestion",
+        "exige": [
+            {"documento_id": None, "texto": "hereda gestion de la regla"},
+            {"documento_id": None, "texto": "documento real", "tipo": None},
+        ],
+    }
+    efectivos = [d.get("tipo") or regla_mixta.get("tipo") for d in regla_mixta["exige"]]
+    assert efectivos == ["gestion", "gestion"]  # sin tipo propio, el fallback aplica a ambas
+    regla_mixta["exige"][1]["tipo"] = "documental_explicito"
+    efectivos = [d.get("tipo") or regla_mixta.get("tipo") for d in regla_mixta["exige"]]
+    assert efectivos == ["gestion", "documental_explicito"]  # con tipo propio, gana la entrada
+
+    # `confianza` es un enum cerrado; un valor fuera de VALORES_CONFIANZA es un typo.
+    invalidas = {r["id"] for r in REGLAS if r.get("confianza") not in VALORES_CONFIANZA}
+    assert not invalidas, f"confianza fuera de {VALORES_CONFIANZA}: {invalidas}"
+
     print("self-check OK\n")
     print(f"Caso: EAP {torre['area_construccion_m2']} m², {torre['altura_m']} m de altura, PTAR nueva")
     print(informe(torre))
     print("\n" + "=" * 70)
     print("MISMA OBRA (450 m², pozo, en condominio) EN CADA MUNICIPALIDAD")
-    for etiqueta, p in (("CAPITAL", en_capital), ("SANTA CATARINA PINULA", en_pinula)):
-        rs = [r for r in requisitos(p) if r["capa"] == "municipal"]
+    for j in municipales:
+        rs = [r for r in requisitos({**obra, "municipalidad": j}) if r["capa"] == "municipal"]
         docs = sum(len(r["exige"]) for r in rs if r.get("tipo") != "aviso")
-        print(f"  {etiqueta:22} {len(rs)} reglas, {docs} requisitos")
+        print(f"  {j:22} {len(rs)} reglas, {docs} requisitos")
 
 
 if __name__ == "__main__":

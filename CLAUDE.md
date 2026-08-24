@@ -50,11 +50,11 @@ Esto importa más que ninguna otra sección.
 Todo lo que cita **VAC04** (`docs/fuentes/VAC04_requisitos_b.pdf`) — requisitos de CONRED, DGAC, MSPAS y MARN. VAC04 a su vez cita la normativa de origen: NRD2, DRPSA-011-2022, AG 178-2009, COGUANOR NTG 29001, AG 53-2022.
 
 ### ⚠️ De fuente secundaria
-La **Guía 09-F municipal** salió de un mirror privado (approvato.com.gt), no del portal oficial, y es de **2019**. Los umbrales y montos (Q350, 200 m², 700 m², 10 m³) pueden estar desactualizados. **Confirmar antes de usarlos en producción.**
+La **Guía 09-F municipal** salió de un mirror privado (approvato.com.gt), no del portal oficial, y es de **2019**. Los umbrales y montos (Q350, 200 m², 700 m², 10 m³) pueden estar desactualizados. **Confirmar antes de usarlos en producción.** La Guía 00-F/01-F sale del mismo mirror. Las reglas municipales que citan cualquiera de las dos están marcadas `"confianza": "mirror"` en `reglas.json` — distinto de `"SIN_CONFIRMAR"`: el dato tiene fuente, pero no es la oficial.
 
 ### ❌ No verificado — no lo trates como cierto
 - **El umbral de 16 m de DGAC.** Aparece solo en VAC02, no se repite en VAC04, y el texto dice *"especialmente en el Departamento de Guatemala"* — ambiguo si es nacional o departamental. En `reglas.json` está marcado `"confianza": "SIN_CONFIRMAR"`. **No le quites esa marca sin una fuente.**
-- **CONAP, IDAEH, MEM e INAB.** Tienen documentos en el Anexo I del VAC02 pero **cero requisitos publicados en VAC04**. No hay base para escribir reglas de estas instituciones todavía.
+- **CONAP, IDAEH, MEM e INAB.** Tienen documentos en el Anexo I del VAC02 pero **cero requisitos publicados en VAC04**. No hay base para escribir reglas de estas instituciones todavía. La única regla de INAB en la capa ministerial (`inab-bosque`) cita solo VAC02 §3j y está marcada `"confianza": "SIN_CONFIRMAR"` por esto mismo.
 - **Nada se validó dentro de `app.vac.com.gt`.** La plataforma requiere cuenta. No se creó ninguna ni se ingresaron credenciales.
 
 ## Errores ya cometidos y corregidos
