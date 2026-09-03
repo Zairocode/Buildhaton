@@ -38,7 +38,8 @@
       }
     ],
     "fuente": "VAC04 · CONRED",
-    "confianza": "confirmada"
+    "confianza": "confirmada",
+    "revisar_si": "La NRD-2 cambió el 22/12/2025 (Acuerdo CN-3-2025 de CONRED) y VAC04 la cita sin número de versión. Confirmar que estos documentos siguen siendo los que exige la NRD-2 vigente."
   },
   {
     "id": "conred-asientos-fijos",
@@ -56,7 +57,8 @@
       }
     ],
     "fuente": "VAC04 · CONRED núm. 10",
-    "confianza": "confirmada"
+    "confianza": "confirmada",
+    "revisar_si": "La NRD-2 cambió el 22/12/2025 (Acuerdo CN-3-2025 de CONRED) y VAC04 la cita sin número de versión. Confirmar que el requisito de asientos fijos sigue siendo el mismo bajo la NRD-2 vigente."
   },
   {
     "id": "dgac-altura",
@@ -334,8 +336,8 @@
       }
     ],
     "fuente": "VAC02 §3j",
-    "confianza": "confirmada",
-    "nota": "INAB NO está integrado a VAC. Se gestiona por fuera."
+    "confianza": "SIN_CONFIRMAR",
+    "nota": "INAB NO está integrado a VAC. Se gestiona por fuera. CLAUDE.md marca a CONAP/IDAEH/MEM/INAB como instituciones sin requisitos publicados en VAC04 — este documento aparece solo en el Anexo I del VAC02, sin base en VAC04."
   },
   {
     "id": "muni-gt-colegiado",
@@ -362,7 +364,7 @@
       }
     ],
     "fuente": "Guía 09-F · PTLI.23 v2",
-    "confianza": "confirmada"
+    "confianza": "mirror"
   },
   {
     "id": "muni-gt-cad-digital",
@@ -402,7 +404,7 @@
       }
     ],
     "fuente": "Guía 09-F · nota importante",
-    "confianza": "confirmada"
+    "confianza": "mirror"
   },
   {
     "id": "muni-gt-fuera-de-guia",
@@ -418,7 +420,7 @@
       "ALERTA: fuera del alcance de la Guía 09-F. Aplica otra guía (Guía 08 u obras mayores)"
     ],
     "fuente": "Guía 09-F · alcance",
-    "confianza": "confirmada",
+    "confianza": "mirror",
     "tipo": "aviso"
   },
   {
@@ -433,7 +435,7 @@
       "ALERTA: la Guía 09-F no aplica en Centro Histórico, Conjunto Histórico ni Área de Amortiguamiento"
     ],
     "fuente": "Guía 09-F · alcance",
-    "confianza": "confirmada",
+    "confianza": "mirror",
     "tipo": "aviso"
   },
   {
@@ -452,7 +454,7 @@
       }
     ],
     "fuente": "Guía 09-F · documentos específicos",
-    "confianza": "confirmada",
+    "confianza": "mirror",
     "nota": "Exentos: tiendas, abarroterías, panaderías, farmacias, librerías, centros educativos, centros comunitarios e iglesias."
   },
   {
@@ -472,7 +474,7 @@
       }
     ],
     "fuente": "Guía 09-F · documentos complementarios",
-    "confianza": "confirmada",
+    "confianza": "mirror",
     "nota": "Cortes menores a 10 m³ van por la Guía 04, Dirección de Medio Ambiente municipal."
   },
   {
@@ -496,7 +498,7 @@
       }
     ],
     "fuente": "Guía 09-F · documentos específicos",
-    "confianza": "confirmada",
+    "confianza": "mirror",
     "nota": "COSTURA VAC->MUNI. Si el trámite MARN no ha concluido, se puede ingresar con acta de declaración jurada + copia de recepción de la solicitud ante MARN."
   },
   {
@@ -546,7 +548,7 @@
       }
     ],
     "fuente": "Guía 09-F · Guía 00-F · documentos generales",
-    "confianza": "confirmada"
+    "confianza": "mirror"
   },
   {
     "id": "muni-gt-nrd1-acta",
@@ -611,7 +613,7 @@
       }
     ],
     "fuente": "Guía 00-F · documentos específicos",
-    "confianza": "confirmada",
+    "confianza": "mirror",
     "nota": "Válvula de escape paralela a la del MARN: se puede ingresar el expediente municipal antes de tener la resolución DGAC, con declaración jurada + acuse de recibo DGAC."
   },
   {
@@ -693,7 +695,7 @@
       }
     ],
     "fuente": "Guía 01-F · documentos específicos",
-    "confianza": "confirmada",
+    "confianza": "mirror",
     "nota": "Aplica para proyectos de urbanización, movimiento de tierra y obras mayores a 900 m³."
   },
   {
@@ -707,7 +709,7 @@
       "Esta lista NO es completa: la guía se reserva pedir requisitos adicionales segun sea el caso"
     ],
     "fuente": "Guía 09-F · requisitos de presentación",
-    "confianza": "confirmada"
+    "confianza": "mirror"
   },
   {
     "id": "scp-base",

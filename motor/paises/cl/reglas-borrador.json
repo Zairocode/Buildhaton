@@ -1,0 +1,141 @@
+[
+  {
+    "id": "cl-cip-precursor",
+    "capa": "nacional",
+    "jurisdiccion": "CL",
+    "institucion": "Dirección de Obras Municipales (DOM)",
+    "tipo": "gestion",
+    "cuando": {},
+    "exige": [
+      {
+        "documento": "cl-cip",
+        "detalle": "Solicitar el Certificado de Informaciones Previas (CIP) ante la DOM antes de armar el expediente — plazo de emisión 7 días (15 si la DOM no tiene información catastral del predio)."
+      }
+    ],
+    "fuente": "OGUC Art. 1.4.4",
+    "confianza": "confirmada",
+    "nota": "Insumo obligatorio del expediente de permiso (aparece también como ítem 2 del Art. 5.1.6). Análogo funcional a la 'Consulta A' de muni-gt-base en Guatemala."
+  },
+  {
+    "id": "cl-permiso-edificacion-obra-nueva",
+    "capa": "nacional",
+    "jurisdiccion": "CL",
+    "institucion": "Dirección de Obras Municipales (DOM)",
+    "cuando": {
+      "tipo_obra": "nueva"
+    },
+    "exige": [
+      {
+        "documento": "cl-solicitud-permiso-edificacion",
+        "detalle": "Solicitud firmada por propietario y arquitecto proyectista (Art. 5.1.6 num. 1)"
+      },
+      {
+        "documento": "cl-cip",
+        "detalle": "Fotocopia del Certificado de Informaciones Previas vigente + plancheta catastral si fue proporcionada (Art. 5.1.6 num. 2)"
+      },
+      {
+        "documento": "cl-formulario-estadisticas-edificacion",
+        "detalle": "Formulario único de estadísticas de edificación (Art. 5.1.6 num. 3)"
+      },
+      {
+        "documento": "cl-certificado-factibilidad-sanitaria",
+        "detalle": "Certificado de factibilidad de agua potable y alcantarillado (Art. 5.1.6 num. 6)"
+      },
+      {
+        "documento": "cl-planos-arquitectura",
+        "detalle": "Planos de arquitectura numerados (Art. 5.1.6 num. 7)"
+      },
+      {
+        "documento": "cl-cuadro-superficies",
+        "detalle": "Cuadro de superficies y cálculo de carga de ocupación (Art. 5.1.6 num. 8)"
+      },
+      {
+        "documento": "cl-levantamiento-topografico",
+        "detalle": "Levantamiento topográfico acotado, salvo que ya esté incorporado en las plantas de arquitectura (Art. 5.1.6 num. 12)"
+      }
+    ],
+    "fuente": "OGUC Art. 5.1.6",
+    "confianza": "confirmada",
+    "nota": "Lista base para obra nueva. El Art. 5.1.6 completo tiene 16 numerales — este borrador solo incluye los que aplican siempre; los condicionales (Revisor Independiente, cálculo estructural, ascensores, accesibilidad, telecomunicaciones, impacto vial, especificaciones térmicas) se modelan como reglas separadas abajo porque cada uno depende de un campo distinto del proyecto. Ver docs/chile-lguc-oguc.md para el listado completo con las 16 entradas."
+  },
+  {
+    "id": "cl-calculo-estructural",
+    "capa": "nacional",
+    "jurisdiccion": "CL",
+    "institucion": "Dirección de Obras Municipales (DOM)",
+    "cuando": {
+      "tipo_obra": "nueva",
+      "area_construccion_m2": {
+        ">=": 100
+      }
+    },
+    "exige": [
+      {
+        "documento": "cl-proyecto-calculo-estructural",
+        "detalle": "Proyecto de cálculo estructural (memoria + planos de estructura), firmado por ingeniero civil o arquitecto (Art. 5.1.6 num. 10, detalle en Art. 5.1.7)"
+      },
+      {
+        "documento": "cl-informe-revisor-calculo-estructural",
+        "detalle": "Informe favorable del Revisor de Proyecto de Cálculo Estructural, cuando corresponda su contratación (Art. 5.1.6 num. 5)"
+      }
+    ],
+    "fuente": "OGUC Art. 5.1.6 num. 5 y 10, Art. 5.1.7",
+    "confianza": "SIN_CONFIRMAR",
+    "nota": "El umbral >= 100 m2 modela solo una de las tres condiciones de exención del Art. 5.1.7 (superficie < 100 m2). Faltan 'obra menor' (sin definir en el pase de lectura) y 'clases C/D/E/F con ocupación < 20 personas' — la regla puede sobre-exigir en esos dos casos hasta confirmarlos. Ver 'Pendiente' en docs/chile-lguc-oguc.md."
+  },
+  {
+    "id": "cl-ascensores",
+    "capa": "nacional",
+    "jurisdiccion": "CL",
+    "institucion": "Dirección de Obras Municipales (DOM)",
+    "cuando": {
+      "tipo_obra": "nueva",
+      "tiene_ascensores_o_similares": true
+    },
+    "exige": [
+      {
+        "documento": "cl-carpeta-ascensores",
+        "detalle": "Carpeta de Ascensores e Instalaciones similares (Art. 5.1.6 num. 13)"
+      }
+    ],
+    "fuente": "OGUC Art. 5.1.6 num. 13",
+    "confianza": "confirmada"
+  },
+  {
+    "id": "cl-impacto-vial",
+    "capa": "nacional",
+    "jurisdiccion": "CL",
+    "institucion": "Dirección de Obras Municipales (DOM)",
+    "cuando": {
+      "tipo_obra": "nueva",
+      "requiere_informe_impacto_vial": true
+    },
+    "exige": [
+      {
+        "documento": "cl-comprobante-impacto-vial",
+        "detalle": "Comprobante de ingreso del Informe de Mitigación de Impacto Vial, o certificado de que no se requiere (Art. 5.1.6 num. 16)"
+      }
+    ],
+    "fuente": "OGUC Art. 5.1.6 num. 16",
+    "confianza": "confirmada",
+    "nota": "requiere_informe_impacto_vial es autodeclarado — el motor no calcula cuándo un proyecto dispara este informe, igual que en_cono_la_aurora en Guatemala (ver limitaciones-motor.md punto 6)."
+  },
+  {
+    "id": "cl-obra-fuera-limite-urbano",
+    "capa": "nacional",
+    "jurisdiccion": "CL",
+    "institucion": "SEREMI de Vivienda y Urbanismo / Servicio Agrícola (SAG)",
+    "cuando": {
+      "en_zona_rural": true
+    },
+    "exige": [
+      {
+        "documento": "cl-informe-favorable-seremi-sag",
+        "detalle": "Informe previo favorable de la SEREMI de Vivienda y Urbanismo y del Servicio Agrícola, para construcciones industriales, de infraestructura, equipamiento, turismo o poblaciones fuera de los límites urbanos"
+      }
+    ],
+    "fuente": "LGUC Art. 55",
+    "confianza": "SIN_CONFIRMAR",
+    "nota": "en_zona_rural es autodeclarado, mismo patrón que en_cono_la_aurora. No modela las excepciones del propio Art. 55 (explotación agrícola, vivienda del propietario/trabajadores, vivienda social/hasta 1.000 UF)."
+  }
+]

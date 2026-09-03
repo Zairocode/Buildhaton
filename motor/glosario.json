@@ -973,6 +973,26 @@
       "confianza": "alta"
     },
     {
+      "id": "confianza_mirror",
+      "termino": "mirror",
+      "categoria": "metadata",
+      "definicion": "Marca en reglas.json: requisito que sale de una fuente secundaria (mirror no oficial de una guía municipal, p. ej. approvato.com.gt) en vez del instructivo oficial. Distinto de SIN_CONFIRMAR: el dato existe y tiene fuente, pero esa fuente no es la primaria. Corresponde al nivel ⚠️ de CLAUDE.md.",
+      "valores": [
+        "mirror"
+      ],
+      "fuente": "CLAUDE.md",
+      "confianza": "alta"
+    },
+    {
+      "id": "revisar_si",
+      "termino": "revisar_si",
+      "categoria": "metadata",
+      "definicion": "Campo opcional en reglas.json: texto libre que describe qué cambio en la norma de origen invalidaría esta regla (p. ej. una actualización de la NRD-2 de CONRED). Cuando está presente, motor/fallas.py emite un hallazgo tipo aviso ('revisar-<id-de-regla>') para que el expediente lo muestre sin bloquearlo.",
+      "valores": [],
+      "fuente": "motor/fallas.py",
+      "confianza": "alta"
+    },
+    {
       "id": "tipo_regla_aviso",
       "termino": "aviso (tipo de regla)",
       "categoria": "metadata",

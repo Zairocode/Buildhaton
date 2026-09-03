@@ -38,6 +38,12 @@ def resuelve(item):
     """Normaliza una entrada de `exige` (string suelto o referencia al catalogo) a un
     dict con al menos `texto`. Si referencia un documento del catalogo, agrega
     documento_id/categoria/vigencia_meses/extensiones_validas/consejo_* cuando existan.
+
+    `tipo` es opcional y solo se agrega si la entrada lo trae explícito (p. ej. una
+    regla de tipo "documental" que mezcla, en una sola entrada de `exige`, un trámite
+    de gestión junto a documentos reales). Si viene None, quien consume el resultado
+    debe hacer fallback al `tipo` de la regla completa — no se resuelve aquí porque
+    `resuelve()` no conoce la regla, solo la entrada.
     """
     if isinstance(item, str):
         return {"texto": item, "documento_id": None}
@@ -52,6 +58,7 @@ def resuelve(item):
         "extensiones_validas": item.get("extensiones_validas"),
         "consejo_vencimiento": doc.get("consejo_vencimiento"),
         "consejo_formato": doc.get("consejo_formato"),
+        "tipo": item.get("tipo"),
     }
     return resuelto
 
@@ -104,6 +111,11 @@ def demo():
     # no un valor generico del catalogo (6 meses capital, no el de Pinula).
     r = resuelve({"documento": "cert-rgp", "detalle": "texto de prueba", "vigencia_meses": 6})
     assert r["vigencia_meses"] == 6 and r["documento_id"] == "cert-rgp" and r["categoria"] == "registral"
+
+    # tipo por entrada: si la entrada no lo trae, resuelve() no inventa uno (fallback
+    # al tipo de la regla lo hace quien llama, no el catalogo).
+    assert resuelve({"documento": "cert-rgp"})["tipo"] is None
+    assert resuelve({"documento": "cert-rgp", "tipo": "gestion"})["tipo"] == "gestion"
 
     print(f"self-check OK — {len(CATALOGO)} documentos en el catalogo\n")
     ejemplo = sugerir("Certificación del Registro de la Propiedad del inmueble")

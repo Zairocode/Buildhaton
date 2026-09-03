@@ -1,0 +1,155 @@
+[
+  {
+    "id": "cl-cip",
+    "nombre": "Certificado de Informaciones Previas (CIP)",
+    "categoria": "certificacion",
+    "quien_emite": "Dirección de Obras Municipales (o SEREMI de Vivienda y Urbanismo si la comuna no tiene DOM)",
+    "consejo_vencimiento": "Mantiene validez mientras no cambien las normas urbanísticas del instrumento de planificación territorial aplicable.",
+    "consejo_formato": null,
+    "alias": ["CIP"]
+  },
+  {
+    "id": "cl-solicitud-permiso-edificacion",
+    "nombre": "Solicitud de permiso de edificación firmada por propietario y arquitecto proyectista",
+    "categoria": "formulario",
+    "quien_emite": "Propietario y arquitecto proyectista",
+    "consejo_vencimiento": null,
+    "consejo_formato": "Debe incluir: lista numerada de documentos y planos, declaración de dominio, disposiciones especiales acogidas, profesionales competentes, si hay uso público, si cuenta con Revisor Independiente y/o Revisor de Cálculo Estructural, si cuenta con anteproyecto aprobado vigente.",
+    "alias": []
+  },
+  {
+    "id": "cl-formulario-estadisticas-edificacion",
+    "nombre": "Formulario único de estadísticas de edificación",
+    "categoria": "formulario",
+    "quien_emite": "Arquitecto proyectista",
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "cl-informe-revisor-independiente-o-declaracion-jurada",
+    "nombre": "Informe del Revisor Independiente, o declaración jurada del arquitecto proyectista",
+    "categoria": "informe",
+    "quien_emite": "Revisor Independiente o arquitecto proyectista",
+    "consejo_vencimiento": null,
+    "consejo_formato": "Solo para permisos de una vivienda, viviendas progresivas o infraestructura sanitaria.",
+    "alias": []
+  },
+  {
+    "id": "cl-informe-revisor-calculo-estructural",
+    "nombre": "Informe favorable del Revisor de Proyecto de Cálculo Estructural",
+    "categoria": "informe",
+    "quien_emite": "Revisor de Proyecto de Cálculo Estructural",
+    "consejo_vencimiento": null,
+    "consejo_formato": "Solo cuando su contratación corresponda según Art. 5.1.7 OGUC.",
+    "alias": []
+  },
+  {
+    "id": "cl-certificado-factibilidad-sanitaria",
+    "nombre": "Certificado de factibilidad de agua potable y alcantarillado (o proyecto propio aprobado si no hay empresa sanitaria en el área)",
+    "categoria": "certificacion",
+    "quien_emite": "Empresa de servicios sanitarios (o autoridad respectiva si no hay empresa en el área)",
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "cl-planos-arquitectura",
+    "nombre": "Planos de arquitectura numerados (ubicación, emplazamiento, plantas, cortes y elevaciones, planta de cubiertas, cierro si aplica)",
+    "categoria": "plano",
+    "quien_emite": "Arquitecto proyectista",
+    "consejo_vencimiento": null,
+    "consejo_formato": "Escala 1:50 (1:100 si la planta supera 50 m de longitud; otra escala solo con justificación).",
+    "alias": []
+  },
+  {
+    "id": "cl-cuadro-superficies",
+    "nombre": "Cuadro de superficies y cálculo de carga de ocupación",
+    "categoria": "memoria",
+    "quien_emite": "Arquitecto proyectista",
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "cl-plano-sombras",
+    "nombre": "Plano comparativo de sombras",
+    "categoria": "plano",
+    "quien_emite": "Arquitecto proyectista",
+    "consejo_vencimiento": null,
+    "consejo_formato": "Solo si el proyecto se acoge al procedimiento del Art. 2.6.11 OGUC.",
+    "alias": []
+  },
+  {
+    "id": "cl-proyecto-calculo-estructural",
+    "nombre": "Proyecto de cálculo estructural (memoria de cálculo + planos de estructura)",
+    "categoria": "memoria",
+    "quien_emite": "Ingeniero civil o arquitecto",
+    "consejo_vencimiento": null,
+    "consejo_formato": "Memoria: cargas/sobrecargas, fuerzas horizontales, tensiones admisibles, medianería. Planos: fundaciones, secciones, detalles, especificaciones con referencia a tabla 4.2 de NCh.433. Exento si superficie < 100 m², obra menor, o clases C/D/E/F con ocupación < 20 personas (condiciones adicionales no verificadas, ver docs/chile-lguc-oguc.md).",
+    "alias": []
+  },
+  {
+    "id": "cl-especificaciones-tecnicas",
+    "nombre": "Especificaciones técnicas (seguridad contra incendio, acondicionamiento térmico)",
+    "categoria": "memoria",
+    "quien_emite": "Arquitecto proyectista",
+    "consejo_vencimiento": null,
+    "consejo_formato": "Uso residencial y equipamiento de educación/salud (no cementerios/crematorios): agregar Informe de acreditación, Informe de Ensayo, Memoria de Cálculo o Informe de Precalificación Energética (solo vivienda).",
+    "alias": []
+  },
+  {
+    "id": "cl-levantamiento-topografico",
+    "nombre": "Levantamiento topográfico acotado",
+    "categoria": "plano",
+    "quien_emite": "Profesional o técnico competente, refrendado por el arquitecto proyectista",
+    "consejo_vencimiento": null,
+    "consejo_formato": "Omitible si la información ya está incorporada en las plantas de arquitectura.",
+    "alias": []
+  },
+  {
+    "id": "cl-carpeta-ascensores",
+    "nombre": "Carpeta de Ascensores e Instalaciones similares",
+    "categoria": "expediente",
+    "quien_emite": "Arquitecto proyectista / instalador",
+    "consejo_vencimiento": null,
+    "consejo_formato": "Solo si el proyecto contempla ascensores, montacargas, escaleras o rampas mecánicas. Incluye plano general, especificaciones técnicas y estudio de ascensores cuando corresponda.",
+    "alias": []
+  },
+  {
+    "id": "cl-plano-accesibilidad",
+    "nombre": "Plano y Memoria de Accesibilidad",
+    "categoria": "plano",
+    "quien_emite": "Arquitecto proyectista",
+    "consejo_vencimiento": null,
+    "consejo_formato": "Solo para edificios del Art. 4.1.7 OGUC (no verificado en detalle, ver docs/chile-lguc-oguc.md).",
+    "alias": []
+  },
+  {
+    "id": "cl-proyecto-telecomunicaciones",
+    "nombre": "Proyecto de telecomunicaciones (planos y especificaciones técnicas)",
+    "categoria": "memoria",
+    "quien_emite": "Proyectista de telecomunicaciones",
+    "consejo_vencimiento": null,
+    "consejo_formato": "Solo si el proyecto debe registrarse en el Registro de Proyectos Inmobiliarios.",
+    "alias": []
+  },
+  {
+    "id": "cl-comprobante-impacto-vial",
+    "nombre": "Comprobante de ingreso del Informe de Mitigación de Impacto Vial (o certificado de que no se requiere)",
+    "categoria": "certificacion",
+    "quien_emite": "Sistema electrónico correspondiente",
+    "consejo_vencimiento": null,
+    "consejo_formato": null,
+    "alias": []
+  },
+  {
+    "id": "cl-informe-favorable-seremi-sag",
+    "nombre": "Informe previo favorable de la SEREMI de Vivienda y Urbanismo y del Servicio Agrícola (SAG)",
+    "categoria": "informe",
+    "quien_emite": "SEREMI de Vivienda y Urbanismo / SAG",
+    "consejo_vencimiento": null,
+    "consejo_formato": "Solo para construcciones industriales, de infraestructura, equipamiento, turismo o poblaciones fuera de los límites urbanos (Art. 55 LGUC).",
+    "alias": []
+  }
+]

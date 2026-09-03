@@ -9,9 +9,17 @@ caso completo. Este documento junta esas limitaciones en un solo lugar, con
 extensiones propuestas y su costo relativo.
 
 Estado actual (para contexto): 49 reglas, 4 jurisdicciones (`GT`, `muniguate`, `scp`,
-`xela`), 104 documentos en el catálogo, `confianza` en 42 reglas `confirmada` y 7
-`SIN_CONFIRMAR`, `tipo` en 9 reglas `gestion` y 5 `aviso` (el resto, 35, son
-requisitos documentales normales).
+`xela`), 104 documentos en el catálogo, `confianza` en 30 reglas `confirmada`, 11
+`mirror` y 8 `SIN_CONFIRMAR`. Las 11 `mirror` son todas las de `muniguate` que citan
+Guía 09-F/00-F/01-F — ambas guías salen del mismo mirror privado no oficial
+(approvato.com.gt, ver [`municipal-guatemala.md`](../municipal-guatemala.md)) —
+excepto las que ya estaban en `SIN_CONFIRMAR` por un disparador sin confirmar en el
+propio texto (esas se quedan como estaban, no suben a `mirror`). `inab-bosque` bajó
+de `confirmada` a `SIN_CONFIRMAR`: cita solo VAC02 §3j y CLAUDE.md marca a INAB
+explícitamente como sin requisitos publicados en VAC04. `tipo` en 9 reglas `gestion`
+y 5 `aviso` (el resto, 35, son requisitos documentales normales). `revisar_si` en 2
+reglas (`conred-nrd2`, `conred-asientos-fijos`), por el cambio de la NRD-2 del
+22/12/2025 (Acuerdo CN-3-2025) que VAC04 todavía cita sin versión.
 
 ## Limitaciones encontradas
 
@@ -107,24 +115,37 @@ revisión?".
 
 ## Extensiones propuestas, por costo/beneficio
 
-1. **`tipo` por entrada de `exige`, con fallback al `tipo` de la regla.** Resuelve el
-   punto 3 sin obligar a partir reglas. Costo bajo: cambia la lectura de `exige` en
-   `motor.py`/`catalogo.py`, no el formato de `cuando`.
-2. **Operador `!=`.** Costo mínimo, mismo patrón que `>=`/`<=`. No abre la puerta a
-   expresiones arbitrarias — sigue siendo comparación de un campo contra un valor fijo.
-3. **Generar el check de no-cruce entre jurisdicciones automáticamente**, iterando
-   `{r["jurisdiccion"] for r in REGLAS}` en vez de bloques manuales por jurisdicción.
-   Resuelve el punto 7. Vive enteramente en `motor.py` (el evaluador genérico, no en
-   `reglas.json`), consistente con la convención "si agregás lógica, que sea al
-   evaluador genérico, no reglas hardcodeadas".
-4. **Campo `fuente_tipo: "oficial" | "mirror" | "inferido"`** (o extender `confianza`
-   a tres valores). Resuelve el punto 8 — hace explícito en datos lo que hoy solo vive
-   en prosa en `CLAUDE.md`. Costo medio: requiere decidir el valor para las 49 reglas
-   existentes, no solo las nuevas.
-5. **Campo opcional `fuente_fecha` o `revisar_si`** en reglas cuya norma de origen es
-   conocida por cambiar (CONRED, planes de ordenamiento territorial). Resuelve el
-   punto 9. Mismo costo que el anterior: hay que decidir el valor retroactivamente
-   para las reglas que ya se sabe que están en riesgo (`conred-*`).
+1. ✅ **`tipo` por entrada de `exige`, con fallback al `tipo` de la regla.** Resuelve el
+   punto 3 sin obligar a partir reglas. Implementado: `catalogo.resuelve()` agrega
+   `tipo` a la entrada resuelta solo si viene explícito; `motor.informe()` y
+   `fallas.revisar()` calculan el tipo efectivo como `d.get("tipo") or r.get("tipo")`
+   antes de decidir si es un requisito documental o una gestión. No se tocó el formato
+   de `cuando`. Reglas existentes sin `tipo` por entrada siguen funcionando igual
+   (fallback al `tipo` de la regla completa) — `xela-alto-impacto-equipo`/
+   `-dictamenes` no se fusionaron porque además difieren en `institucion`, que sigue
+   siendo un campo de regla completa, no de entrada.
+2. ✅ **Operador `!=`.** Agregado a `OPS` en `motor.py`, mismo patrón que `>=`/`<=`.
+   Sin uso real en `reglas.json` todavía — cubierto solo por el self-check.
+3. ✅ **Check de no-cruce entre jurisdicciones, genérico.** `motor.py::demo()` ahora
+   recorre `{r["jurisdiccion"] for r in REGLAS} - {"GT"}` y verifica todas las
+   combinaciones de a pares. Agregar una jurisdicción nueva no requiere código nuevo.
+4. ✅ **Nivel de confianza de tres valores.** Se optó por extender `confianza` en vez
+   de agregar `fuente_tipo` aparte (menos sprawl de esquema, mismos consumidores
+   existentes — `SIN_CONFIRMAR` sigue funcionando igual en frontend/api-server).
+   Valores: `confirmada` (✅ oficial), `mirror` (⚠️ fuente secundaria/mirror no
+   oficial), `SIN_CONFIRMAR` (❌ no verificado) — mapea 1:1 a la sección "Nivel de
+   confianza de los datos" de `CLAUDE.md`. `motor.py::demo()` valida que ninguna
+   regla tenga un valor fuera de `VALORES_CONFIANZA`. Documentado en
+   `motor/glosario.json` (`confianza_mirror`). **Pendiente:** reclasificar las 49
+   reglas existentes — hoy todas siguen en `confirmada`/`SIN_CONFIRMAR`, ninguna usa
+   `mirror` todavía aunque varias deberían (las que citan la Guía 09-F).
+5. ✅ **Campo opcional `revisar_si`.** Texto libre en una regla que describe qué
+   cambio en la norma de origen la invalidaría. Cuando está presente,
+   `fallas.revisar()` emite un hallazgo tipo `aviso` (`revisar-<id>`) sin bloquear el
+   expediente. Documentado en `motor/glosario.json`. **Pendiente:** poblarlo en las
+   reglas que ya se sabe que están en riesgo — mínimo `conred-nrd2` y
+   `conred-asientos-fijos` (NRD-2 cambió el 22/12/2025, Acuerdo CN-3-2025, VAC04 la
+   cita sin versión).
 6. **Comparación entre dos campos del proyecto** (p. ej.
    `{"campo_a": "area_construccion_m2", "op": ">", "campo_b": "area_terreno_m2"}`).
    Costo alto: cambia la forma del DSL de `cuando`, no solo agrega un operador. Vale
