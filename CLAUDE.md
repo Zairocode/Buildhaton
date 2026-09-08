@@ -41,6 +41,7 @@ El [README](README.md) tiene el planteamiento completo.
 | [`motor/`](motor/) | Motor de requisitos: reglas como datos + ~55 líneas de filtro. |
 | [`docs/devel/limitaciones-motor.md`](docs/devel/limitaciones-motor.md) | **Desarrollo, no normativa.** Límites del DSL de reglas encontrados al integrar Xela, y extensiones propuestas por costo/beneficio. |
 | [`docs/devel/pruebas-e2e.md`](docs/devel/pruebas-e2e.md) | **Desarrollo, no normativa.** Estado de pruebas (no hay ninguna en frontend/api-server) y propuestas concretas, con los gotchas de Playwright ya documentados. |
+| [`docs/devel/expansion-multi-pais.md`](docs/devel/expansion-multi-pais.md) | **Desarrollo, no normativa.** Propuesta para partir el motor por país (Colombia primero, unitario), qué está hardcodeado a Guatemala hoy, y qué queda explícitamente diferido (soporte federal). |
 
 ## Nivel de confianza de los datos
 
@@ -129,7 +130,8 @@ No gastes intentos con urllib/WebFetch sobre muniguate: ya se intentó por tres 
 
 **Ingeniería**
 - Sin pruebas automatizadas en `frontend/` ni `api-server/` — propuestas concretas en [`docs/devel/pruebas-e2e.md`](docs/devel/pruebas-e2e.md).
-- El DSL de `reglas.json` tiene límites reales (condiciones de un solo campo, `tipo` a nivel de regla no de documento, sin tabla de parámetros por zona) — inventario completo y extensiones propuestas en [`docs/devel/limitaciones-motor.md`](docs/devel/limitaciones-motor.md).
+- El DSL de `reglas.json` tiene límites reales (condiciones de un solo campo, sin tabla de parámetros por zona) — inventario completo y extensiones propuestas en [`docs/devel/limitaciones-motor.md`](docs/devel/limitaciones-motor.md). `tipo` por entrada de `exige` y el operador `!=` ya se implementaron.
+- Multi-país: propuesta de partición por país (`motor/paises/<iso>/`) en [`docs/devel/expansion-multi-pais.md`](docs/devel/expansion-multi-pais.md), todavía no ejecutada — el borrador de Chile en `motor/paises/cl/` es una prueba de esquema aislada, no está cargado por el motor en vivo.
 
 **Preguntas abiertas que cambian el producto**
 - **¿La VAC tiene API?** Define si el módulo 2 sincroniza estado real o solo lo registra en paralelo. Es la pregunta de mayor impacto.
